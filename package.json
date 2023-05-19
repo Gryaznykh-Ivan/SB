@@ -1,0 +1,26 @@
+{
+  "name": "super-brand",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev:store-server": "cd ./store-server && npm run start:dev",
+    "dev:store-client": "cd ./store-client && npm run dev",
+    "dev:cms-server": "cd ./cms-server && npm run start:dev",
+    "dev:cms-client": "cd ./cms-client && npm run dev",
+    "dev:parser-server": "cd ./parser-server && npm run prisma-push && npm run start:dev",
+    "dev:parser-client": "cd ./parser-client && npm run dev",
+    "dev": "concurrently \"npm run dev:store-client\" \"npm run dev:store-server\" \"npm run dev:cms-client\" \"npm run dev:cms-server\" \"npm run dev:parser-client\" \"npm run dev:parser-server\""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jwt-decode": "^3.1.2",
+    "next": "^13.3.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/selenium-webdriver": "^4.1.13"
+  }
+}
