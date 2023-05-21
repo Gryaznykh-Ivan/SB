@@ -314,8 +314,8 @@ model Offer {
     compareAtPrice    Decimal?         @db.Decimal(10, 2)
     comment           String?
     status            OfferStatus      @default(OFFERED)
-    user              User?            @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    userId            String?
+    user              User             @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    userId            String
     order             Order?           @relation(name: "orderoffers", fields: [orderId], references: [id], onUpdate: Cascade, onDelete: SetNull)
     orderId           Int?
     product           Product?         @relation(fields: [productId], references: [id], onUpdate: Cascade, onDelete: SetNull)

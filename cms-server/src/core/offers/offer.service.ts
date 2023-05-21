@@ -226,6 +226,7 @@ export class OfferService {
                 data: offer.id
             }
         } catch (e) {
+            console.log(e)
             throw new HttpException("Произошла ошибка на стороне сервера", HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }

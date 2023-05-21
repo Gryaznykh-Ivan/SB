@@ -29,7 +29,6 @@ export class CreateOfferDto {
     @IsString()
     deliveryProfileId: string;
 
-    @IsOptional()
     @IsString()
     userId: string;
 }

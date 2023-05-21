@@ -34,7 +34,6 @@ export class UpdateOfferDto {
     @ValidateIf((object, value) => value !== undefined)
     deliveryProfileId: string;
 
-    @IsOptional()
     @IsString()
     userId: string;
 }
