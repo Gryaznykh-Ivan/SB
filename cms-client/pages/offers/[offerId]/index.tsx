@@ -64,7 +64,6 @@ function New() {
     }
 
     const mustBeSaved = useMemo(() => {
-        console.log(changes.userId)
         return Object.values(changes).some(c => c !== undefined)
     }, [changes])
 
