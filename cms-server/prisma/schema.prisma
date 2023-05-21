@@ -326,8 +326,6 @@ model Offer {
     deliveryProfileId String?
     fulfillment       Fulfillment?     @relation(fields: [fulfillmentId], references: [id], onUpdate: Cascade, onDelete: SetNull)
     fulfillmentId     String?
-    image             Image?           @relation(fields: [imageId], references: [id], onUpdate: Cascade, onDelete: SetNull)
-    imageId           String?
     cartProduct       CartProduct[]
     returned          ReturnOffer[]
     removedFromOrders Order[]          @relation(name: "orderremovedoffers")
@@ -479,7 +477,6 @@ model Image {
     collectionId String?
     variant      Variant?    @relation(fields: [variantId], references: [id], onUpdate: Cascade, onDelete: SetNull)
     variantId    String?
-    offer        Offer[]
     createdAt    DateTime    @default(now())
     updatedAt    DateTime    @updatedAt
 

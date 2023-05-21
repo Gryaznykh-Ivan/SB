@@ -149,12 +149,18 @@ export class OrderService {
                         id: true,
                         productTitle: true,
                         variantTitle: true,
-                        image: {
+                        product: {
                             select: {
-                                id: true,
-                                alt: true,
-                                src: true
-                            }
+                                images: {
+                                    select: {
+                                        id: true,
+                                        alt: true,
+                                        src: true
+                                    },
+                                    orderBy: { position: 'asc' },
+                                    take: 1
+                                },
+                            },
                         },
                         price: true,
                         deliveryProfile: {
@@ -177,12 +183,18 @@ export class OrderService {
                                         id: true,
                                         productTitle: true,
                                         variantTitle: true,
-                                        image: {
+                                        product: {
                                             select: {
-                                                id: true,
-                                                alt: true,
-                                                src: true
-                                            }
+                                                images: {
+                                                    select: {
+                                                        id: true,
+                                                        alt: true,
+                                                        src: true
+                                                    },
+                                                    orderBy: { position: 'asc' },
+                                                    take: 1
+                                                },
+                                            },
                                         },
                                         price: true
                                     }
@@ -200,12 +212,18 @@ export class OrderService {
                                 id: true,
                                 productTitle: true,
                                 variantTitle: true,
-                                image: {
+                                product: {
                                     select: {
-                                        id: true,
-                                        alt: true,
-                                        src: true
-                                    }
+                                        images: {
+                                            select: {
+                                                id: true,
+                                                alt: true,
+                                                src: true
+                                            },
+                                            orderBy: { position: 'asc' },
+                                            take: 1
+                                        },
+                                    },
                                 },
                                 price: true,
                                 deliveryProfile: {
@@ -244,12 +262,18 @@ export class OrderService {
                         id: true,
                         productTitle: true,
                         variantTitle: true,
-                        image: {
+                        product: {
                             select: {
-                                id: true,
-                                alt: true,
-                                src: true
-                            }
+                                images: {
+                                    select: {
+                                        id: true,
+                                        alt: true,
+                                        src: true
+                                    },
+                                    orderBy: { position: 'asc' },
+                                    take: 1
+                                },
+                            },
                         },
                         price: true,
                         deliveryProfile: {
@@ -283,7 +307,7 @@ export class OrderService {
                 id: offer.id,
                 product: offer.productTitle,
                 variant: offer.variantTitle,
-                image: offer.image,
+                image: offer.product?.images[0] ?? null,
                 deliveryProfile: offer.deliveryProfile,
                 price: offer.price
             })),
@@ -293,7 +317,7 @@ export class OrderService {
                     id: offer.id,
                     product: offer.productTitle,
                     variant: offer.variantTitle,
-                    image: offer.image,
+                    image: offer.product?.images[0] ?? null,
                     deliveryProfile: offer.deliveryProfile,
                     price: offer.price
                 })),
@@ -305,7 +329,7 @@ export class OrderService {
                     id: offer.id,
                     product: offer.productTitle,
                     variant: offer.variantTitle,
-                    image: offer.image,
+                    image: offer.product?.images[0] ?? null,
                     price: offer.price,
                     reason: reason,
                 })),
@@ -315,7 +339,7 @@ export class OrderService {
                 id: offer.id,
                 product: offer.productTitle,
                 variant: offer.variantTitle,
-                image: offer.image,
+                image: offer.product?.images[0] ?? null,
                 deliveryProfile: offer.deliveryProfile,
                 price: offer.price
             })),
@@ -594,12 +618,18 @@ export class OrderService {
                         id: true,
                         productTitle: true,
                         variantTitle: true,
-                        image: {
+                        product: {
                             select: {
-                                id: true,
-                                alt: true,
-                                src: true
-                            }
+                                images: {
+                                    select: {
+                                        id: true,
+                                        alt: true,
+                                        src: true
+                                    },
+                                    orderBy: { position: 'asc' },
+                                    take: 1
+                                },
+                            },
                         },
                         price: true,
                         deliveryProfile: {
@@ -623,7 +653,7 @@ export class OrderService {
                 id: offer.id,
                 product: offer.productTitle,
                 variant: offer.variantTitle,
-                image: offer.image,
+                image: offer.product?.images[0] ?? null,
                 deliveryProfile: offer.deliveryProfile,
                 price: offer.price
             })),
@@ -654,12 +684,18 @@ export class OrderService {
                                 id: true,
                                 productTitle: true,
                                 variantTitle: true,
-                                image: {
+                                product: {
                                     select: {
-                                        id: true,
-                                        alt: true,
-                                        src: true
-                                    }
+                                        images: {
+                                            select: {
+                                                id: true,
+                                                alt: true,
+                                                src: true
+                                            },
+                                            orderBy: { position: 'asc' },
+                                            take: 1
+                                        },
+                                    },
                                 },
                                 price: true
                             }
@@ -679,7 +715,7 @@ export class OrderService {
                 id: offer.id,
                 product: offer.productTitle,
                 variant: offer.variantTitle,
-                image: offer.image,
+                image: offer.product?.images[0] ?? null,
                 price: offer.price,
                 reason: reason,
             })),

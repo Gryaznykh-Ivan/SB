@@ -22,12 +22,20 @@ export class OfferService {
                 id: true,
                 productTitle: true,
                 variantTitle: true,
-                image: {
+                product: {
                     select: {
-                        id: true,
-                        src: true,
-                        alt: true,
-                    }
+                        images: {
+                            select: {
+                                id: true,
+                                src: true,
+                                alt: true,
+                            },
+                            orderBy: {
+                                position: 'asc'
+                            },
+                            take: 1,
+                        },
+                    },
                 },
                 variant: {
                     select: {
@@ -58,7 +66,7 @@ export class OfferService {
             id: offer.id,
             product: offer.productTitle,
             variant: offer.variantTitle,
-            image: offer.image,
+            image: offer.product?.images[0] ?? null,
             variantId: offer.variantId,
             productId: offer.variant?.productId ?? null,
             price: offer.price,
@@ -122,12 +130,20 @@ export class OfferService {
                 },
                 productTitle: true,
                 variantTitle: true,
-                image: {
+                product: {
                     select: {
-                        id: true,
-                        src: true,
-                        alt: true,
-                    }
+                        images: {
+                            select: {
+                                id: true,
+                                src: true,
+                                alt: true,
+                            },
+                            orderBy: {
+                                position: 'asc'
+                            },
+                            take: 1,
+                        },
+                    },
                 },
                 price: true,
                 offerPrice: true,
@@ -148,12 +164,12 @@ export class OfferService {
         const result = offers.map(offer => ({
             id: offer.id,
             product: offer.productTitle,
-            variant: offer.variantTitle, //variant.product.options.map((option) => offer.variant[`option${option.option}`]).join(' | ')
+            variant: offer.variantTitle,
             price: offer.price,
             offerPrice: offer.offerPrice,
             status: offer.status,
             user: offer.user?.fullName ?? null,
-            image: offer.image,
+            image: offer.product?.images[0] ?? null,
             deliveryProfile: offer.deliveryProfile
         }))
 
@@ -179,17 +195,10 @@ export class OfferService {
                                 title: true,
                                 option: true,
                             },
-                            orderBy: [{ position: 'asc' }]
-                        },
-                        images: {
-                            select: {
-                                id: true
-                            },
                             orderBy: {
                                 position: 'asc'
-                            },
-                            take: 1
-                        }
+                            }
+                        },
                     }
                 }
             }
@@ -199,13 +208,10 @@ export class OfferService {
             throw new HttpException("Вариант не найден", HttpStatus.BAD_REQUEST)
         }
 
-        const offerImage = variant.product.images[0] ?? null
-
         const createOfferQuery = {
             productId: variant.product.id,
             productTitle: variant.product.title,
             variantTitle: variant.product.options.map((option) => variant[`option${option.option}`]).join(' | '),
-            imageId: offerImage !== null ? offerImage.id : undefined,
             variantId: data.variantId,
             userId: data.userId,
             status: data.status,
@@ -238,11 +244,6 @@ export class OfferService {
                 id: true,
                 status: true,
                 variantId: true,
-                image: {
-                    select: {
-                        id: true
-                    }
-                }
             }
         })
 
@@ -289,15 +290,6 @@ export class OfferService {
                                     option: true,
                                 },
                                 orderBy: [{ position: 'asc' }]
-                            },
-                            images: {
-                                select: {
-                                    id: true
-                                },
-                                orderBy: {
-                                    position: 'asc'
-                                },
-                                take: 1
                             }
                         }
                     }
@@ -308,15 +300,12 @@ export class OfferService {
                 throw new HttpException("Вариант не найден", HttpStatus.BAD_REQUEST)
             }
 
-            const offerImage = variant.product.images[0] ?? null
-
             Object.assign(updateOfferQuery, {
                 status: (offer.status === OfferStatus.NO_MATCH && data.status === undefined) ? OfferStatus.ACTIVE : data.status,
                 productId: variant.product.id,
                 productTitle: variant.product.title,
                 variantTitle: variant.product.options.map((option) => variant[`option${option.option}`]).join(' | '),
-                variantId: data.variantId,
-                imageId: offerImage !== null ? offerImage.id : null
+                variantId: data.variantId
             })
         }
 

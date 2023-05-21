@@ -1,4 +1,3 @@
-import { profile } from 'console';
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDeliveryProfilesQuery } from '../../../services/suggestionService';
 import { OfferCreateRequest } from '../../../types/api';
