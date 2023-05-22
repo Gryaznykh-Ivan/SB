@@ -5,7 +5,7 @@ import { IsArray, IsDecimal, IsEnum, IsInt, IsNotEmpty, IsOptional, IsString, Mi
 export class CreateOfferDto {
     @IsNotEmpty()
     @IsString()
-    variantId: string;
+    variantId: number;
 
     @IsDecimal()
     price: number;
@@ -27,9 +27,9 @@ export class CreateOfferDto {
 
     @IsOptional()
     @IsString()
-    deliveryProfileId: string;
+    deliveryProfileId: number;
 
     @IsOptional()
     @IsString()
-    userId: string;
+    userId: number;
 }

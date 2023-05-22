@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Modal from '../../portals/Modal'
 import SearchInput from '../../inputs/SearchInput';
-import { useLazyDeliveryZonesQuery } from '../../../services/suggestionService';
-import { IDeliveryZone, IErrorResponse } from '../../../types/api';
+import { useLazyDeliveryZonesQuery } from '@/services/suggestionService';
+import { IDeliveryZone, IErrorResponse } from '@/types/api';
 import { toast } from 'react-toastify';
 
 interface IProps {
-    profileId: string;
+    profileId: number;
     title: string;
     onClose: () => void;
     onDone: (zone: Pick<IDeliveryZone, "country" | "region">) => void;

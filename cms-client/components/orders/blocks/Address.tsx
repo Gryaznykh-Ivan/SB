@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { IOrderAddress, IUserAddress, OrderCreateRequest } from '../../../types/api';
+import { IOrderAddress, IUserAddress, OrderCreateRequest } from '@/types/api';
 import ManageAddress from '../../orders/popups/ManageAddress';
 import AddAddress from '../popups/ManageAddress';
 
@@ -8,7 +8,7 @@ interface IProps {
     mailingCity: string | null;
     mailingRegion: string | null;
     mailingAddress: string | null;
-    userId: string | null;
+    userId: number | null;
     onChange: (obj: OrderCreateRequest) => void;
 }
 

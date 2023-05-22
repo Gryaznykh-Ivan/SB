@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { hideConfirm, showConfirm } from '../store/slices/confirm.slice'
+import { hideConfirm, showConfirm } from '@/store/slices/confirm.slice'
 import { useAppDispatch } from './store'
 
 let resolver: Function 

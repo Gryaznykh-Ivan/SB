@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import React, { useState } from 'react'
-import MainLayout from '../../components/layouts/Main'
-import { useGetSettingsByIdQuery } from '../../services/settingsService'
-import { ISetting } from '../../types/api'
+import MainLayout from '@/components/layouts/Main'
+import { useGetSettingsByIdQuery } from '@/services/settingsService'
+import { ISetting } from '@/types/api'
 
 interface IState {
     price: string;

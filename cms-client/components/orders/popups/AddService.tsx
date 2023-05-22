@@ -4,14 +4,14 @@ import Image from 'next/image'
 import Modal from '../../portals/Modal'
 import SearchInput from '../../inputs/SearchInput';
 import JSXAccordion from '../../accordions/JSXAccordion';
-import { IDeliveryProfile, IErrorResponse, IOffer, IOfferSearch, IService } from '../../../types/api';
-import { useLazyGetOffersBySearchQuery } from '../../../services/offerService';
+import { IDeliveryProfile, IErrorResponse, IOffer, IOfferSearch, IService } from '@/types/api';
+import { useLazyGetOffersBySearchQuery } from '@/services/offerService';
 import ImageLoader from '../../image/ImageLoader';
 import Select from '../../inputs/Select';
 import PickDelivery from '../blocks/PickDelivery';
 import Input from '../../inputs/Input';
 import { toast } from 'react-toastify';
-import { Service } from '../../../types/store';
+import { Service } from '@/types/store';
 
 interface IProps {
     title: string;
@@ -64,7 +64,7 @@ export default function AddService({ title, onClose, onDone, ...data }: IProps) 
             return toast.error("Вы не указали сумму")
         }
 
-        onDone({ ...state, id: `new${Math.random()}` })
+        onDone({ ...state, id: Math.random() })
         onClose()
     }
 

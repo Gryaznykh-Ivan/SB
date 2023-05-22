@@ -59,6 +59,7 @@ export enum FulfillmentStatus {
 
 export enum ReturnStatus {
     RETURNED = "RETURNED",
+    PARTIALLY_RETURNED = "PARTIALLY_RETURNED",
     RETURN_REQUESTED = "RETURN_REQUESTED",
     RETURN_IN_PROGRESS = "RETURN_IN_PROGRESS",
 }

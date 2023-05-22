@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import { IUserAddress, UserUpdateRequest } from '../../../types/api';
+import { IUserAddress, UserUpdateRequest } from '@/types/api';
 import Address from '../cards/Address'
 import ManageAddress from '../popups/ManageAddress';
 
@@ -15,9 +15,9 @@ export default function Addresses({ addresses, onChange }: IProps) {
     const [popup, setPopup] = useState(false)
 
     useEffect(() => {
-        const createAddresses = state.filter(c => c.id.startsWith('new')).map(({ id, ...address }) => address)
-        const deleteAddresses = addresses.filter(c => !state.some(a => a.id === c.id)).map(({ id }) => id)
-        const updateAddresses = state.filter(c => !c.id.startsWith('new')).filter(c => Object.values(c).sort().join() !== Object.values(addresses.find(a => a.id === c.id) ?? {}).sort().join())
+        const createAddresses = state.filter(c => addresses.find(a => a.id === c.id) === undefined).map(({ id, ...address }) => address)
+        const updateAddresses = state.filter(c => addresses.find(a => a.id === c.id && Object.values(c).sort().join() !== Object.values(addresses.find(a => a.id === c.id) ?? {}).sort().join()))
+        const deleteAddresses = addresses.filter(c => state.find(a => a.id === c.id) === undefined).map(c => c.id)
         
         onChange({
             createAddresses: createAddresses.length !== 0 ? createAddresses : undefined,
@@ -27,8 +27,8 @@ export default function Addresses({ addresses, onChange }: IProps) {
     }, [state])
 
 
-    const onNewAddress = (address: IUserAddress) => {
-        const newAddress = { ...address, id: `new${Math.random()}` }
+    const onNewAddress = (address: Omit<IUserAddress, "id">) => {
+        const newAddress = { ...address, id: Math.random() }
         setState(prev => ([...prev, newAddress]))
     }
 
@@ -36,7 +36,7 @@ export default function Addresses({ addresses, onChange }: IProps) {
         setState(prev => prev.map(c => c.id === address.id ? address : c))
     }
 
-    const onDeleteAddress = (address: IUserAddress) => {
+    const onDeleteAddress = (address: Pick<IUserAddress, "id">) => {
         setState(prev => prev.filter(c => c.id !== address.id))
     }
 
@@ -69,7 +69,7 @@ export default function Addresses({ addresses, onChange }: IProps) {
                     <span className="ml-2">Добавить адрес</span>
                 </button>
             </div>
-            {popup && <ManageAddress title="Добавить адресс" isDeletable={false} onDone={onNewAddress} onClose={onPopupClose} />}
+            {popup && <ManageAddress title="Добавить адресс" isDeletable={false} onCreate={onNewAddress} onClose={onPopupClose} />}
         </div>
     )
 }

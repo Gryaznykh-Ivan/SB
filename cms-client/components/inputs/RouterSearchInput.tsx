@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
-import useDebounce from '../../hooks/useDebounce';
+import useDebounce from '@/hooks/useDebounce';
 
 interface IProps {
     className?: string;

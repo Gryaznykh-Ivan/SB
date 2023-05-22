@@ -2,12 +2,12 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
-import Input from '../../../components/inputs/Input'
-import MainLayout from '../../../components/layouts/Main'
-import ProductsToReturn from '../../../components/orders/blocks/ProductsToReturn'
-import TrackingInformation from '../../../components/orders/blocks/TrackingInformation'
-import { useCreateReturnMutation, useGetOrderByIdQuery } from '../../../services/orderService'
-import { IErrorResponse, IReturnProduct, OrderReturnCreateRequest } from '../../../types/api'
+import Input from '@/components/inputs/Input'
+import MainLayout from '@/components/layouts/Main'
+import ProductsToReturn from '@/components/orders/blocks/ProductsToReturn'
+import TrackingInformation from '@/components/orders/blocks/TrackingInformation'
+import { useCreateReturnMutation, useGetOrderByIdQuery } from '@/services/orderService'
+import { IErrorResponse, IReturnProduct, OrderReturnCreateRequest } from '@/types/api'
 
 export default function Return() {
     const router = useRouter()

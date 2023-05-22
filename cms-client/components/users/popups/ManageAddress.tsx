@@ -4,7 +4,7 @@ import Image from 'next/image'
 import Modal from '../../portals/Modal'
 import SearchInput from '../../inputs/SearchInput';
 import Input from '../../inputs/Input';
-import { IUserAddress } from '../../../types/api';
+import { IUserAddress } from '@/types/api';
 import { toast } from 'react-toastify';
 import CountriesSmartInput from '../../inputs/CountriesSmartInput';
 import RegionsSmartInput from '../../inputs/RegionsSmartInput';
@@ -12,16 +12,17 @@ import CitiesSmartInput from '../../inputs/CitiesSmartInput';
 
 interface IProps {
     title: string;
-    initialState?: IUserAddress;
+    id?: number;
+    initialState?: Omit<IUserAddress, "id">;
     isDeletable: boolean;
     onClose: () => void;
-    onDelete?: (obj: IUserAddress) => void;
-    onDone?: (obj: IUserAddress) => void;
+    onCreate?: (obj:  Omit<IUserAddress, "id">) => void;
+    onUpdate?: (obj: IUserAddress) => void;
+    onDelete?: (obj: Pick<IUserAddress, "id">) => void;
 }
 
-export default function ManageAddress({ title, initialState, isDeletable, onClose, onDone, onDelete }: IProps) {
+export default function ManageAddress({ id, title, initialState, isDeletable, onClose, onCreate, onUpdate, onDelete }: IProps) {
     const [state, setState] = useState({
-        id: initialState?.id ?? "",
         city: initialState?.city ?? "",
         country: initialState?.country ?? "",
         address: initialState?.address ?? "",
@@ -32,22 +33,34 @@ export default function ManageAddress({ title, initialState, isDeletable, onClos
         setState(prev => ({ ...prev, [e.target.name]: e.target.value }))
     }
 
-    const onDoneEvent = () => {
-        if (onDone !== undefined) {
-            if (state.country === "" || state.region === "" || state.city === "" || state.address === "") {
-                return toast.error("Одно из полей не заполнено")
-            }
-
-            onDone(state)
-            onClose()
+    const onCreateEvent = () => {
+        if (onCreate === undefined) return
+        if (state.country === "" || state.region === "" || state.city === "" || state.address === "") {
+            return toast.error("Одно из полей не заполнено")
         }
+
+        onCreate(state)
+        onClose()
+    }
+
+    const onUpdateEvent = () => {
+        if (id === undefined) return
+        if (onUpdate === undefined) return
+
+        if (state.country === "" || state.region === "" || state.city === "" || state.address === "") {
+            return toast.error("Одно из полей не заполнено")
+        }
+
+        onUpdate({ id, ...state })
+        onClose()
     }
 
     const onDeleteEvent = () => {
-        if (onDelete !== undefined) {
-            onDelete(state)
-            onClose()
-        }
+        if (id === undefined) return
+        if (onDelete === undefined) return
+
+        onDelete({ id })
+        onClose()
     }
 
     return (
@@ -90,7 +103,7 @@ export default function ManageAddress({ title, initialState, isDeletable, onClos
                                 }
                             </div>
                             <div className="flex justify-end">
-                                <button className="bg-green-700 px-4 py-2 text-white font-medium rounded-md" onClick={onDoneEvent}>Готово</button>
+                                <button className="bg-green-700 px-4 py-2 text-white font-medium rounded-md" onClick={id === undefined ? onCreateEvent : onUpdateEvent}>Готово</button>
                             </div>
                         </div>
                     </div>

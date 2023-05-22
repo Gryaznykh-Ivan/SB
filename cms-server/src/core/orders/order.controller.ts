@@ -45,7 +45,7 @@ export class OrderController {
     @Get(':orderId/fulfillment/:fulfillmentId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.ORDER_READ])
     getFulfillmentById(
-        @Param('fulfillmentId') fulfillmentId: string
+        @Param('fulfillmentId', ParseIntPipe) fulfillmentId: number
     ) {
         return this.orderService.getFulfillmentById(fulfillmentId)
     }
@@ -53,7 +53,7 @@ export class OrderController {
     @Get(':orderId/return/:returnId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.ORDER_READ])
     getReturnById(
-        @Param('returnId') returnId: string
+        @Param('returnId', ParseIntPipe) returnId: number
     ) {
         return this.orderService.getReturnById(returnId)
     }
@@ -111,7 +111,7 @@ export class OrderController {
     @Auth([Role.ADMIN, Role.MANAGER], [Right.ORDER_UPDATE])
     updateReturn(
         @Param('orderId', ParseIntPipe) orderId: number,
-        @Param('returnId') returnId: string,
+        @Param('returnId', ParseIntPipe) returnId: number,
         @Body() data: UpdateReturnDto,
         @User() self: IUser
     ) {
@@ -122,7 +122,7 @@ export class OrderController {
     @Auth([Role.ADMIN, Role.MANAGER], [Right.ORDER_UPDATE])
     updateFulfillment(
         @Param('orderId', ParseIntPipe) orderId: number,
-        @Param('fulfillmentId') fulfillmentId: string,
+        @Param('fulfillmentId', ParseIntPipe) fulfillmentId: number,
         @Body() data: UpdateFulfillmentDto,
         @User() self: IUser
     ) {
@@ -133,7 +133,7 @@ export class OrderController {
     @Auth([Role.ADMIN, Role.MANAGER], [Right.ORDER_UPDATE])
     removeFulfillment(
         @Param('orderId', ParseIntPipe) orderId: number,
-        @Param('fulfillmentId') fulfillmentId: string,
+        @Param('fulfillmentId', ParseIntPipe) fulfillmentId: number,
         @User() self: IUser
     ) {
         return this.orderService.removeFulfillment(orderId, fulfillmentId, self)
@@ -143,7 +143,7 @@ export class OrderController {
     @Auth([Role.ADMIN, Role.MANAGER], [Right.ORDER_UPDATE])
     removeReturn(
         @Param('orderId', ParseIntPipe) orderId: number,
-        @Param('returnId') returnId: string,
+        @Param('returnId', ParseIntPipe) returnId: number,
         @User() self: IUser
     ) {
         return this.orderService.removeReturn(orderId, returnId, self)

@@ -1,11 +1,11 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useMemo, useState } from 'react'
-import GeneralInfo from '../../components/pages/blocks/GeneralInfo'
-import SeoSearch from '../../components/pages/blocks/SeoSearch'
-import MainLayout from '../../components/layouts/Main'
-import { useCreatePageMutation } from '../../services/pageService'
-import { PageCreateRequest, IErrorResponse } from '../../types/api'
+import GeneralInfo from '@/components/pages/blocks/GeneralInfo'
+import SeoSearch from '@/components/pages/blocks/SeoSearch'
+import MainLayout from '@/components/layouts/Main'
+import { useCreatePageMutation } from '@/services/pageService'
+import { PageCreateRequest, IErrorResponse } from '@/types/api'
 import { toast } from 'react-toastify'
 
 export default function New() {

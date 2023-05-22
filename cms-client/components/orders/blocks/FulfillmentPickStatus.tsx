@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { OrderFulfillmentUpdateRequest } from '../../../types/api';
+import { OrderFulfillmentUpdateRequest } from '@/types/api';
 import Select from '../../inputs/Select'
 
 interface IProps {

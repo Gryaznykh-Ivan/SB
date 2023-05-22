@@ -1,16 +1,16 @@
 import Link from 'next/link'
 import React, { useEffect, useMemo, useState } from 'react'
 
-import MainLayout from '../../components/layouts/Main'
-import OrganizationInfo from '../../components/products/blocks/OrganizationInfo'
-import GeneralInfo from '../../components/products/blocks/GeneralInfo'
-import CreateSeoSearch from '../../components/products/blocks/CreateSeoSearch'
-import Status from '../../components/products/blocks/Status'
+import MainLayout from '@/components/layouts/Main'
+import OrganizationInfo from '@/components/products/blocks/OrganizationInfo'
+import GeneralInfo from '@/components/products/blocks/GeneralInfo'
+import CreateSeoSearch from '@/components/products/blocks/CreateSeoSearch'
+import Status from '@/components/products/blocks/Status'
 import { useRouter } from 'next/router'
-import { useCreateProductMutation } from '../../services/productService'
+import { useCreateProductMutation } from '@/services/productService'
 import { toast } from 'react-toastify'
-import { IErrorResponse, ProductCreateRequest, ProductUpdateRequest } from '../../types/api'
-import Inventory from '../../components/products/blocks/Inventory'
+import { IErrorResponse, ProductCreateRequest, ProductUpdateRequest } from '@/types/api'
+import Inventory from '@/components/products/blocks/Inventory'
 
 function New() {
     const router = useRouter()

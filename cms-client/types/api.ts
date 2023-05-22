@@ -11,13 +11,13 @@ export interface IErrorResponse {
 }
 
 export interface IMetafield {
-    id: string;
+    id: number;
     key: string;
     value: string;
 }
 
 export interface ISetting {
-    id: string;
+    id: number;
     setting: string;
     title: string;
     value: string;
@@ -26,21 +26,21 @@ export interface ISetting {
 }
 
 export interface IDeliveryOption {
-    id: string;
+    id: number;
     title: string;
     duration: number;
     price: string;
 }
 
 export interface IDeliveryZone {
-    id: string;
+    id: number;
     country: string;
     region: string;
     options: IDeliveryOption[]
 }
 
 export interface IUserSearch {
-    id: string;
+    id: number;
     fullName: string | null;
     phone: string | null;
     email: string | null;
@@ -52,21 +52,22 @@ export interface IUserSearch {
 }
 
 export interface IDeliveryProfilePreview {
-    id: string;
+    id: number;
     title: string;
     zonesCount: number;
     offersCount: number;
 }
 
 export interface IDeliveryProfile {
-    id: string;
+    id: number;
     title: string;
     location: string;
+    isDefault: boolean;
 }
 
 
 export interface IOfferSearch {
-    id: string;
+    id: number;
     product: string;
     variant: string;
     price: string;
@@ -78,7 +79,7 @@ export interface IOfferSearch {
 }
 
 export interface IUserAddress {
-    id: string;
+    id: number;
     country: string;
     region: string;
     city: string;
@@ -93,12 +94,12 @@ export interface IOrderAddress {
 }
 
 export interface IUserPermission {
-    id: string;
+    id: number;
     right: Right;
 }
 
 export interface IUser {
-    id: string;
+    id: number;
     email: string | null;
     phone: string | null;
     firstName: string | null;
@@ -120,51 +121,51 @@ export interface IUser {
 }
 
 export interface IOffer {
-    id: string;
+    id: number;
     product: string;
     variant: string;
     image: IImage | null;
-    variantId: string | null;
-    productId: string | null;
+    variantId: number | null;
+    productId: number | null;
     price: string | null;
     compareAtPrice: string | null;
     offerPrice: string | null;
     comment: string | null;
-    deliveryProfileId: string | null;
+    deliveryProfileId: number | null;
     status: OfferStatus;
-    userId: string | null;
-    orderId: string | null;
+    userId: number | null;
+    orderId: number | null;
 }
 
 export interface IImage {
-    id: string;
+    id: number;
     alt: string;
     src: string;
     position: number;
 }
 
 export interface IProductOption {
-    id: string;
+    id: number;
     title: string;
     position: number;
     values: IProductOptionValue[]
 }
 
 export interface IProductOptionValue {
-    id: string;
+    id: number;
     title: string;
     position: number;
 }
 
 export interface IOption {
-    id: string;
+    id: number;
     title: string;
     position: number;
     option: number;
 }
 
 export interface ICollection {
-    id: string;
+    id: number;
     title: string;
     handle: string;
     hidden: boolean;
@@ -175,7 +176,7 @@ export interface ICollection {
 }
 
 export interface IPage {
-    id: string;
+    id: number;
     title: string;
     handle: string;
     content: string;
@@ -184,45 +185,45 @@ export interface IPage {
 }
 
 export interface IPageSearch {
-    id: string;
+    id: number;
     title: string;
     createdAt: Date
 }
 
 export interface ICollectionSearch {
-    id: string;
+    id: number;
     title: string;
     productsCount: number;
     createdAt: Date
 }
 
 export interface IVariantSearch {
-    id: string;
+    id: number;
     image: IImage | null;
     title: string;
     variants: {
-        id: string;
+        id: number;
         title: string;
     }[];
 }
 
 export interface IVariantPreview {
-    id: string;
+    id: number;
     title: string;
     price: string;
     image: IImage | null;
 }
 
 export interface IOfferVariantPreview {
-    id: string;
+    id: number;
     product: string;
-    productId: string;
+    productId: number;
     variant: string;
     image: IImage | null;
 }
 
 export interface IVariant {
-    id: string;
+    id: number;
     option0: string;
     option1: string;
     option2: string;
@@ -233,7 +234,7 @@ export interface IVariant {
 }
 
 export interface IProductSearch {
-    id: string;
+    id: number;
     image: IImage | null;
     title: string;
     available: boolean;
@@ -243,19 +244,19 @@ export interface IProductSearch {
 }
 
 export interface ICollectionProduct {
-    id: string;
+    id: number;
     title: string;
     image: IImage | null;
     available: boolean;
 }
 
 export interface ITag {
-    id: string;
+    id: number;
     title: string;
 }
 
 export interface IProduct {
-    id: string;
+    id: number;
     title: string;
     available: boolean;
     handle: string;
@@ -286,7 +287,7 @@ export interface IOrderSearch {
 }
 
 export interface ITimeline {
-    id: string;
+    id: number;
     title: string;
     message: string;
     user: string;
@@ -294,7 +295,7 @@ export interface ITimeline {
 }
 
 export interface IOrderProduct {
-    id: string;
+    id: number;
     product: string;
     variant: string;
     image: IImage | null;
@@ -303,7 +304,7 @@ export interface IOrderProduct {
 }
 
 export interface IReturnProduct {
-    id: string;
+    id: number;
     product: string;
     variant: string;
     image: IImage | null;
@@ -312,7 +313,7 @@ export interface IReturnProduct {
 }
 
 export interface IFulfillment {
-    id: string;
+    id: number;
     offers: IOrderProduct[];
     status: FulfillmentStatus;
     carrier: string;
@@ -320,7 +321,7 @@ export interface IFulfillment {
 }
 
 export interface IOrderReturn {
-    id: string;
+    id: number;
     offers: IReturnProduct[];
     status: ReturnStatus;
     carrier: string;
@@ -328,14 +329,14 @@ export interface IOrderReturn {
 }
 
 export interface IService {
-    id: string;
+    id: number;
     type: Service;
     description: string | null;
     amount: string;
 }
 
 export interface IRemovedOffer {
-    id: string;
+    id: number;
     product: string;
     variant: string;
     image: IImage | null;
@@ -346,7 +347,7 @@ export interface IRemovedOffer {
 export interface IOrder {
     id: number;
     note: string;
-    userId: string;
+    userId: number;
     mailingAddress: string;
     mailingCity: string;
     mailingCountry: string;
@@ -364,7 +365,7 @@ export interface IOrder {
 }
 
 export interface IReorderOptionValue {
-    id: string;
+    id: number;
     position: number;
 }
 
@@ -408,12 +409,12 @@ export type UserSearchRequest = {
 
 export type UserGetByIdResponse = IResponse<IUser>
 export type UserGetByIdRequest = {
-    userId: string
+    userId: number
 }
 
 export type UserGetAddressesResponse = IResponse<IUserAddress[]>
 export type UserGetAddressesRequest = {
-    userId: string
+    userId: number
 }
 
 export type UserCreateResponse = IResponse<void>
@@ -421,7 +422,7 @@ export type UserCreateRequest = {
     email?: string | null;
     phone?: string | null;
     lastName?: string | null;
-    fullName?: string | null;
+    firstName?: string | null;
     inn?: string | null;
     account?: string | null;
     correspondentAccount?: string | null;
@@ -437,11 +438,11 @@ export type UserCreateRequest = {
 
 export type UserUpdateResponse = IResponse<void>
 export type UserUpdateRequest = {
-    userId?: string;
+    userId?: number;
     email?: string | null;
     phone?: string | null;
     lastName?: string | null;
-    fullName?: string | null;
+    firstName?: string | null;
     inn?: string | null;
     account?: string | null;
     correspondentAccount?: string | null;
@@ -452,39 +453,39 @@ export type UserUpdateRequest = {
     isVerified?: boolean;
     isSubscribed?: boolean;
     createPermissions?: Right[];
-    deletePermissions?: string[];
+    deletePermissions?: number[];
     createAddresses?: Omit<IUserAddress, "id">[];
     updateAddresses?: IUserAddress[];
-    deleteAddresses?: string[];
+    deleteAddresses?: number[];
 }
 
 export type UserAddAddressResponse = IResponse<void>
 export type UserAddAddressRequest = {
-    userId: string;
+    userId: number;
     data: Omit<IUserAddress, "id">
 }
 
 export type UserRemoveAddressResponse = IResponse<void>
 export type UserRemoveAddressRequest = {
-    userId: string;
-    addressId: string;
+    userId: number;
+    addressId: number;
 }
 
 export type UserAddPermissionResponse = IResponse<void>
 export type UserAddPermissionRequest = {
-    userId: string;
+    userId: number;
     data: Omit<IUserPermission, "id">
 }
 
 export type UserRemovePermissionResponse = IResponse<void>
 export type UserRemovePermissionRequest = {
-    userId: string;
-    permissionId: string;
+    userId: number;
+    permissionId: number;
 }
 
 export type UserDeleteResponse = IResponse<void>
 export type UserDeleteRequest = {
-    userId: string;
+    userId: number;
 }
 
 
@@ -512,7 +513,7 @@ export type CitiesSuggestionRequest = {
 export type CollectionsSuggestionResponse = IResponse<Pick<ICollection, "id" | "title">[]>
 export type CollectionsSuggestionRequest = {
     q: string;
-    ids?: string[];
+    ids?: number[];
 }
 
 export type VendorsSuggestionResponse = IResponse<string[]>
@@ -536,7 +537,7 @@ export type DeliveryProfilesSuggestionRequest = void;
 export type DeliveryOptionsSuggestionResponse = IResponse<IDeliveryOption[]>
 export type DeliveryOptionsSuggestionRequest = {
     region: string;
-    deliveryProfileId: string;
+    deliveryProfileId: number;
 };
 
 export type deliveryZonesSuggestionResponse = IResponse<Pick<IDeliveryZone, "country" | "region">[]>
@@ -544,7 +545,7 @@ export type DeliveryZonesSuggestionRequest = {
     q?: string;
     limit?: number;
     skip?: number;
-    profileId?: string;
+    profileId?: number;
 };
 
 
@@ -557,12 +558,12 @@ export type ProductSearchRequest = {
     limit?: number;
     skip?: number;
     available?: string;
-    notInCollectionId?: string;
+    notInCollectionId?: number;
 }
 
 export type ProductGetByIdResponse = IResponse<IProduct>
 export type ProductGetByIdRequest = {
-    productId: string
+    productId: number
 }
 
 export type ProductCreateResponse = IResponse<string>
@@ -583,7 +584,7 @@ export type ProductCreateRequest = {
 
 export type ProductUpdateResponse = IResponse<void>
 export type ProductUpdateRequest = {
-    productId?: string
+    productId?: number
     title?: string;
     handle?: string;
     available?: boolean;
@@ -602,19 +603,19 @@ export type ProductUpdateRequest = {
 
 export type ProductDeleteResponse = IResponse<void>
 export type ProductDeleteRequest = {
-    productId: string;
+    productId: number;
 }
 
 export type ProductUploadImagesResponse = IResponse<void>
 export type ProductUploadImagesRequest = {
-    productId: string;
+    productId: number;
     formData: FormData;
 }
 
 export type ProductUpdateImageResponse = IResponse<void>
 export type ProductUpdateImageRequest = {
-    productId: string;
-    imageId: string;
+    productId: number;
+    imageId: number;
     src?: string;
     alt?: string;
     position?: number;
@@ -622,33 +623,33 @@ export type ProductUpdateImageRequest = {
 
 export type ProductRemoveImageResponse = IResponse<void>
 export type ProductRemoveImageRequest = {
-    productId: string;
-    imageId: string;
+    productId: number;
+    imageId: number;
 }
 
 export type ProductCreateOptionResponse = IResponse<void>
 export type ProductCreateOptionRequest = {
-    productId: string;
+    productId: number;
     title: string;
     createOptionValues: string[];
 }
 
 export type ProductUpdateOptionResponse = IResponse<void>
 export type ProductUpdateOptionRequest = {
-    productId: string;
-    optionId: string;
+    productId: number;
+    optionId: number;
     title?: string;
     position?: number;
     reorderOptionValue?: IReorderOptionValue;
     createOptionValues?: Pick<IProductOption, "title">[];
     updateOptionValues?: Pick<IProductOption, "title" | "id">[];
-    deleteOptionValues?: string[];
+    deleteOptionValues?: number[];
 }
 
 export type ProductRemoveOptionResponse = IResponse<void>
 export type ProductRemoveOptionRequest = {
-    productId: string;
-    optionId: string;
+    productId: number;
+    optionId: number;
 }
 
 
@@ -664,27 +665,27 @@ export type VariantSearchRequest = {
 
 export type VariantGetAllResponse = IResponse<IVariantPreview[]>
 export type VariantGetAllRequest = {
-    productId: string
+    productId: number
 }
 
 export type VariantGetPreviewResponse = IResponse<IOfferVariantPreview>
 export type VariantGetPreviewRequest = {
-    variantId: string
+    variantId: number
 }
 
 export type VariantGetOptionsResponse = IResponse<IOption[]>
 export type VariantGetOptionsRequest = {
-    productId: string
+    productId: number
 }
 
 export type VariantGetByIdResponse = IResponse<IVariant>
 export type VariantGetByIdRequest = {
-    variantId: string
+    variantId: number
 }
 
 export type VariantCreateResponse = IResponse<string>
 export type VariantCreateRequest = {
-    productId?: string;
+    productId?: number;
     option0?: string | null;
     option1?: string | null;
     option2?: string | null;
@@ -694,7 +695,7 @@ export type VariantCreateRequest = {
 
 export type VariantUpdateResponse = IResponse<void>
 export type VariantUpdateRequest = {
-    variantId?: string;
+    variantId?: number;
     option0?: string | null;
     option1?: string | null;
     option2?: string | null;
@@ -704,19 +705,19 @@ export type VariantUpdateRequest = {
 
 export type VariantDeleteResponse = IResponse<void>
 export type VariantDeleteRequest = {
-    variantId: string;
+    variantId: number;
 }
 
 export type VariantUploadImagesResponse = IResponse<void>
 export type VariantUploadImagesRequest = {
-    variantId: string;
+    variantId: number;
     formData: FormData;
 }
 
 export type VariantUpdateImageResponse = IResponse<void>
 export type VariantUpdateImageRequest = {
-    variantId: string;
-    imageId: string;
+    variantId: number;
+    imageId: number;
     src?: string;
     alt?: string;
     position?: number;
@@ -724,8 +725,8 @@ export type VariantUpdateImageRequest = {
 
 export type VariantRemoveImageResponse = IResponse<void>
 export type VariantRemoveImageRequest = {
-    variantId: string;
-    imageId: string;
+    variantId: number;
+    imageId: number;
 }
 
 
@@ -741,7 +742,7 @@ export type CollectionSearchRequest = {
 
 export type CollectionGetProductsResponse = IResponse<ICollectionProduct[]>
 export type CollectionGetProductsRequest = {
-    collectionId: string
+    collectionId: number
     q?: string;
     limit?: number;
     skip?: number;
@@ -749,7 +750,7 @@ export type CollectionGetProductsRequest = {
 
 export type CollectionGetByIdResponse = IResponse<ICollection>
 export type CollectionGetByIdRequest = {
-    collectionId: string
+    collectionId: number
 }
 
 export type CollectionCreateResponse = IResponse<string>
@@ -766,7 +767,7 @@ export type CollectionCreateRequest = {
 
 export type CollectionUpdateResponse = IResponse<void>
 export type CollectionUpdateRequest = {
-    collectionId?: string
+    collectionId?: number
     title?: string;
     handle?: string;
     hidden?: boolean;
@@ -779,19 +780,19 @@ export type CollectionUpdateRequest = {
 
 export type CollectionDeleteResponse = IResponse<void>
 export type CollectionDeleteRequest = {
-    collectionId: string;
+    collectionId: number;
 }
 
 export type CollectionUploadImagesResponse = IResponse<void>
 export type CollectionUploadImagesRequest = {
-    collectionId: string;
+    collectionId: number;
     formData: FormData;
 }
 
 export type CollectionUpdateImageResponse = IResponse<void>
 export type CollectionUpdateImageRequest = {
-    collectionId: string;
-    imageId: string;
+    collectionId: number;
+    imageId: number;
     src?: string;
     alt?: string;
     position?: number;
@@ -799,8 +800,8 @@ export type CollectionUpdateImageRequest = {
 
 export type CollectionRemoveImageResponse = IResponse<void>
 export type CollectionRemoveImageRequest = {
-    collectionId: string;
-    imageId: string;
+    collectionId: number;
+    imageId: number;
 }
 
 
@@ -818,7 +819,7 @@ export type PageSearchRequest = {
 
 export type PageGetByIdResponse = IResponse<IPage>
 export type PageGetByIdRequest = {
-    pageId: string
+    pageId: number
 }
 
 export type PageCreateResponse = IResponse<string>
@@ -832,7 +833,7 @@ export type PageCreateRequest = {
 
 export type PageUpdateResponse = IResponse<void>
 export type PageUpdateRequest = {
-    pageId?: string
+    pageId?: number
     title?: string;
     handle?: string;
     content?: string;
@@ -842,7 +843,7 @@ export type PageUpdateRequest = {
 
 export type PageDeleteResponse = IResponse<void>
 export type PageDeleteRequest = {
-    pageId: string;
+    pageId: number;
 }
 
 
@@ -860,43 +861,43 @@ export type OfferSearchRequest = {
     skip?: number;
     status?: string;
     notStatus?: string;
-    deliveryProfileId?: string;
-    notDeliveryProfileId?: string;
+    deliveryProfileId?: number;
+    notDeliveryProfileId?: number;
 }
 
 export type OfferGetByIdResponse = IResponse<IOffer>
 export type OfferGetByIdRequest = {
-    offerId: string
+    offerId: number
 }
 
 export type OfferCreateResponse = IResponse<string>
 export type OfferCreateRequest = {
-    variantId?: string;
+    variantId?: number;
     price?: string | null;
     compareAtPrice?: string | null;
     offerPrice?: string | null;
     comment?: string | null;
-    deliveryProfileId?: string;
+    deliveryProfileId?: number;
     status?: string;
-    userId?: string | null;
+    userId?: number | null;
 }
 
 export type OfferUpdateResponse = IResponse<void>
 export type OfferUpdateRequest = {
-    offerId?: string;
-    variantId?: string;
+    offerId?: number;
+    variantId?: number;
     price?: string | null;
     compareAtPrice?: string | null;
     offerPrice?: string | null;
     comment?: string | null;
-    deliveryProfileId?: string;
+    deliveryProfileId?: number;
     status?: string;
-    userId?: string | null;
+    userId?: number | null;
 }
 
 export type OfferDeleteResponse = IResponse<void>
 export type OfferDeleteRequest = {
-    offerId: string;
+    offerId: number;
 }
 
 
@@ -911,7 +912,7 @@ export type DeliveryProfileGetAllRequest = void
 
 export type DeliveryProfileGetDeliveryZonesResponse = IResponse<IDeliveryZone[]>
 export type DeliveryProfileGetDeliveryZonesRequest = {
-    profileId: string;
+    profileId: number;
     q?: string;
     limit?: number;
     skip?: number;
@@ -919,7 +920,7 @@ export type DeliveryProfileGetDeliveryZonesRequest = {
 
 export type DeliveryProfileGetByIdResponse = IResponse<IDeliveryProfile>
 export type DeliveryProfileGetByIdRequest = {
-    profileId: string;
+    profileId: number;
 }
 
 export type DeliveryProfileCreateResponse = IResponse<string>
@@ -930,36 +931,36 @@ export type DeliveryProfileCreateRequest = {
 
 export type DeliveryProfileUpdateResponse = IResponse<void>
 export type DeliveryProfileUpdateRequest = {
-    profileId?: string;
+    profileId?: number;
     connectOffers?: Pick<IOffer, "id">[];
     disconnectOffers?: Pick<IOffer, "id">[];
 }
 
 export type DeliveryProfileDeleteResponse = IResponse<void>
 export type DeliveryProfileDeleteRequest = {
-    profileId: string;
+    profileId: number;
 }
 
 export type DeliveryZoneCreateResponse = IResponse<void>
 export type DeliveryZoneCreateRequest = {
-    profileId: string;
+    profileId: number;
     country?: string;
     region?: string;
 }
 
 export type DeliveryZoneUpdateResponse = IResponse<void>
 export type DeliveryZoneUpdateRequest = {
-    profileId: string;
-    zoneId: string;
+    profileId: number;
+    zoneId: number;
     createDeliveryOptions?: Omit<IDeliveryOption, "id">[];
     updateDeliveryOptions?: IDeliveryOption[];
-    deleteDeliveryOptions?: string[];
+    deleteDeliveryOptions?: number[];
 }
 
 export type DeliveryZoneDeleteResponse = IResponse<void>
 export type DeliveryZoneDeleteRequest = {
-    profileId: string;
-    zoneId: string;
+    profileId: number;
+    zoneId: number;
 }
 
 
@@ -990,18 +991,18 @@ export type OrderGetByIdRequest = {
 export type OrderFulfillmentGetByIdResponse = IResponse<IFulfillment>
 export type OrderFulfillmentGetByIdRequest = {
     orderId: number,
-    fulfillmentId: string;
+    fulfillmentId: number;
 }
 
 export type OrderReturnGetByIdResponse = IResponse<IOrderReturn>
 export type OrderReturnGetByIdRequest = {
     orderId: number,
-    returnId: string;
+    returnId: number;
 }
 
 export type OrderCreateResponse = IResponse<string>
 export type OrderCreateRequest = {
-    userId?: string;
+    userId?: number;
     mailingCountry?: string;
     mailingCity?: string;
     mailingRegion?: string;
@@ -1014,7 +1015,7 @@ export type OrderCreateRequest = {
 export type OrderUpdateResponse = IResponse<void>
 export type OrderUpdateRequest = {
     orderId?: number;
-    userId?: string;
+    userId?: number;
     mailingCountry?: string;
     mailingCity?: string;
     mailingRegion?: string;
@@ -1040,7 +1041,7 @@ export type OrderFulfillmentCreateRequest = {
 export type OrderFulfillmentUpdateResponse = IResponse<void>
 export type OrderFulfillmentUpdateRequest = {
     orderId?: number;
-    fulfillmentId?: string;
+    fulfillmentId?: number;
     carrier?: string;
     tracking?: string;
     status?: FulfillmentStatus;
@@ -1049,7 +1050,7 @@ export type OrderFulfillmentUpdateRequest = {
 export type OrderFulfillmentDeleteResponse = IResponse<void>
 export type OrderFulfillmentDeleteRequest = {
     orderId?: number;
-    fulfillmentId?: string;
+    fulfillmentId?: number;
 }
 
 export type OrderReturnCreateResponse = IResponse<string>
@@ -1061,7 +1062,7 @@ export type OrderReturnCreateRequest = {
 export type OrderReturnUpdateResponse = IResponse<void>
 export type OrderReturnUpdateRequest = {
     orderId?: number;
-    returnId?: string;
+    returnId?: number;
     status?: ReturnStatus;
     carrier?: string;
     tracking?: string;
@@ -1070,7 +1071,7 @@ export type OrderReturnUpdateRequest = {
 export type OrderReturnDeleteResponse = IResponse<void>
 export type OrderReturnDeleteRequest = {
     orderId?: number;
-    returnId?: string;
+    returnId?: number;
 }
 
 

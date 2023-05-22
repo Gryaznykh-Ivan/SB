@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
-import { useAppSelector } from '../hooks/store';
-import useSetBodyScroll from '../hooks/useSetBodyScroll';
-import { useLogoutMutation } from '../services/authService';
+import { useAppSelector } from '@/hooks/store';
+import useSetBodyScroll from '@/hooks/useSetBodyScroll';
+import { useLogoutMutation } from '@/services/authService';
 import Burger from './navigation/Burger';
 
 export default function Header() {

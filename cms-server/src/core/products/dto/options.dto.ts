@@ -20,9 +20,8 @@ export class CreateOptionDto {
 }
 
 export class UpdateOptionValueDto {
-    @IsNotEmpty()
-    @IsString()
-    id: string;
+    @IsInt()
+    id: number;
 
     @IsNotEmpty()
     @IsString()
@@ -30,9 +29,8 @@ export class UpdateOptionValueDto {
 }
 
 export class ReorderOptionValueDto {
-    @IsNotEmpty()
-    @IsString()
-    id: string;
+    @IsInt()
+    id: number;
 
     @IsInt()
     position: number;
@@ -66,6 +64,6 @@ export class UpdateOptionDto {
     updateOptionValues: UpdateOptionValueDto[]
 
     @IsOptional()
-    @IsString({ each: true })
-    deleteOptionValues: string[];
+    @IsInt({ each: true })
+    deleteOptionValues: number[];
 }

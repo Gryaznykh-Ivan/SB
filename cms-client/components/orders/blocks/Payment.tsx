@@ -1,11 +1,11 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { useEffect, useMemo, useState } from 'react'
-import { CollectionCreateRequest, CollectionUpdateRequest, ICollectionProduct, IErrorResponse, IOfferSearch, IOrderProduct, IProduct, IService } from '../../../types/api';
+import { CollectionCreateRequest, CollectionUpdateRequest, ICollectionProduct, IErrorResponse, IOfferSearch, IOrderProduct, IProduct, IService } from '@/types/api';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
-import { useConfirmPaymentMutation } from '../../../services/orderService';
-import { Service } from '../../../types/store';
+import { useConfirmPaymentMutation } from '@/services/orderService';
+import { Service } from '@/types/store';
 import ServiceType from '../cards/ServiceType';
 
 

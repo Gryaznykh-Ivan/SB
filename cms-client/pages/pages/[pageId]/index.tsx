@@ -2,17 +2,17 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useMemo, useState } from 'react'
-import GeneralInfo from '../../../components/pages/blocks/GeneralInfo'
-import SeoSearch from '../../../components/pages/blocks/SeoSearch'
-import MainLayout from '../../../components/layouts/Main'
-import { PageUpdateRequest, IErrorResponse } from '../../../types/api'
-import { useDeletePageMutation, useGetPageByIdQuery, useUpdatePageMutation } from '../../../services/pageService'
+import GeneralInfo from '@/components/pages/blocks/GeneralInfo'
+import SeoSearch from '@/components/pages/blocks/SeoSearch'
+import MainLayout from '@/components/layouts/Main'
+import { PageUpdateRequest, IErrorResponse } from '@/types/api'
+import { useDeletePageMutation, useGetPageByIdQuery, useUpdatePageMutation } from '@/services/pageService'
 import { toast } from 'react-toastify'
 
 export default function Index() {
     const router = useRouter()
 
-    const { isError, error, isLoading, data } = useGetPageByIdQuery({ pageId: router.query.pageId as string })
+    const { isError, error, isLoading, data } = useGetPageByIdQuery({ pageId: Number(router.query.pageId) }, { skip: router.query.pageId === undefined })
 
     const [updatePage, { isSuccess: isUpdatePageSuccess, isError: isUpdatePageError, error: updatePageError }] = useUpdatePageMutation()
     const [deletePage, { isSuccess: isDeletePageSuccess, isError: isDeletePageError, error: deletePageError }] = useDeletePageMutation()
@@ -51,7 +51,7 @@ export default function Index() {
     }, [isDeletePageSuccess, isDeletePageError])
 
     const onSaveChanges = async () => {
-        const result = await updatePage({ pageId: router.query.pageId as string, ...changes }).unwrap()
+        const result = await updatePage({ pageId: Number(router.query.pageId), ...changes }).unwrap()
         if (result.success === true) {
             setChanges({})
         }
@@ -62,7 +62,7 @@ export default function Index() {
     }, [changes])
 
     const onPageDelete = async () => {
-        const result = await deletePage({ pageId: router.query.pageId as string }).unwrap();
+        const result = await deletePage({ pageId: Number(router.query.pageId) }).unwrap();
         if (result.success === true) {
             setChanges({})
             router.push("/pages")

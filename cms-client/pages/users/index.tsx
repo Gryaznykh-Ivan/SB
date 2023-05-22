@@ -2,11 +2,11 @@
 import Link from 'next/link'
 import { toast } from 'react-toastify';
 import React, { useEffect, useMemo, useState } from 'react'
-import SearchInput from '../../components/inputs/SearchInput'
-import MainLayout from '../../components/layouts/Main'
+import SearchInput from '@/components/inputs/SearchInput'
+import MainLayout from '@/components/layouts/Main'
 import { useRouter } from 'next/router'
-import { useLazyGetUsersBySearchQuery } from '../../services/userService'
-import { IErrorResponse } from '../../types/api';
+import { useLazyGetUsersBySearchQuery } from '@/services/userService'
+import { IErrorResponse } from '@/types/api';
 
 
 

@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react'
-import useDebounce from '../../hooks/useDebounce';
-import { useLazyCitiesQuery, useLazyCollectionsQuery, useLazyCountriesQuery, useLazyRegionsQuery } from '../../services/suggestionService';
-import { ICollection } from '../../types/api';
+import useDebounce from '@/hooks/useDebounce';
+import { useLazyCitiesQuery, useLazyCollectionsQuery, useLazyCountriesQuery, useLazyRegionsQuery } from '@/services/suggestionService';
+import { ICollection } from '@/types/api';
 import Input from './Input';
 
 interface IProps {
@@ -42,7 +42,7 @@ export default function CollectionsSmartInput({ onChange, placeholder, className
         }
     }
 
-    const onDelete = (id: string) => {
+    const onDelete = (id: number) => {
         onChange(collections.filter(c => c.id !== id))
     }
 

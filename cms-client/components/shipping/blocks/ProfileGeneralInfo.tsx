@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { DeliveryProfileUpdateRequest } from '../../../types/api';
+import { DeliveryProfileUpdateRequest } from '@/types/api';
 import CountriesSmartInput from '../../inputs/CountriesSmartInput';
 import Input from '../../inputs/Input'
 import Select from '../../inputs/Select';

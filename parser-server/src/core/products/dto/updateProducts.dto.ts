@@ -6,6 +6,6 @@ import { ArrayNotEmpty, IsArray, IsBoolean, IsBooleanString, IsEnum, IsInt, IsNo
 export class UpdateProductsDto {
     @IsArray()
     @ArrayNotEmpty()
-    @IsString({ each: true })
-    ids: string[];
+    @IsInt({ each: true })
+    ids: number[];
 }

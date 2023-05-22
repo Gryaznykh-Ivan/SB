@@ -1,14 +1,14 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useMemo, useState } from 'react'
-import GeneralInfo from '../../components/collections/blocks/GeneralInfo'
-import SeoSearch from '../../components/collections/blocks/SeoSearch'
-import MainLayout from '../../components/layouts/Main'
-import { useCreateCollectionMutation } from '../../services/collectionService'
-import { CollectionCreateRequest, IErrorResponse } from '../../types/api'
+import GeneralInfo from '@/components/collections/blocks/GeneralInfo'
+import SeoSearch from '@/components/collections/blocks/SeoSearch'
+import MainLayout from '@/components/layouts/Main'
+import { useCreateCollectionMutation } from '@/services/collectionService'
+import { CollectionCreateRequest, IErrorResponse } from '@/types/api'
 import { toast } from 'react-toastify'
-import CollectionProducts from '../../components/collections/blocks/CollectionProducts'
-import CreateCollectionProducts from '../../components/collections/blocks/CreateCollectionProducts'
+import CollectionProducts from '@/components/collections/blocks/CollectionProducts'
+import CreateCollectionProducts from '@/components/collections/blocks/CreateCollectionProducts'
 
 export default function New() {
     const router = useRouter()

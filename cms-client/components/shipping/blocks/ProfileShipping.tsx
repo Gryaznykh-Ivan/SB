@@ -5,14 +5,14 @@ import SearchInput from '../../inputs/SearchInput'
 import SelectOffers from '../popups/SelectOffers'
 import DeliveryDeliveryZone from '../cards/DeliveryZone'
 import SelectRegion from '../popups/SelectRegion'
-import { useCreateDeliveryZoneMutation, useDeleteDeliveryZoneMutation, useLazyGetDeliveryZonesQuery, useUpdateDeliveryZoneMutation } from '../../../services/shippingService'
-import { DeliveryZoneUpdateRequest, IDeliveryZone, IErrorResponse } from '../../../types/api'
+import { useCreateDeliveryZoneMutation, useDeleteDeliveryZoneMutation, useLazyGetDeliveryZonesQuery, useUpdateDeliveryZoneMutation } from '@/services/shippingService'
+import { DeliveryZoneUpdateRequest, IDeliveryZone, IErrorResponse } from '@/types/api'
 import DeliveryZone from '../cards/DeliveryZone'
 import { toast } from 'react-toastify'
-import useConfirm from '../../../hooks/useConfirm'
+import useConfirm from '@/hooks/useConfirm'
 
 interface IProps {
-    profileId: string;
+    profileId: number;
 }
 
 export default function ProfileShipping({ profileId }: IProps) {
@@ -108,7 +108,7 @@ export default function ProfileShipping({ profileId }: IProps) {
         createDeliveryZone({ profileId, ...zone })
     }
 
-    const onRemoveDeliveryZone = async (zoneId: string) => {
+    const onRemoveDeliveryZone = async (zoneId: number) => {
         const isConfirmed = await show("Подтверждение", "Подтвердите удаление зоны")
 
         if (isConfirmed === true) {
@@ -116,7 +116,7 @@ export default function ProfileShipping({ profileId }: IProps) {
         }
     }
 
-    const onUpdateDeliveryZone = (zoneId: string, data: Omit<DeliveryZoneUpdateRequest, "profileId" | "zoneId">) => {
+    const onUpdateDeliveryZone = (zoneId: number, data: Omit<DeliveryZoneUpdateRequest, "profileId" | "zoneId">) => {
         updateDeliveryZone({ profileId, zoneId, ...data })
     }
 

@@ -2,16 +2,16 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
-import MainLayout from '../../../../components/layouts/Main'
-import GeneralInfo from '../../../../components/variants/blocks/GeneralInfo'
-import VariantList from '../../../../components/variants/blocks/VariantList'
-import { useCreateVariantMutation, useGetVariantOptionsQuery } from '../../../../services/variantService'
-import { IErrorResponse, VariantCreateRequest, VariantUpdateRequest } from '../../../../types/api'
+import MainLayout from '@/components/layouts/Main'
+import GeneralInfo from '@/components/variants/blocks/GeneralInfo'
+import VariantList from '@/components/variants/blocks/VariantList'
+import { useCreateVariantMutation, useGetVariantOptionsQuery } from '@/services/variantService'
+import { IErrorResponse, VariantCreateRequest, VariantUpdateRequest } from '@/types/api'
 
 function New() {
     const router = useRouter()
 
-    const { isError, error, isLoading, data } = useGetVariantOptionsQuery({ productId: router.query.productId as string })
+    const { isError, error, isLoading, data } = useGetVariantOptionsQuery({ productId: Number(router.query.productId) }, { skip: router.query.productId === undefined })
     const [createVariant, { isSuccess: isCreateVariantSuccess, isError: isCreateVariantError, error: createVariantError }] = useCreateVariantMutation()
 
     const [changes, setChanges] = useState<VariantCreateRequest | VariantUpdateRequest>({})
@@ -34,7 +34,7 @@ function New() {
     }, [isCreateVariantSuccess, isCreateVariantError])
 
     const onSaveChanges = async () => {
-        const result = await createVariant({ ...changes, productId: router.query.productId as string }).unwrap()
+        const result = await createVariant({ ...changes, productId: Number(router.query.productId) }).unwrap()
         if (result.success === true) {
             setChanges({})
             router.push(`/products/${router.query.productId}/variants/${result.data}`)
@@ -78,7 +78,7 @@ function New() {
                         <div className="my-4 flex flex-col space-y-4 pb-4 border-b-[1px] lg:flex-row lg:space-x-4 lg:space-y-0">
                             <div className="space-y-4 lg:w-80">
                                 <VariantList
-                                    productId={router.query.productId as string}
+                                    productId={Number(router.query.productId)}
                                     createNewVariant={false}
                                 />
                             </div>

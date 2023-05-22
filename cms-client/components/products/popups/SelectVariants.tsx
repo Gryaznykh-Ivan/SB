@@ -3,14 +3,14 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Modal from '../../portals/Modal'
 import SearchInput from '../../inputs/SearchInput';
-import { useLazyGetVariantsBySearchQuery } from '../../../services/variantService';
-import { IErrorResponse, IVariantSearch } from '../../../types/api';
+import { useLazyGetVariantsBySearchQuery } from '@/services/variantService';
+import { IErrorResponse, IVariantSearch } from '@/types/api';
 import ImageLoader from '../../image/ImageLoader';
 
 interface IProps {
     title: string;
-    variantId: string | null;
-    onVariantChange: (id: string) => void;
+    variantId: number | null;
+    onVariantChange: (id: number) => void;
     onClose: () => void;
     onDone: () => void;
 }
@@ -116,9 +116,9 @@ export default function SelectVariants({ title, variantId, onVariantChange, onCl
                                         </div>
                                         <div className="divide-y-[1px]">
                                             {product.variants.map(variant => (
-                                                <label key={variant.id} htmlFor={variant.id} className="flex items-center py-3 space-x-4 hover:bg-gray-100 px-5">
+                                                <label key={variant.id} htmlFor={variant.id.toString()} className="flex items-center py-3 space-x-4 hover:bg-gray-100 px-5">
                                                     <div className="">
-                                                        <input type="checkbox" readOnly id={variant.id} name="" className="rounded" checked={variantId === variant.id} onClick={() => onVariantChange(variant.id)} />
+                                                        <input type="checkbox" readOnly id={variant.id.toString()} name="" className="rounded" checked={variantId === variant.id} onClick={() => onVariantChange(variant.id)} />
                                                     </div>
                                                     <div className="text-sm flex-1">{variant.title}</div>
                                                 </label>

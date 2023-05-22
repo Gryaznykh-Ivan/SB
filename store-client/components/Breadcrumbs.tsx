@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React from 'react'
-import { IBreadcrumb } from '../types';
+import { IBreadcrumb } from '@/types';
 
 interface IProps {
     className: string;

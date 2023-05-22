@@ -39,6 +39,17 @@ const settings = async () => {
 const managers = async () => {
     await prisma.user.create({
         data: {
+            id: 1,
+            role: "ADMIN",
+            firstName: "Stockx",
+            lastName: "Provider",
+            fullName: "Stockx Provider"
+        }
+    })
+
+    await prisma.user.create({
+        data: {
+            id: 2,
             email: "gryaznykh.ivan@gmail.com",
             role: "ADMIN",
             firstName: "Иван",
@@ -60,7 +71,9 @@ const managers = async () => {
                         { right: "SHIPPING_READ" },
                         { right: "SHIPPING_UPDATE" },
                         { right: "MEDIA_UPLOAD" },
-                        { right: "MEDIA_DELETE" }
+                        { right: "MEDIA_DELETE" },
+                        { right: "PAGE_READ" },
+                        { right: "PAGE_UPDATE" },
                     ]
                 }
             }
@@ -69,6 +82,7 @@ const managers = async () => {
 
     await prisma.user.create({
         data: {
+            id: 3,
             email: "larosipier@gmail.com",
             role: "ADMIN",
             firstName: "Артур",
@@ -90,7 +104,9 @@ const managers = async () => {
                         { right: "SHIPPING_READ" },
                         { right: "SHIPPING_UPDATE" },
                         { right: "MEDIA_UPLOAD" },
-                        { right: "MEDIA_DELETE" }
+                        { right: "MEDIA_DELETE" },
+                        { right: "PAGE_READ" },
+                        { right: "PAGE_UPDATE" },
                     ]
                 }
             }
@@ -131,9 +147,9 @@ const deliveryProfiles = async () => {
     for (const profile of data) {
         const createdProfile = await prisma.deliveryProfile.create({
             data: {
-                id: profile.id ?? undefined,
                 title: profile.title,
-                location: profile.location
+                location: profile.location,
+                isDefault: profile.isDefault ?? undefined
             },
             select: {
                 id: true

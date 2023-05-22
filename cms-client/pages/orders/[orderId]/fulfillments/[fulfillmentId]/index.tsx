@@ -3,20 +3,20 @@ import React, { useEffect, useMemo, useState } from 'react'
 
 
 import { useRouter } from 'next/router'
-import MainLayout from '../../../../../components/layouts/Main'
-import Fulfillment from '../../../../../components/orders/blocks/Fulfillment'
-import TrackingInformation from '../../../../../components/orders/blocks/TrackingInformation'
-import FulfillmentStatus from '../../../../../components/orders/blocks/FulfillmentPickStatus'
-import { useDeleteFulfillmentMutation, useGetFulfillmentByIdQuery, useUpdateFulfillmentMutation } from '../../../../../services/orderService'
+import MainLayout from '@/components/layouts/Main'
+import Fulfillment from '@/components/orders/blocks/Fulfillment'
+import TrackingInformation from '@/components/orders/blocks/TrackingInformation'
+import FulfillmentStatus from '@/components/orders/blocks/FulfillmentPickStatus'
+import { useDeleteFulfillmentMutation, useGetFulfillmentByIdQuery, useUpdateFulfillmentMutation } from '@/services/orderService'
 import { toast } from 'react-toastify'
-import { OrderFulfillmentUpdateRequest, IErrorResponse } from '../../../../../types/api'
+import { OrderFulfillmentUpdateRequest, IErrorResponse } from '@/types/api'
 
 
 
 function Index() {
     const router = useRouter()
 
-    const { isError, error, isLoading, data } = useGetFulfillmentByIdQuery({ orderId: Number(router.query.orderId as string), fulfillmentId: router.query.fulfillmentId as string })
+    const { isError, error, isLoading, data } = useGetFulfillmentByIdQuery({ orderId: Number(router.query.orderId), fulfillmentId: Number(router.query.fulfillmentId) })
 
     const [updateFulfillment, { isSuccess: isUpdateFulfillmentSuccess, isError: isUpdateFulfillmentError, error: updateFulfillmentError }] = useUpdateFulfillmentMutation()
     const [deleteFulfillment, { isSuccess: isDeleteFulfillmentSuccess, isError: isDeleteFulfillmentError, error: deleteFulfillmentError }] = useDeleteFulfillmentMutation()
@@ -56,8 +56,8 @@ function Index() {
 
     const onSaveChanges = async () => {
         const result = await updateFulfillment({
-            orderId: Number(router.query.orderId as string),
-            fulfillmentId: router.query.fulfillmentId as string,
+            orderId: Number(router.query.orderId),
+            fulfillmentId: Number(router.query.fulfillmentId),
             ...changes
         }).unwrap()
         if (result.success === true) {
@@ -71,9 +71,10 @@ function Index() {
 
     const onFulfillmentDelete = async () => {
         const result = await deleteFulfillment({
-            fulfillmentId: router.query.fulfillmentId as string,
-            orderId: Number(router.query.orderId as string)
+            fulfillmentId: Number(router.query.fulfillmentId),
+            orderId: Number(router.query.orderId)
         }).unwrap();
+        
         if (result.success === true) {
             setChanges({})
             router.push(`/orders/${router.query.orderId}`)

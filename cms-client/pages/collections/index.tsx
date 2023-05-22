@@ -1,10 +1,10 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import SearchInput from '../../components/inputs/SearchInput'
-import MainLayout from '../../components/layouts/Main'
-import { useLazyGetCollectionsBySearchQuery } from '../../services/collectionService'
-import { IErrorResponse } from '../../types/api'
+import SearchInput from '@/components/inputs/SearchInput'
+import MainLayout from '@/components/layouts/Main'
+import { useLazyGetCollectionsBySearchQuery } from '@/services/collectionService'
+import { IErrorResponse } from '@/types/api'
 
 
 function Index() {

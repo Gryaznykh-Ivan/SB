@@ -1,12 +1,12 @@
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import { useGetUserByIdQuery, useLazyGetUserByIdQuery, useLazyGetUsersBySearchQuery } from '../../../services/userService';
-import { OfferCreateRequest } from '../../../types/api';
+import { useGetUserByIdQuery, useLazyGetUserByIdQuery, useLazyGetUsersBySearchQuery } from '@/services/userService';
+import { OfferCreateRequest } from '@/types/api';
 import SearchInput from '../../inputs/SearchInput'
 import UsersSmartInput from '../../inputs/UsersSmartInput';
 
 interface IProps {
-    providerId: string | null;
+    providerId: number | null;
     onChange: (obj: OfferCreateRequest) => void;
 }
 
@@ -28,7 +28,7 @@ export default function Provider({ onChange, ...data }: IProps) {
         onChange({ userId: data.providerId === null ? undefined : null })
     }
 
-    const onUserChange = async (id: string) => {
+    const onUserChange = async (id: number) => {
         const user = await getUser({ userId: id }).unwrap()
         if (user.success === true) {
             setState(prev => ({

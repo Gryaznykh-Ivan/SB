@@ -1,4 +1,4 @@
-import { Body, Controller, DefaultValuePipe, Delete, Get, HttpCode, Param, ParseIntPipe, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, DefaultValuePipe, Delete, Get, HttpCode, Param, ParseIntPipe, Post, Put, Query, ValidationPipe } from '@nestjs/common';
 import { Right, Role } from '@prisma/client';
 import { Auth } from 'src/decorators/auth.decorator';
 import { User } from 'src/decorators/user.decorator';
@@ -26,7 +26,7 @@ export class UserController {
     @Get(':userId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.USER_READ])
     getUserById(
-        @Param('userId') userId: string
+        @Param('userId', ParseIntPipe) userId: number,
     ) {
         return this.userService.getUserById(userId)
     }
@@ -34,7 +34,7 @@ export class UserController {
     @Get(':userId/addresses')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.USER_READ])
     getUserAddresses(
-        @Param('userId') userId: string
+        @Param('userId', ParseIntPipe) userId: number,
     ) {
         return this.userService.getUserAddresses(userId)
     }
@@ -52,7 +52,7 @@ export class UserController {
     @Put(':userId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.USER_UPDATE])
     updateUser(
-        @Param('userId') userId: string,
+        @Param('userId', ParseIntPipe) userId: number,
         @Body() data: UpdateUserDto,
         @User() self: IUser
     ) {
@@ -62,9 +62,9 @@ export class UserController {
     @Delete(':userId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.USER_UPDATE])
     deleteUser(
-        @Param('userId') id: string,
+        @Param('userId', ParseIntPipe) userId: number,
         @User() self: IUser
     ) {
-        return this.userService.deleteUser(id, self)
+        return this.userService.removeUser(userId, self)
     }
 }

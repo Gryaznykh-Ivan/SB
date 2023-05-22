@@ -29,10 +29,12 @@ export class SearchOfferDto {
     notStatus: OfferStatus;
 
     @IsOptional()
-    @IsString()
-    deliveryProfileId: string;
+    @IsInt()
+    @Transform(({ value }) => parseInt(value, 10))
+    deliveryProfileId: number;
 
     @IsOptional()
-    @IsString()
-    notDeliveryProfileId: string;
+    @IsInt()
+    @Transform(({ value }) => parseInt(value, 10))
+    notDeliveryProfileId: number;
 }

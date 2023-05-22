@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { ICollection, ITag, ProductCreateRequest, ProductUpdateRequest } from '../../../types/api';
+import { ICollection, ITag, ProductCreateRequest, ProductUpdateRequest } from '@/types/api';
 import CollectionsSmartInput from '../../inputs/CollectionsSmartInput'
 import Input from '../../inputs/Input'
 import ProductTypesSmartInput from '../../inputs/ProductTypesSmartInput';

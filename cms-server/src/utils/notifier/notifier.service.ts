@@ -24,7 +24,7 @@ export class NotifierService {
             
             return code
         } catch (e) {
-            console.log(e)
+            
             throw new HttpException('Не удалось отправить код подтверждения', HttpStatus.INTERNAL_SERVER_ERROR)
         }
 

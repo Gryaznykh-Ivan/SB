@@ -1,12 +1,12 @@
 import Image from 'next/image'
 import React, { useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify';
-import { useRemoveProductImageMutation, useUpdateProductImageMutation, useUploadProductImagesMutation } from '../../../services/productService';
-import { IErrorResponse, IImage } from '../../../types/api';
+import { useRemoveProductImageMutation, useUpdateProductImageMutation, useUploadProductImagesMutation } from '@/services/productService';
+import { IErrorResponse, IImage } from '@/types/api';
 import MediaCard from '../../media/cards/MediaCard';
 
 interface IProps {
-    productId: string;
+    productId: number;
     images: IImage[];
 }
 
@@ -123,7 +123,7 @@ export default function Media({ productId, images }: IProps) {
         await updateImage({ productId, imageId: image.id, src: image.src, alt: image.alt })
     }
 
-    const onDeleteImage = async (id: string) => {
+    const onDeleteImage = async (id: number) => {
         await removeImage({ productId, imageId: id })
     }
 

@@ -2,23 +2,23 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
-import MainLayout from '../../../components/layouts/Main'
-import Comment from '../../../components/offers/blocks/Comment'
-import DeliveryProfile from '../../../components/offers/blocks/DeliveryProfile'
-import PickVariant from '../../../components/offers/blocks/PickVariant'
-import Prices from '../../../components/offers/blocks/Prices'
-import Provider from '../../../components/offers/blocks/Provider'
-import StatusBlock from '../../../components/offers/blocks/Status'
-import OfferStatus from '../../../components/offers/cards/OfferStatus'
-import { useDeleteOfferMutation, useGetOfferByIdQuery, useUpdateOfferMutation } from '../../../services/offerService'
-import { IErrorResponse, OfferUpdateRequest } from '../../../types/api'
+import MainLayout from '@/components/layouts/Main'
+import Comment from '@/components/offers/blocks/Comment'
+import DeliveryProfile from '@/components/offers/blocks/DeliveryProfile'
+import PickVariant from '@/components/offers/blocks/PickVariant'
+import Prices from '@/components/offers/blocks/Prices'
+import Provider from '@/components/offers/blocks/Provider'
+import StatusBlock from '@/components/offers/blocks/Status'
+import OfferStatus from '@/components/offers/cards/OfferStatus'
+import { useDeleteOfferMutation, useGetOfferByIdQuery, useUpdateOfferMutation } from '@/services/offerService'
+import { IErrorResponse, OfferUpdateRequest } from '@/types/api'
 
 
 
 function New() {
     const router = useRouter()
 
-    const { isError, error, isLoading, data } = useGetOfferByIdQuery({ offerId: router.query.offerId as string })
+    const { isError, error, isLoading, data } = useGetOfferByIdQuery({ offerId: Number(router.query.offerId) }, { skip: router.query.offerId === undefined })
 
     const [updateOffer, { isSuccess: isUpdateOfferSuccess, isError: isUpdateOfferError, error: updateOfferError }] = useUpdateOfferMutation()
     const [deleteOffer, { isSuccess: isDeleteOfferSuccess, isError: isDeleteOfferError, error: deleteOfferError }] = useDeleteOfferMutation()
@@ -57,7 +57,7 @@ function New() {
     }, [isDeleteOfferSuccess, isDeleteOfferError])
 
     const onSaveChanges = async () => {
-        const result = await updateOffer({ offerId: router.query.offerId as string, ...changes }).unwrap()
+        const result = await updateOffer({ offerId: Number(router.query.offerId), ...changes }).unwrap()
         if (result.success === true) {
             setChanges({})
         }
@@ -68,7 +68,7 @@ function New() {
     }, [changes])
 
     const onOfferDelete = async () => {
-        const result = await deleteOffer({ offerId: router.query.offerId as string }).unwrap();
+        const result = await deleteOffer({ offerId: Number(router.query.offerId) }).unwrap();
         if (result.success === true) {
             setChanges({})
             router.push("/offers")

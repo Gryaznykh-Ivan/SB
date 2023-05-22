@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { UserUpdateRequest } from '../../../types/api';
+import { UserUpdateRequest } from '@/types/api';
 import Input from '../../inputs/Input'
 import TextArea from '../../inputs/TextArea'
 

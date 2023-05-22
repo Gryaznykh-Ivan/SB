@@ -2,11 +2,11 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React, { ChangeEvent, useEffect, useState } from 'react'
-import { useGetOrderByIdQuery } from '../../../services/orderService'
+import { useGetOrderByIdQuery } from '@/services/orderService'
 import Input from '../../inputs/Input'
 import Select from '../../inputs/Select'
 import ImageLoader from '../../image/ImageLoader'
-import { IErrorResponse, IReturnProduct, OrderReturnCreateRequest } from '../../../types/api'
+import { IErrorResponse, IReturnProduct, OrderReturnCreateRequest } from '@/types/api'
 
 interface IProps {
     offers: Pick<IReturnProduct, "id" | "reason">[];
@@ -18,7 +18,7 @@ export default function ProductsToReturn({ onChange, offers }: IProps) {
 
     const { isError, error, isLoading, data } = useGetOrderByIdQuery({ orderId: Number(router.query.orderId as string) })
 
-    const onToggleReturnOffer = (id: string) => {
+    const onToggleReturnOffer = (id: number) => {
         let newState = offers
 
         if (newState.find(c => c.id === id) !== undefined) {
@@ -33,7 +33,7 @@ export default function ProductsToReturn({ onChange, offers }: IProps) {
     }
 
     const onSelectReturnReason = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        onChange({ offers: offers.map(c => c.id !== e.target.id ? c : { ...c, reason: e.target.value }) })
+        onChange({ offers: offers.map(c => c.id.toString() !== e.target.id ? c : { ...c, reason: e.target.value }) })
     }
 
     return (
@@ -63,7 +63,7 @@ export default function ProductsToReturn({ onChange, offers }: IProps) {
                         fulfillment.offers.map((offer) =>
                             <div key={offer.id} className="">
                                 <label className="flex items-center px-5 py-2 space-x-4 hover:bg-gray-50">
-                                    <input type="checkbox" readOnly name="" id={offer.id} className="rounded" checked={offers.some(c => c.id === offer.id) === true} onClick={() => onToggleReturnOffer(offer.id)} />
+                                    <input type="checkbox" readOnly name="" id={offer.id.toString()} className="rounded" checked={offers.some(c => c.id === offer.id) === true} onClick={() => onToggleReturnOffer(offer.id)} />
                                     <div className="relative w-12 aspect-square border-[1px] rounded-md">
                                         {offer.image !== null ?
                                             <Image
@@ -92,10 +92,10 @@ export default function ProductsToReturn({ onChange, offers }: IProps) {
                                 </label>
                                 {offers.some(c => c.id === offer.id) &&
                                     <div className="px-5 pb-5 pt-1">
-                                        <label htmlFor={offer.id} className="text-sm text-gray-500">Причина возврата</label>
+                                        <label htmlFor={offer.id.toString()} className="text-sm text-gray-500">Причина возврата</label>
                                         <Select
-                                            id={offer.id}
-                                            name={offer.id}
+                                            id={offer.id.toString()}
+                                            name={offer.id.toString()}
                                             onChange={onSelectReturnReason}
                                             options={{
                                                 "Неизвестно": { value: "Неизвестно", disabled: false },

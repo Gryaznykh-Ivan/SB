@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
-import { IUserAddress } from '../../../types/api';
+import { IUserAddress } from '@/types/api';
 import ManageAddress from '../popups/ManageAddress'
 
 interface IProps {
-    id: string;
+    id: number;
     country: string;
     region: string;
     city: string;
     address: string;
     onUpdateAddress: (obj: IUserAddress) => void;
-    onDeleteAddress: (obj: IUserAddress) => void;
+    onDeleteAddress: (obj: Pick<IUserAddress, "id">) => void;
 }
 
 export default function Address({ onUpdateAddress, onDeleteAddress, ...data }: IProps) {
@@ -35,7 +35,7 @@ export default function Address({ onUpdateAddress, onDeleteAddress, ...data }: I
             <div className="">{data.region}</div>
             <div className="">{data.city}</div>
             <div className="">{data.address}</div>
-            {popup && <ManageAddress title="Изменить адресс" isDeletable={true} initialState={data} onDone={onUpdateAddress} onClose={onPopupClose} onDelete={ onDeleteAddress } />}
+            {popup && <ManageAddress title="Изменить адресс" isDeletable={true} id={data.id} initialState={data} onUpdate={onUpdateAddress} onClose={onPopupClose} onDelete={onDeleteAddress} />}
         </div>
     )
 }

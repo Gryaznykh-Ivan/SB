@@ -2,12 +2,12 @@ import React, { useMemo, useState } from 'react'
 import Image from 'next/image'
 import Modal from '../../portals/Modal'
 import Input from '../../inputs/Input';
-import { IImage } from '../../../types/api';
+import { IImage } from '@/types/api';
 import ImageLoader from '../../image/ImageLoader';
 
 interface IProps {
     image: IImage;
-    onDelete: (id: string) => void;
+    onDelete: (id: number) => void;
     onUpdate: (image: IImage) => void;
     onClose: () => void;
 }

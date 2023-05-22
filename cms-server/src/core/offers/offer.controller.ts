@@ -27,7 +27,7 @@ export class OfferController {
     @Get(':offerId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.COLLECTION_READ])
     getOfferById(
-        @Param('offerId') offerId: string
+        @Param('offerId', ParseIntPipe) offerId: number
     ) {
         return this.offerService.getOfferById(offerId)
     }
@@ -44,7 +44,7 @@ export class OfferController {
     @Put(':offerId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.COLLECTION_UPDATE])
     updateOffer(
-        @Param('offerId') offerId: string,
+        @Param('offerId', ParseIntPipe) offerId: number,
         @Body() data: UpdateOfferDto
     ) {
         return this.offerService.updateOffer(offerId, data)
@@ -53,7 +53,7 @@ export class OfferController {
     @Delete(':offerId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.COLLECTION_UPDATE])
     removeOffer(
-        @Param('offerId') offerId: string,
+        @Param('offerId', ParseIntPipe) offerId: number,
     ) {
         return this.offerService.removeOffer(offerId)
     }

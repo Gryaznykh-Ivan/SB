@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react'
-import useDebounce from '../../hooks/useDebounce';
-import { useLazyCitiesQuery, useLazyCountriesQuery, useLazyRegionsQuery } from '../../services/suggestionService';
-import { useLazyGetUsersBySearchQuery } from '../../services/userService';
+import useDebounce from '@/hooks/useDebounce';
+import { useLazyCitiesQuery, useLazyCountriesQuery, useLazyRegionsQuery } from '@/services/suggestionService';
+import { useLazyGetUsersBySearchQuery } from '@/services/userService';
 import Input from './Input';
 
 interface IProps {
@@ -12,7 +12,7 @@ interface IProps {
     name?: string;
     region?: string;
     placeholder: string;
-    onChange: (value: string) => void;
+    onChange: (value: number) => void;
 }
 
 export default function UsersSmartInput({ onChange, value, placeholder, className, id, name, region }: IProps) {
@@ -33,7 +33,7 @@ export default function UsersSmartInput({ onChange, value, placeholder, classNam
     const onFocus = () => setFocus(true)
     const onBlur = () => setFocus(false)
 
-    const onSelect = (value: string) => {
+    const onSelect = (value: number) => {
         onChange(value)
     }
 

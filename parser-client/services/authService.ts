@@ -1,5 +1,5 @@
-import { api } from "../store/api";
-import { LogoutRequest, LogoutResponse, RefreshRequest, RefreshResponse } from "../types/api";
+import { api } from "@/store/api";
+import { LogoutRequest, LogoutResponse, RefreshRequest, RefreshResponse } from "@/types/api";
 
 export const authService = api.injectEndpoints({
     endpoints: builder => ({

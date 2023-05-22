@@ -1,8 +1,8 @@
 import { time } from 'console';
 import { userAgent } from 'next/server';
 import React, { useEffect, useState } from 'react'
-import { useLazyGetOrderTimelineBySearchQuery } from '../../../services/orderService';
-import { IErrorResponse } from '../../../types/api';
+import { useLazyGetOrderTimelineBySearchQuery } from '@/services/orderService';
+import { IErrorResponse } from '@/types/api';
 import Input from '../../inputs/Input'
 
 interface IProps {

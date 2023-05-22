@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
-import { DeliveryZoneUpdateRequest, IDeliveryOption } from '../../../types/api';
+import { DeliveryZoneUpdateRequest, IDeliveryOption } from '@/types/api';
 import Input from '../../inputs/Input'
 
 interface IProps {
-    id: string;
+    id: number;
     country: string;
     region: string;
     options: IDeliveryOption[];
-    onChange: (zoneId: string, data: Omit<DeliveryZoneUpdateRequest, "profileId" | "zoneId">) => void;
-    onRemoveDeliveryZone: (zoneId: string) => void;
+    onChange: (zoneId: number, data: Omit<DeliveryZoneUpdateRequest, "profileId" | "zoneId">) => void;
+    onRemoveDeliveryZone: (zoneId: number) => void;
 }
 
 export default function DeliveryZone({ country, id, options, region, onChange, onRemoveDeliveryZone }: IProps) {
@@ -38,7 +38,7 @@ export default function DeliveryZone({ country, id, options, region, onChange, o
                 : e.target.value.replace(/[^0-9.]/g, "")
             : e.target.value;
 
-        setState(prev => ({ ...prev, values: state.values.map(c => c.id === e.target.id ? { ...c, [e.target.name]: value } : c) }))
+        setState(prev => ({ ...prev, values: state.values.map(c => c.id.toString() === e.target.id ? { ...c, [e.target.name]: value } : c) }))
         setState(prev => {
             const check = prev.values.length === options.length && prev.values.every(c => {
                 const a = options.find(a => a.id === c.id)
@@ -54,7 +54,7 @@ export default function DeliveryZone({ country, id, options, region, onChange, o
         })
     }
 
-    const onRemoveOptionValue = (id: string) => {
+    const onRemoveOptionValue = (id: number) => {
         setState(prev => ({ ...prev, values: state.values.filter(c => c.id !== id) }))
         setState(prev => {
             const check = prev.values.length === options.length && prev.values.every(c => {
@@ -90,7 +90,7 @@ export default function DeliveryZone({ country, id, options, region, onChange, o
             values: [
                 ...prev.values,
                 {
-                    id: `new${Math.random()}`,
+                    id: Math.random(),
                     title: prev.newOptionTitle,
                     duration: Number(prev.newOptionDuration),
                     price: prev.newOptionPrice
@@ -104,7 +104,7 @@ export default function DeliveryZone({ country, id, options, region, onChange, o
             return toast.error("Значения опций не может быть пустым")
         }
 
-        const createDeliveryOptions = state.values.filter(c => c.id.startsWith('new')).map(c => ({ title: c.title, duration: c.duration, price: c.price }))
+        const createDeliveryOptions = state.values.filter(c => options.find(a => a.id === c.id) === undefined).map(c => ({ title: c.title, duration: c.duration, price: c.price }))
         const deleteDeliveryOptions = options.filter(c => state.values.find(a => a.id === c.id) === undefined).map(c => c.id)
         const updateDeliveryOptions = state.values.filter(c => options.find(a => a.id === c.id && (a.title !== c.title || a.duration !== c.duration || a.price !== c.price)))
 
@@ -131,9 +131,9 @@ export default function DeliveryZone({ country, id, options, region, onChange, o
                     {state.values.map(option =>
                         <div key={option.id} className="flex py-2 bg-white">
                             <div className="flex-1 flex space-x-2">
-                                <Input type="text" id={option.id} name="title" onChange={onOptionValueChange} value={option.title} placeholder="Название" />
-                                <Input className="md:w-20" type="text" id={option.id} name="duration" onChange={onOptionValueChange} value={option.duration} placeholder="Срок" />
-                                <Input className="md:w-40" type="text" id={option.id} name="price" onChange={onOptionValueChange} value={option.price} placeholder="Цена" />
+                                <Input type="text" id={option.id.toString()} name="title" onChange={onOptionValueChange} value={option.title} placeholder="Название" />
+                                <Input className="md:w-20" type="text" id={option.id.toString()} name="duration" onChange={onOptionValueChange} value={option.duration} placeholder="Срок" />
+                                <Input className="md:w-40" type="text" id={option.id.toString()} name="price" onChange={onOptionValueChange} value={option.price} placeholder="Цена" />
                             </div>
                             <button className="ml-1 p-2 rounded-md hover:bg-gray-100" onClick={() => onRemoveOptionValue(option.id)}>
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

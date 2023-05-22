@@ -2,17 +2,17 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
-import MainLayout from '../../../../components/layouts/Main'
-import ProfileGeneralInfo from '../../../../components/shipping/blocks/ProfileGeneralInfo'
-import ProfileOffers from '../../../../components/shipping/blocks/ProfileOffers'
-import ProfileShipping from '../../../../components/shipping/blocks/ProfileShipping'
-import { useDeleteDeliveryProfileMutation, useGetDeliveryProfileByIdQuery, useUpdateDeliveryProfileMutation } from '../../../../services/shippingService'
-import { DeliveryProfileUpdateRequest, IErrorResponse } from '../../../../types/api'
+import MainLayout from '@/components/layouts/Main'
+import ProfileGeneralInfo from '@/components/shipping/blocks/ProfileGeneralInfo'
+import ProfileOffers from '@/components/shipping/blocks/ProfileOffers'
+import ProfileShipping from '@/components/shipping/blocks/ProfileShipping'
+import { useDeleteDeliveryProfileMutation, useGetDeliveryProfileByIdQuery, useUpdateDeliveryProfileMutation } from '@/services/shippingService'
+import { DeliveryProfileUpdateRequest, IErrorResponse } from '@/types/api'
 
 export default function Index() {
     const router = useRouter()
 
-    const { isError, error, isLoading, data } = useGetDeliveryProfileByIdQuery({ profileId: router.query.profileId as string })
+    const { isError, error, isLoading, data } = useGetDeliveryProfileByIdQuery({ profileId: Number(router.query.profileId) }, { skip: router.query.profileId === undefined })
 
     const [updateDeliveryProfile, { isSuccess: isUpdateDeliveryProfileSuccess, isError: isUpdateDeliveryProfileError, error: updateDeliveryProfileError }] = useUpdateDeliveryProfileMutation()
     const [deleteDeliveryProfile, { isSuccess: isDeleteDeliveryProfileSuccess, isError: isDeleteDeliveryProfileError, error: deleteDeliveryProfileError }] = useDeleteDeliveryProfileMutation()
@@ -51,7 +51,7 @@ export default function Index() {
     }, [isDeleteDeliveryProfileSuccess, isDeleteDeliveryProfileError])
 
     const onSaveChanges = async () => {
-        const result = await updateDeliveryProfile({ profileId: router.query.profileId as string, ...changes }).unwrap()
+        const result = await updateDeliveryProfile({ profileId: Number(router.query.profileId), ...changes }).unwrap()
         if (result.success === true) {
             setChanges({})
         }
@@ -62,7 +62,7 @@ export default function Index() {
     }, [changes])
 
     const onDeliveryProfileDelete = async () => {
-        const result = await deleteDeliveryProfile({ profileId: router.query.profileId as string }).unwrap();
+        const result = await deleteDeliveryProfile({ profileId: Number(router.query.profileId) }).unwrap();
         if (result.success === true) {
             setChanges({})
             router.push("/shipping")
@@ -112,6 +112,7 @@ export default function Index() {
                                 />
                                 <ProfileOffers
                                     deliveryProfileId={data.data.id}
+                                    isDefault={data.data.isDefault}
                                     connectOffers={changes.connectOffers}
                                     disconnectOffers={changes.disconnectOffers}
                                     onChange={onCollectChanges}

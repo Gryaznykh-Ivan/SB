@@ -3,15 +3,15 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import SearchInput from '../../inputs/SearchInput'
 import SelectProducts from '../../collections/popups/SelectProducts'
-import { CollectionCreateRequest, CollectionUpdateRequest, ICollectionProduct, IErrorResponse, IOffer, IOrderProduct, IProduct } from '../../../types/api';
+import { CollectionCreateRequest, CollectionUpdateRequest, ICollectionProduct, IErrorResponse, IOffer, IOrderProduct, IProduct } from '@/types/api';
 import ImageLoader from '../../image/ImageLoader';
-import { useLazyGetCollectionProductsQuery } from '../../../services/collectionService';
+import { useLazyGetCollectionProductsQuery } from '@/services/collectionService';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Status from '../../products/cards/Status';
 import SelectOffers from '../popups/SelectOffers';
-import { IOrderState } from '../../../types/store';
-import { useCreateFulfillmentMutation } from '../../../services/orderService';
+import { IOrderState } from '@/types/store';
+import { useCreateFulfillmentMutation } from '@/services/orderService';
 import { toast } from 'react-toastify';
 
 interface IProps {
@@ -23,7 +23,7 @@ interface IProps {
 export default function ProductsToFulfill({ onChange, ...data }: IProps) {
     const router = useRouter()
 
-    const [state, setState] = useState<{ id: string }[]>([])
+    const [state, setState] = useState<Pick<IOffer, "id">[]>([])
     const [popup, setPopup] = useState(false)
 
     const onPopupOpen = () => setPopup(true)
@@ -58,7 +58,7 @@ export default function ProductsToFulfill({ onChange, ...data }: IProps) {
         onChange({ offers: result })
     }
 
-    const onToggleFulfillmentOffer = (id: string) => {
+    const onToggleFulfillmentOffer = (id: number) => {
         if (state.find(c => c.id === id) !== undefined) {
             setState(prev => prev.filter(c => c.id !== id) ?? [])
         } else {
@@ -90,9 +90,9 @@ export default function ProductsToFulfill({ onChange, ...data }: IProps) {
             </div>
             <div className="divide-y-[1px] overflow-y-auto">
                 {data.offers.map((offer) =>
-                    <label key={offer.id} htmlFor={offer.id} className="flex items-center px-5 py-2 space-x-4 hover:bg-gray-100">
+                    <label key={offer.id} htmlFor={offer.id.toString()} className="flex items-center px-5 py-2 space-x-4 hover:bg-gray-100">
                         {data.offersToAddIds.length === 0 &&
-                            <input type="checkbox" readOnly name="" id={offer.id} className="rounded" checked={state.some(c => c.id === offer.id) === true} onClick={() => onToggleFulfillmentOffer(offer.id)} />
+                            <input type="checkbox" readOnly name="" id={offer.id.toString()} className="rounded" checked={state.some(c => c.id === offer.id) === true} onClick={() => onToggleFulfillmentOffer(offer.id)} />
                         }
                         <div className="relative w-12 aspect-square border-[1px] rounded-md">
                             {offer.image !== null ?

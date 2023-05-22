@@ -1,11 +1,11 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { useEffect, useMemo, useState } from 'react'
-import { CollectionCreateRequest, CollectionUpdateRequest, ICollectionProduct, IDeliveryOption, IErrorResponse, IProduct, IService } from '../../../types/api';
+import { CollectionCreateRequest, CollectionUpdateRequest, ICollectionProduct, IDeliveryOption, IErrorResponse, IProduct, IService } from '@/types/api';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Select from '../../inputs/Select';
-import { useDeliveryProfilesQuery, useLazyDeliveryOptionsQuery } from '../../../services/suggestionService';
-import { Service } from '../../../types/store';
+import { useDeliveryProfilesQuery, useLazyDeliveryOptionsQuery } from '@/services/suggestionService';
+import { Service } from '@/types/store';
 
 
 interface IProps {
@@ -15,7 +15,7 @@ interface IProps {
 
 export default function PickDelivery({ onSelectShipping, region }: IProps) {
     const [state, setState] = useState({
-        deliveryProfileId: "default",
+        deliveryProfileId: "1",
         selectedOption: ""
     })
 
@@ -33,7 +33,7 @@ export default function PickDelivery({ onSelectShipping, region }: IProps) {
     const [getDeliveryOptions, { error: deliveryOptionsError, isFetching: isDeliveryOptionsFetching, isError: isDeliveryOptionsError, data: deliveryOptions }] = useLazyDeliveryOptionsQuery()
 
     useEffect(() => {
-        getDeliveryOptions({ region, deliveryProfileId: state.deliveryProfileId })
+        getDeliveryOptions({ region, deliveryProfileId: Number(state.deliveryProfileId) })
     }, [state.deliveryProfileId])
 
     useEffect(() => {
@@ -47,10 +47,10 @@ export default function PickDelivery({ onSelectShipping, region }: IProps) {
     }
 
     const onSelectOption = (option: IDeliveryOption) => {
-        if (state.selectedOption === option.id) return
+        if (state.selectedOption === option.id.toString()) return
 
         onSelectShipping({ type: Service.SHIPPING, description: option.title, amount: option.price })
-        setState(prev => ({ ...prev, selectedOption: option.id }))
+        setState(prev => ({ ...prev, selectedOption: option.id.toString() }))
     }
 
     return (
@@ -79,9 +79,9 @@ export default function PickDelivery({ onSelectShipping, region }: IProps) {
             {!isDeliveryOptionsError && deliveryOptions?.data !== undefined && deliveryOptions.data.length !== 0 &&
                 <div className="mt-4 space-y-2">
                     {deliveryOptions.data.map(option =>
-                        <label key={option.id} htmlFor={ option.id } className="block border-[1px] rounded-md p-3 text-sm" onClick={() => onSelectOption(option)}>
+                        <label key={option.id} htmlFor={ option.id.toString() } className="block border-[1px] rounded-md p-3 text-sm" onClick={() => onSelectOption(option)}>
                             <div className="flex items-center">
-                                <input type="checkbox" id={ option.id } readOnly name="" checked={state.selectedOption === option.id} className="rounded" />
+                                <input type="checkbox" id={ option.id.toString() } readOnly name="" checked={state.selectedOption === option.id.toString()} className="rounded" />
                                 <div className="flex-1 ml-3">{option.title}</div>
                                 <div className="flex space-x-4 text-gray-500">
                                     <div className="">{option.duration <= 1 ? "В течении дня" : `до ${option.duration} дней`}</div>

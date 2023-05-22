@@ -29,7 +29,7 @@ export class CollectionController {
     @Get(':collectionId/getProducts')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.COLLECTION_READ])
     getCollectionProducts(
-        @Param('collectionId') collectionId: string,
+        @Param('collectionId', ParseIntPipe) collectionId: number,
         @Query('q') q: string,
         @Query('limit', new DefaultValuePipe(20), ParseIntPipe) limit: number,
         @Query('skip', new DefaultValuePipe(0), ParseIntPipe) skip: number,
@@ -40,7 +40,7 @@ export class CollectionController {
     @Get(':collectionId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.COLLECTION_READ])
     getCollectionById(
-        @Param('collectionId') collectionId: string
+        @Param('collectionId', ParseIntPipe) collectionId: number
     ) {
         return this.collectionService.getCollectionById(collectionId)
     }
@@ -58,7 +58,7 @@ export class CollectionController {
     @Auth([Role.ADMIN, Role.MANAGER], [Right.COLLECTION_UPDATE, Right.MEDIA_UPLOAD])
     @UseInterceptors(FilesInterceptor('images'))
     uploadImages(
-        @Param('collectionId') collectionId: string,
+        @Param('collectionId', ParseIntPipe) collectionId: number,
         @UploadedFiles() images: Express.Multer.File[],
         @Token() token: string
     ) {
@@ -68,8 +68,8 @@ export class CollectionController {
     @Put(':collectionId/updateImage/:imageId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.COLLECTION_UPDATE])
     updateImage(
-        @Param('collectionId') collectionId: string,
-        @Param('imageId') imageId: string,
+        @Param('collectionId', ParseIntPipe) collectionId: number,
+        @Param('imageId', ParseIntPipe) imageId: number,
         @Body() data: UpdateImageDto
     ) {
         return this.collectionService.updateImage(collectionId, imageId, data)
@@ -78,15 +78,16 @@ export class CollectionController {
     @Delete(':collectionId/removeImage/:imageId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.COLLECTION_UPDATE, Right.MEDIA_DELETE])
     removeImage(
-        @Param('imageId') imageId: string,
+        @Param('collectionId', ParseIntPipe) collectionId: number,
+        @Param('imageId', ParseIntPipe) imageId: number,
     ) {
-        return this.collectionService.removeImage(imageId)
+        return this.collectionService.removeImage(collectionId, imageId)
     }
 
     @Put(':collectionId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.COLLECTION_UPDATE])
     updateCollection(
-        @Param('collectionId') collectionId: string,
+        @Param('collectionId', ParseIntPipe) collectionId: number,
         @Body() data: UpdateCollectionDto
     ) {
         return this.collectionService.updateCollection(collectionId, data)
@@ -95,7 +96,7 @@ export class CollectionController {
     @Delete(':collectionId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.COLLECTION_UPDATE])
     removeCollection(
-        @Param('collectionId') collectionId: string,
+        @Param('collectionId', ParseIntPipe) collectionId: number,
     ) {
         return this.collectionService.removeCollection(collectionId)
     }

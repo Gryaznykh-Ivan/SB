@@ -2,20 +2,20 @@
 import Link from 'next/link'
 import React, { useEffect, useMemo, useState } from 'react'
 
-import MainLayout from '../../components/layouts/Main'
+import MainLayout from '@/components/layouts/Main'
 
 import { useRouter } from 'next/router'
-import OrderProducts from '../../components/orders/blocks/OrderProducts'
-import Customer from '../../components/orders/blocks/Customer'
-import Address from '../../components/orders/blocks/Address'
-import Service from '../../components/orders/blocks/Service'
-import Note from '../../components/orders/blocks/Note'
-import { IErrorResponse, IOfferSearch, IService, OrderCreateRequest } from '../../types/api'
+import OrderProducts from '@/components/orders/blocks/OrderProducts'
+import Customer from '@/components/orders/blocks/Customer'
+import Address from '@/components/orders/blocks/Address'
+import Service from '@/components/orders/blocks/Service'
+import Note from '@/components/orders/blocks/Note'
+import { IErrorResponse, IOfferSearch, IService, OrderCreateRequest } from '@/types/api'
 import { toast } from 'react-toastify'
-import { useCreateOrderMutation } from '../../services/orderService'
-import { IOrderState } from '../../types/store'
-import ServiceType from '../../components/orders/cards/ServiceType'
-import Payment from '../../components/orders/blocks/Payment'
+import { useCreateOrderMutation } from '@/services/orderService'
+import { IOrderState } from '@/types/store'
+import ServiceType from '@/components/orders/cards/ServiceType'
+import Payment from '@/components/orders/blocks/Payment'
 
 function New() {
     const router = useRouter()

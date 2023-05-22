@@ -1,14 +1,12 @@
 import { Type } from "class-transformer";
-import { IsArray, IsInt, IsNotEmpty, IsOptional, IsString, ValidateNested } from "class-validator";
+import { IsArray, IsIn, IsInt, IsNotEmpty, IsOptional, IsString, ValidateNested } from "class-validator";
 
 export class ConnectOfferDto {
-    @IsNotEmpty()
-    @IsString()
-    id: string;
+    @IsInt()
+    id: number;
 }
 
 export class DisconnectOfferDto {
-    @IsNotEmpty()
-    @IsString()
-    id: string;
+    @IsInt()
+    id: number;
 }

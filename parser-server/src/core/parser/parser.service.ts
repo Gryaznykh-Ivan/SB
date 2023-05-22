@@ -1,12 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Browser } from 'puppeteer';
 import { Cron } from '@nestjs/schedule';
 import { BotAction, BotStatus, ProductStatus } from '@prisma-parser';
 import { PriceService } from 'src/utils/price/price.service';
-import { BrowserService } from 'src/utils/browser/browser.service';
 import { ParserDBService } from '../../db/parser/parser.service';
 import { ShopService } from '../shop/shop.service';
-import { By, WebDriver } from 'selenium-webdriver';
 import { RequestService } from 'src/utils/request/request.service';
 
 
@@ -15,7 +12,6 @@ export class ParserService {
     constructor(
         private parser: ParserDBService,
         private shop: ShopService,
-        private browser: BrowserService,
         private shopPrice: PriceService,
         private request: RequestService
     ) { }
@@ -76,6 +72,7 @@ export class ParserService {
     private async parseRestProducts() {
         try {
             const provider = await this.shop.getStockxProvider()
+            const deliveryProfile = await this.shop.getDefaultDeliveryProfile()
 
             await this.parser.bot.update({
                 where: { id: process.env.BOT_ID },
@@ -95,9 +92,9 @@ export class ParserService {
                 }
             })
 
-            await this.updateShopProducts(provider);
+            await this.updateShopProducts(provider, deliveryProfile);
         } catch (e) {
-            console.log(e)
+            
         }
 
         await this.parser.bot.update({
@@ -113,6 +110,7 @@ export class ParserService {
     private async parse() {
         try {
             const provider = await this.shop.getStockxProvider()
+            const deliveryProfile = await this.shop.getDefaultDeliveryProfile()
 
             await this.parser.bot.update({
                 where: { id: process.env.BOT_ID },
@@ -142,9 +140,9 @@ export class ParserService {
                 }
             })
 
-            await this.updateShopProducts(provider);
+            await this.updateShopProducts(provider, deliveryProfile);
         } catch (e) {
-            console.log(e)
+            
         }
 
         await this.parser.bot.update({
@@ -235,11 +233,9 @@ export class ParserService {
 
             hasNextPage = products.length === limit
         } while (hasNextPage === true)
-
-        // await browser.close()
     }
 
-    private async getShopProducts({ id: providerId }: { id: string }) {
+    private async getShopProducts({ id: providerId }: { id: number }) {
         await this.parser.product.deleteMany({})
 
         const limit = 250;
@@ -281,8 +277,10 @@ export class ParserService {
     }
 
 
-    private async updateShopProducts({ id: providerId }: { id: string }) {
+    private async updateShopProducts(provider: { id: number }, deliveryProfile: { id: number }) {
         const setting = await this.parser.settings.findUnique({ where: { id: process.env.BOT_ID } })
+
+        console.log(provider, deliveryProfile)
 
         const limit = 10;
         let hasNextPage = true
@@ -335,7 +333,8 @@ export class ParserService {
 
                             await this.shop.upsertOffers({
                                 variantId: variant.id,
-                                userId: providerId,
+                                userId: provider.id,
+                                deliveryProfileId: deliveryProfile.id,
                                 price: price,
                                 offerPrice: offerPrice,
                                 amount: product.pamount
@@ -343,8 +342,6 @@ export class ParserService {
                         }
                     }
                 } catch (e) {
-                    console.log(e)
-
                     await this.parser.product.update({
                         where: { id: product.id },
                         data: {
@@ -373,10 +370,10 @@ export class ParserService {
 
                 const response = await fetcher(`https://stockx.com/api/products/${handle}?includes=market,360&currency=USD&country=PL`);
                 const result = await response.json()
-
+                
                 return resolve(result)
             } catch (e) {
-                console.log(e)
+                
                 return reject(null)
             }
         })

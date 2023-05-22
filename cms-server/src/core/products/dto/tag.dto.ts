@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsArray, IsBoolean, IsNotEmpty, IsOptional, IsString, ValidateNested } from "class-validator";
+import { IsArray, IsBoolean, IsInt, IsNotEmpty, IsOptional, IsString, ValidateNested } from "class-validator";
 
 
 export class CreateTagDto {
@@ -9,7 +9,6 @@ export class CreateTagDto {
 }
 
 export class DeleteTagDto {
-    @IsNotEmpty()
-    @IsString()
-    id: string;
+    @IsInt()
+    id: number;
 }

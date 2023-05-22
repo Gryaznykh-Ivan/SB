@@ -7,7 +7,7 @@ export class UpdateOfferDto {
     @IsString()
     @NotEquals(null)
     @ValidateIf((object, value) => value !== undefined)
-    variantId: string;
+    variantId: number;
 
     @IsOptional()
     @IsDecimal()
@@ -32,9 +32,9 @@ export class UpdateOfferDto {
     @IsString()
     @NotEquals(null)
     @ValidateIf((object, value) => value !== undefined)
-    deliveryProfileId: string;
+    deliveryProfileId: number;
 
     @IsOptional()
     @IsString()
-    userId: string;
+    userId: number;
 }

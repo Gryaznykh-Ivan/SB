@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsArray, IsBoolean, IsNotEmpty, IsOptional, IsString, ValidateNested } from "class-validator";
+import { IsArray, IsBoolean, IsInt, IsNotEmpty, IsOptional, IsString, ValidateNested } from "class-validator";
 
 
 export class CreateMetafieldDto {
@@ -13,9 +13,8 @@ export class CreateMetafieldDto {
 }
 
 export class UpdateMetafieldDto {
-    @IsNotEmpty()
-    @IsString()
-    id: string;
+    @IsInt()
+    id: number;
 
     @IsNotEmpty()
     @IsString()
@@ -27,7 +26,6 @@ export class UpdateMetafieldDto {
 }
 
 export class DeleteMetafieldDto {
-    @IsNotEmpty()
-    @IsString()
-    id: string;
+    @IsInt()
+    id: number;
 }

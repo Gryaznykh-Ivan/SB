@@ -3,18 +3,18 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
-import MainLayout from '../../../../components/layouts/Main'
-import GeneralInfo from '../../../../components/variants/blocks/GeneralInfo'
-import Media from '../../../../components/variants/blocks/Media'
-import VariantList from '../../../../components/variants/blocks/VariantList'
-import { useDeleteVariantMutation, useGetVariantByIdQuery, useUpdateVariantMutation } from '../../../../services/variantService'
-import { IErrorResponse, VariantCreateRequest, VariantUpdateRequest } from '../../../../types/api'
+import MainLayout from '@/components/layouts/Main'
+import GeneralInfo from '@/components/variants/blocks/GeneralInfo'
+import Media from '@/components/variants/blocks/Media'
+import VariantList from '@/components/variants/blocks/VariantList'
+import { useDeleteVariantMutation, useGetVariantByIdQuery, useUpdateVariantMutation } from '@/services/variantService'
+import { IErrorResponse, VariantCreateRequest, VariantUpdateRequest } from '@/types/api'
 
 
 function Variant() {
     const router = useRouter()
 
-    const { isError, error, isLoading, data } = useGetVariantByIdQuery({ variantId: router.query.variantId as string })
+    const { isError, error, isLoading, data } = useGetVariantByIdQuery({ variantId: Number(router.query.variantId) }, { skip: router.query.variantId === undefined })
     const [updateVariant, { isSuccess: isUpdateVariantSuccess, isError: isUpdateVariantError, error: updateVariantError }] = useUpdateVariantMutation()
     const [deleteVariant, { isSuccess: isDeleteVariantSuccess, isError: isDeleteVariantError, error: deleteVariantError }] = useDeleteVariantMutation()
 
@@ -52,14 +52,14 @@ function Variant() {
     }, [isDeleteVariantSuccess, isDeleteVariantError])
 
     const onSaveChanges = async () => {
-        const result = await updateVariant({ ...changes, variantId: router.query.variantId as string }).unwrap()
+        const result = await updateVariant({ ...changes, variantId: Number(router.query.variantId) }).unwrap()
         if (result.success === true) {
             setChanges({})
         }
     }
 
     const onVariantDelete = async () => {
-        const result = await deleteVariant({ variantId: router.query.variantId as string }).unwrap();
+        const result = await deleteVariant({ variantId: Number(router.query.variantId) }).unwrap();
         if (result.success === true) {
             setChanges({})
             router.push(`/products/${router.query.productId}`)
@@ -112,7 +112,7 @@ function Variant() {
                         <div className="my-4 flex flex-col space-y-4 pb-4 border-b-[1px] lg:flex-row lg:space-x-4 lg:space-y-0">
                             <div className="space-y-4 lg:w-80">
                                 <VariantList
-                                    productId={router.query.productId as string}
+                                    productId={Number(router.query.productId)}
                                 />
                             </div>
                             <div className="flex-1 space-y-4">

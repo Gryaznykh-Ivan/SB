@@ -1,11 +1,11 @@
 import type { AppProps } from 'next/app'
-import { wrapper } from '../store';
+import { wrapper } from '@/store';
 import { Provider } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 
-import '../styles/globals.css'
+import '@/styles/globals.css'
 
 export default function App({ Component, ...rest }: AppProps) {
     const { store, props } = wrapper.useWrappedStore(rest);

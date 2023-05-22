@@ -3,14 +3,14 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Modal from '../../portals/Modal'
 import SearchInput from '../../inputs/SearchInput';
-import { useLazyGetProductsBySearchQuery } from '../../../services/productService';
+import { useLazyGetProductsBySearchQuery } from '@/services/productService';
 import { useRouter } from 'next/router';
-import { CollectionCreateRequest, CollectionUpdateRequest, ICollectionProduct, IErrorResponse, IProduct } from '../../../types/api';
+import { CollectionCreateRequest, CollectionUpdateRequest, ICollectionProduct, IErrorResponse, IProduct } from '@/types/api';
 import ImageLoader from '../../image/ImageLoader';
 import Status from '../../products/cards/Status';
 
 interface IProps {
-    collectionId?: string;
+    collectionId?: number;
     title: string;
     connectProducts: Pick<IProduct, "id">[] | undefined;
     onAddProduct: (item: ICollectionProduct) => void;
@@ -91,9 +91,9 @@ export default function SelectProducts({ title, collectionId, connectProducts, o
                         {data?.data &&
                             <div className="divide-y-[1px] max-h-96 overflow-y-auto">
                                 {state.map(product =>
-                                    <label key={product.id} htmlFor={ product.id } className="flex items-center px-5 py-2 space-x-4 hover:bg-gray-100">
+                                    <label key={product.id} htmlFor={ product.id.toString() } className="flex items-center px-5 py-2 space-x-4 hover:bg-gray-100">
                                         <div className="">
-                                            <input type="checkbox" readOnly id={product.id} name="" className="rounded" checked={connectProducts?.find(c => c.id === product.id) !== undefined} onClick={() => onAddProduct(product)} />
+                                            <input type="checkbox" readOnly id={product.id.toString()} name="" className="rounded" checked={connectProducts?.find(c => c.id === product.id) !== undefined} onClick={() => onAddProduct(product)} />
                                         </div>
                                         <div className="relative w-12 aspect-square border-[1px] rounded-md">
                                             {product.image !== null ?

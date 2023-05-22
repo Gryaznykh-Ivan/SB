@@ -1,13 +1,12 @@
 import { FulfillmentStatus, ReturnStatus } from "@prisma/client";
 import { Type } from "class-transformer";
-import { IsArray, IsBoolean, IsEnum, IsNotEmpty, IsOptional, IsString, ValidateNested } from "class-validator";
+import { IsArray, IsBoolean, IsEnum, IsInt, IsNotEmpty, IsOptional, IsString, ValidateNested } from "class-validator";
 import { ConnectOfferDto } from "./offer.dto";
 
 
 export class ConnectReturnOfferDto {
-    @IsNotEmpty()
-    @IsString()
-    id: string;
+    @IsInt()
+    id: number;
 
     @IsNotEmpty()
     @IsString()

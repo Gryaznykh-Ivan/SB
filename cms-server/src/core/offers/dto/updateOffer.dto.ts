@@ -3,11 +3,10 @@ import { Type } from "class-transformer";
 import { IsArray, IsDecimal, IsEnum, IsInt, IsNotEmpty, IsOptional, IsString, Min, NotEquals, ValidateIf, ValidateNested } from "class-validator";
 
 export class UpdateOfferDto {
-    @IsNotEmpty()
-    @IsString()
+    @IsInt()
     @NotEquals(null)
     @ValidateIf((object, value) => value !== undefined)
-    variantId: string;
+    variantId: number;
 
     @IsOptional()
     @IsDecimal()
@@ -29,13 +28,13 @@ export class UpdateOfferDto {
     @IsEnum(OfferStatus, { each: true })
     status: OfferStatus;
 
-    @IsString()
+    @IsInt()
     @NotEquals(null)
     @ValidateIf((object, value) => value !== undefined)
-    deliveryProfileId: string;
+    deliveryProfileId: number;
 
-    @IsString()
+    @IsInt()
     @NotEquals(null)
     @ValidateIf((object, value) => value !== undefined)
-    userId: string;
+    userId: number;
 }

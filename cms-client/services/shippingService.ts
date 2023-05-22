@@ -1,5 +1,5 @@
-import { api } from "../store/api";
-import { DeliveryProfileCreateRequest, DeliveryProfileCreateResponse, DeliveryProfileDeleteRequest, DeliveryProfileDeleteResponse, DeliveryProfileGetAllRequest, DeliveryProfileGetAllResponse, DeliveryProfileGetByIdRequest, DeliveryProfileGetByIdResponse, DeliveryProfileGetDeliveryZonesRequest, DeliveryProfileGetDeliveryZonesResponse, DeliveryProfileUpdateRequest, DeliveryProfileUpdateResponse, DeliveryZoneCreateRequest, DeliveryZoneCreateResponse, DeliveryZoneDeleteRequest, DeliveryZoneDeleteResponse, DeliveryZoneUpdateRequest, DeliveryZoneUpdateResponse } from "../types/api";
+import { api } from "@/store/api";
+import { DeliveryProfileCreateRequest, DeliveryProfileCreateResponse, DeliveryProfileDeleteRequest, DeliveryProfileDeleteResponse, DeliveryProfileGetAllRequest, DeliveryProfileGetAllResponse, DeliveryProfileGetByIdRequest, DeliveryProfileGetByIdResponse, DeliveryProfileGetDeliveryZonesRequest, DeliveryProfileGetDeliveryZonesResponse, DeliveryProfileUpdateRequest, DeliveryProfileUpdateResponse, DeliveryZoneCreateRequest, DeliveryZoneCreateResponse, DeliveryZoneDeleteRequest, DeliveryZoneDeleteResponse, DeliveryZoneUpdateRequest, DeliveryZoneUpdateResponse } from "@/types/api";
 
 export const shippingService = api.injectEndpoints({
     endpoints: builder => ({

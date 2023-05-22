@@ -9,7 +9,7 @@ generator client {
 
 datasource db {
     provider = "mysql"
-    url      = env("DATABASE_URL_SHOP")
+    url      = env("DATABASE_URL_STORE")
 }
 
 enum Role {
@@ -49,12 +49,6 @@ enum OfferStatus {
     RETURN_APPROVAL
 }
 
-enum Service {
-    SHIPPING
-    DISCOUNT_AMOUNT
-    DISCOUNT_PERCENT
-}
-
 enum Currency {
     RUB
     USD
@@ -80,6 +74,7 @@ enum OrderStatus {
 enum ReturnStatus {
     RETURN_REQUESTED
     RETURN_IN_PROGRESS
+    PARTIALLY_RETURNED
     RETURNED
 }
 
@@ -103,7 +98,7 @@ enum InvoiceStatus {
 }
 
 model Setting {
-    id        String   @id @default(cuid())
+    id        Int      @id @default(autoincrement()) @db.UnsignedInt
     setting   String
     title     String
     value     String
@@ -115,7 +110,7 @@ model Setting {
 }
 
 model VerificationCode {
-    id        String   @id @default(cuid())
+    id        Int      @id @default(autoincrement()) @db.UnsignedInt
     email     String
     code      String
     createdAt DateTime @default(now())
@@ -124,7 +119,7 @@ model VerificationCode {
 }
 
 model User {
-    id                   String            @id @default(cuid())
+    id                   Int               @id @default(autoincrement()) @db.UnsignedInt
     email                String?           @unique
     phone                String?
     firstName            String?
@@ -156,10 +151,10 @@ model User {
 }
 
 model Permission {
-    id        String   @id @default(cuid())
+    id        Int      @id @default(autoincrement()) @db.UnsignedInt
     right     Right
     user      User     @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    userId    String
+    userId    Int      @db.UnsignedInt
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
@@ -169,9 +164,9 @@ model Permission {
 
 model CartProduct {
     user      User     @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    userId    String
+    userId    Int      @db.UnsignedInt
     offer     Offer    @relation(fields: [offerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    offerId   String
+    offerId   Int      @db.UnsignedInt
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
@@ -180,9 +175,9 @@ model CartProduct {
 }
 
 model Token {
-    id           String   @id @default(cuid())
+    id           Int      @id @default(autoincrement()) @db.UnsignedInt
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-    userId       String
+    userId       Int      @db.UnsignedInt
     refreshToken String
     expiresIn    DateTime
     createdAt    DateTime @default(now())
@@ -191,13 +186,13 @@ model Token {
 }
 
 model Address {
-    id        String   @id @default(cuid())
+    id        Int      @id @default(autoincrement()) @db.UnsignedInt
     country   String
     city      String
     address   String
     region    String
     user      User     @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    userId    String
+    userId    Int      @db.UnsignedInt
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
@@ -205,78 +200,71 @@ model Address {
 }
 
 model Order {
-    id             Int            @id @default(autoincrement())
-    orderStatus    OrderStatus    @default(UNFULFILLED)
-    paymentStatus  PaymentStatus  @default(UNPAID)
-    returnStatus   ReturnStatus?
-    totalPrice     Decimal        @db.Decimal(10, 2)
-    mailingCountry String
-    mailingCity    String
-    mailingRegion  String
-    mailingAddress String
-    note           String?
-    invoices       Invoice[]
-    services       OrderService[]
-    offers         Offer[]        @relation(name: "orderoffers")
-    fulfillments   Fulfillment[]
-    returns        Return[]
-    timeline       Timeline[]
-    removedOffers  Offer[]        @relation(name: "orderremovedoffers")
-    user           User           @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    userId         String
-    createdAt      DateTime       @default(now())
-    updatedAt      DateTime       @updatedAt
+    id                 Int           @id @default(autoincrement()) @db.UnsignedInt
+    orderStatus        OrderStatus   @default(UNFULFILLED)
+    paymentStatus      PaymentStatus @default(UNPAID)
+    returnStatus       ReturnStatus?
+    subtotalPrice      Decimal       @db.Decimal(10, 2)
+    totalDiscount      Decimal       @db.Decimal(10, 2)
+    totalShippingPrice Decimal       @db.Decimal(10, 2)
+    totalPrice         Decimal       @db.Decimal(10, 2)
+    mailingCountry     String
+    mailingCity        String
+    mailingRegion      String
+    mailingAddress     String
+    shippingInfo       String?
+    discountInfo       String?
+    note               String?
+    invoices           Invoice[]
+    offers             Offer[]       @relation(name: "orderoffers")
+    fulfillments       Fulfillment[]
+    returns            Return[]
+    timeline           Timeline[]
+    removedOffers      Offer[]       @relation(name: "orderremovedoffers")
+    user               User          @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    userId             Int           @db.UnsignedInt
+    createdAt          DateTime      @default(now())
+    updatedAt          DateTime      @updatedAt
 
     @@map("order")
 }
 
 model Invoice {
-    id        String        @id @default(cuid())
+    id        Int           @id @default(autoincrement()) @db.UnsignedInt
     type      InvoiceType   @default(PAYMENT)
     status    InvoiceStatus @default(PENDING)
     method    InvoiceMethod
     amount    Decimal       @db.Decimal(10, 2)
     currency  Currency      @default(RUB)
     order     Order         @relation(fields: [orderId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    orderId   Int
+    orderId   Int           @db.UnsignedInt
     createdAt DateTime      @default(now())
     updatedAt DateTime      @updatedAt
 
     @@map("invoice")
 }
 
-model OrderService {
-    id          String  @id @default(cuid())
-    type        Service @default(SHIPPING)
-    description String? @db.Text
-    amount      Decimal @db.Decimal(10, 2)
-    order       Order   @relation(fields: [orderId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    orderId     Int
-
-    @@map("orderservice")
-}
-
 model Timeline {
-    id        String   @id @default(cuid())
+    id        Int      @id @default(autoincrement()) @db.UnsignedInt
     title     String   @db.VarChar(255)
     message   String?  @db.Text
     order     Order    @relation(fields: [orderId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    orderId   Int
+    orderId   Int      @db.UnsignedInt
     user      User?    @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: SetNull)
-    userId    String?
+    userId    Int?     @db.UnsignedInt
     createdAt DateTime @default(now())
 
     @@map("timeline")
 }
 
 model Fulfillment {
-    id        String            @id @default(cuid())
+    id        Int               @id @default(autoincrement()) @db.UnsignedInt
     status    FulfillmentStatus @default(SENT)
     tracking  String?
     carrier   String?
     offers    Offer[]
     order     Order             @relation(fields: [orderId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    orderId   Int
+    orderId   Int               @db.UnsignedInt
     createdAt DateTime          @default(now())
     updatedAt DateTime          @updatedAt
 
@@ -284,13 +272,13 @@ model Fulfillment {
 }
 
 model Return {
-    id        String        @id @default(cuid())
+    id        Int           @id @default(autoincrement()) @db.UnsignedInt
     status    ReturnStatus  @default(RETURN_REQUESTED)
     tracking  String?
     carrier   String?
     offers    ReturnOffer[]
     order     Order         @relation(fields: [orderId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    orderId   Int
+    orderId   Int           @db.UnsignedInt
     createdAt DateTime      @default(now())
     updatedAt DateTime      @updatedAt
 
@@ -299,9 +287,9 @@ model Return {
 
 model ReturnOffer {
     return    Return   @relation(fields: [returnId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    returnId  String
+    returnId  Int      @db.UnsignedInt
     offer     Offer    @relation(fields: [offerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    offerId   String
+    offerId   Int      @db.UnsignedInt
     reason    String
     createdAt DateTime @default(now())
 
@@ -310,7 +298,7 @@ model ReturnOffer {
 }
 
 model Offer {
-    id                String           @id @default(cuid())
+    id                Int              @id @default(autoincrement()) @db.UnsignedInt
     productTitle      String           @db.VarChar(255)
     variantTitle      String
     price             Decimal          @db.Decimal(10, 2)
@@ -318,20 +306,18 @@ model Offer {
     compareAtPrice    Decimal?         @db.Decimal(10, 2)
     comment           String?
     status            OfferStatus      @default(OFFERED)
-    user              User?            @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    userId            String?
+    user              User             @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    userId            Int              @db.UnsignedInt
     order             Order?           @relation(name: "orderoffers", fields: [orderId], references: [id], onUpdate: Cascade, onDelete: SetNull)
-    orderId           Int?
+    orderId           Int?             @db.UnsignedInt
     product           Product?         @relation(fields: [productId], references: [id], onUpdate: Cascade, onDelete: SetNull)
-    productId         String?
+    productId         Int?             @db.UnsignedInt
     variant           Variant?         @relation(fields: [variantId], references: [id], onUpdate: Cascade, onDelete: SetNull)
-    variantId         String?
+    variantId         Int?             @db.UnsignedInt
     deliveryProfile   DeliveryProfile? @relation(fields: [deliveryProfileId], references: [id], onUpdate: Cascade, onDelete: SetNull)
-    deliveryProfileId String?
+    deliveryProfileId Int?             @db.UnsignedInt
     fulfillment       Fulfillment?     @relation(fields: [fulfillmentId], references: [id], onUpdate: Cascade, onDelete: SetNull)
-    fulfillmentId     String?
-    image             Image?           @relation(fields: [imageId], references: [id], onUpdate: Cascade, onDelete: SetNull)
-    imageId           String?
+    fulfillmentId     Int?             @db.UnsignedInt
     cartProduct       CartProduct[]
     returned          ReturnOffer[]
     removedFromOrders Order[]          @relation(name: "orderremovedoffers")
@@ -344,9 +330,9 @@ model Offer {
 
 model FavoriteProduct {
     product   Product  @relation(fields: [productId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    productId String
+    productId Int      @db.UnsignedInt
     user      User     @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    userId    String
+    userId    Int      @db.UnsignedInt
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
@@ -355,7 +341,7 @@ model FavoriteProduct {
 }
 
 model Collection {
-    id              String    @id @default(cuid())
+    id              Int       @id @default(autoincrement()) @db.UnsignedInt
     title           String    @db.VarChar(255)
     description     String?   @db.Text
     metaTitle       String?   @db.VarChar(255)
@@ -372,7 +358,7 @@ model Collection {
 }
 
 model Page {
-    id              String   @id @default(cuid())
+    id              Int      @id @default(autoincrement()) @db.UnsignedInt
     title           String   @db.VarChar(255)
     content         String   @db.Text
     metaTitle       String?  @db.VarChar(255)
@@ -386,7 +372,7 @@ model Page {
 }
 
 model Product {
-    id               String            @id @default(cuid())
+    id               Int               @id @default(autoincrement()) @db.UnsignedInt
     handle           String            @unique() @db.VarChar(255)
     title            String            @db.VarChar(255)
     available        Boolean           @default(false)
@@ -418,10 +404,10 @@ model Product {
 }
 
 model Tag {
-    id        String   @id @default(cuid())
+    id        Int      @id @default(autoincrement()) @db.UnsignedInt
     title     String
     product   Product  @relation(fields: [productId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    productId String
+    productId Int      @db.UnsignedInt
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
@@ -430,11 +416,11 @@ model Tag {
 }
 
 model Metafield {
-    id        String   @id @default(cuid())
+    id        Int      @id @default(autoincrement()) @db.UnsignedInt
     key       String
     value     String
     product   Product  @relation(fields: [productId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    productId String
+    productId Int      @db.UnsignedInt
     updatedAt DateTime @updatedAt
     createdAt DateTime @default(now())
 
@@ -443,13 +429,13 @@ model Metafield {
 }
 
 model Option {
-    id        String        @id @default(cuid())
+    id        Int           @id @default(autoincrement()) @db.UnsignedInt
     title     String
     option    Int
     position  Int
     values    OptionValue[]
     product   Product       @relation(fields: [productId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    productId String
+    productId Int           @db.UnsignedInt
     createdAt DateTime      @default(now())
     updatedAt DateTime      @updatedAt
 
@@ -458,11 +444,11 @@ model Option {
 }
 
 model OptionValue {
-    id        String   @id @default(cuid())
+    id        Int      @id @default(autoincrement()) @db.UnsignedInt
     title     String
     position  Int
     option    Option   @relation(fields: [optionId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    optionId  String
+    optionId  Int      @db.UnsignedInt
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
@@ -471,19 +457,18 @@ model OptionValue {
 }
 
 model Image {
-    id           String      @id @default(cuid())
+    id           Int         @id @default(autoincrement()) @db.UnsignedInt
     path         String
     src          String
     alt          String
     blurhash     String
     position     Int
     product      Product?    @relation(fields: [productId], references: [id], onUpdate: Cascade, onDelete: SetNull)
-    productId    String?
+    productId    Int?        @db.UnsignedInt
     collection   Collection? @relation(fields: [collectionId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    collectionId String?
+    collectionId Int?        @db.UnsignedInt
     variant      Variant?    @relation(fields: [variantId], references: [id], onUpdate: Cascade, onDelete: SetNull)
-    variantId    String?
-    offer        Offer[]
+    variantId    Int?        @db.UnsignedInt
     createdAt    DateTime    @default(now())
     updatedAt    DateTime    @updatedAt
 
@@ -491,14 +476,14 @@ model Image {
 }
 
 model Variant {
-    id        String   @id @default(cuid())
+    id        Int      @id @default(autoincrement()) @db.UnsignedInt
     SKU       String?
     barcode   String?
     option0   String?
     option1   String?
     option2   String?
     product   Product  @relation(fields: [productId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    productId String
+    productId Int      @db.UnsignedInt
     images    Image[]
     offers    Offer[]
     createdAt DateTime @default(now())
@@ -508,7 +493,8 @@ model Variant {
 }
 
 model DeliveryProfile {
-    id        String         @id @default(cuid())
+    id        Int            @id @default(autoincrement()) @db.UnsignedInt
+    isDefault Boolean        @default(false)
     title     String         @unique
     location  String
     offers    Offer[]
@@ -520,12 +506,12 @@ model DeliveryProfile {
 }
 
 model DeliveryZone {
-    id                String           @id @default(cuid())
+    id                Int              @id @default(autoincrement()) @db.UnsignedInt
     country           String
     region            String
     options           DeliveryOption[]
     deliveryProfile   DeliveryProfile  @relation(fields: [deliveryProfileId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    deliveryProfileId String
+    deliveryProfileId Int              @db.UnsignedInt
     createdAt         DateTime         @default(now())
     updatedAt         DateTime         @updatedAt
 
@@ -535,12 +521,12 @@ model DeliveryZone {
 }
 
 model DeliveryOption {
-    id             String       @id @default(cuid())
+    id             Int          @id @default(autoincrement()) @db.UnsignedInt
     title          String
     duration       Int
     price          Decimal      @db.Decimal(10, 2)
     deliveryZone   DeliveryZone @relation(fields: [deliveryZoneId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    deliveryZoneId String
+    deliveryZoneId Int          @db.UnsignedInt
     createdAt      DateTime     @default(now())
     updatedAt      DateTime     @updatedAt
 
@@ -548,7 +534,7 @@ model DeliveryOption {
 }
 
 model Country {
-    id        String   @id @default(cuid())
+    id        Int      @id @default(autoincrement()) @db.UnsignedInt
     title     String   @unique
     regions   Region[]
     createdAt DateTime @default(now())
@@ -559,11 +545,11 @@ model Country {
 }
 
 model Region {
-    id        String   @id @default(cuid())
+    id        Int      @id @default(autoincrement()) @db.UnsignedInt
     title     String
     cities    City[]
     country   Country  @relation(fields: [countryId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    countryId String
+    countryId Int      @db.UnsignedInt
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
@@ -573,10 +559,10 @@ model Region {
 }
 
 model City {
-    id        String   @id @default(cuid())
+    id        Int      @id @default(autoincrement()) @db.UnsignedInt
     title     String
     region    Region   @relation(fields: [regionId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    regionId  String
+    regionId  Int      @db.UnsignedInt
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 

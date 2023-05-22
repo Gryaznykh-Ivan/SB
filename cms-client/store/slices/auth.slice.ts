@@ -1,7 +1,7 @@
 import jwt_decode from 'jwt-decode'
 import { createSlice } from "@reduxjs/toolkit";
-import { authService } from "../../services/authService";
-import { IAuthState, IJwtDecode } from "../../types/store";
+import { authService } from "@/services/authService";
+import { IAuthState, IJwtDecode } from "@/types/store";
 
 const initialState: IAuthState = {
     isAuth: false,

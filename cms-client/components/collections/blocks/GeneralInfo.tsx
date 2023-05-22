@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { CollectionCreateRequest, CollectionUpdateRequest } from '../../../types/api';
+import { CollectionCreateRequest, CollectionUpdateRequest } from '@/types/api';
 import Input from '../../inputs/Input'
 import TextArea from '../../inputs/TextArea'
 import ReactJodit from '../../textEditor/ReactJodit';

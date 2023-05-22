@@ -1,16 +1,17 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import MainLayout from '../../components/layouts/Main'
-import GeneralInfo from '../../components/users/blocks/GeneralInfo'
-import Consignment from '../../components/users/blocks/Consignment'
-import Roles from '../../components/users/blocks/Roles'
-import Status from '../../components/users/blocks/Status'
-import Addresses from '../../components/users/blocks/Addresses'
-import Permissions from '../../components/users/blocks/Permissions'
-import { useCreateUserMutation } from '../../services/userService'
+import MainLayout from '@/components/layouts/Main'
+import GeneralInfo from '@/components/users/blocks/GeneralInfo'
+import Consignment from '@/components/users/blocks/Consignment'
+import Roles from '@/components/users/blocks/Roles'
+import Status from '@/components/users/blocks/Status'
+import Addresses from '@/components/users/blocks/Addresses'
+import Permissions from '@/components/users/blocks/Permissions'
+import { useCreateUserMutation } from '@/services/userService'
 import { toast } from 'react-toastify'
-import { IErrorResponse, UserCreateRequest, UserUpdateRequest } from '../../types/api'
+import { IErrorResponse, UserCreateRequest, UserUpdateRequest } from '@/types/api'
 import { useRouter } from 'next/router'
+import { Role } from '@/types/store'
 
 export default function New() {
     const router = useRouter()
@@ -45,7 +46,7 @@ export default function New() {
     }
 
     const mustBeSaved = useMemo(() => {
-        return Object.values(changes).some(c => c !== undefined)
+        return Object.values(changes).some(c => c !== undefined) && changes.lastName !== undefined && changes.firstName !== undefined
     }, [changes])
 
     return (
@@ -82,14 +83,16 @@ export default function New() {
                             passport={null}
                             onChange={onCollectChanges}
                         />
-                        <Permissions
-                            permissions={[]}
-                            onChange={onCollectChanges}
-                        />
+                        {(changes.role === Role.ADMIN || changes.role === Role.MANAGER) &&
+                            <Permissions
+                                permissions={[]}
+                                onChange={onCollectChanges}
+                            />
+                        }
                     </div>
                     <div className="space-y-4 lg:w-80">
                         <Roles
-                            role={'GUEST'}
+                            role={Role.GUEST}
                             onChange={onCollectChanges}
                         />
                         <Status

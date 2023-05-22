@@ -1,7 +1,7 @@
 import { Right, Role } from "@prisma/client";
 
 export interface IUser {
-    id: string;
+    id: number;
     role: Role;
     name: string;
     permissions: Right[]

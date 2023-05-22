@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import MainLayout from '../../components/layouts/Main'
-import SEOSnippetProduct from '../../components/settings/blocks/SEOSnippetProduct'
+import MainLayout from '@/components/layouts/Main'
+import SEOSnippetProduct from '@/components/settings/blocks/SEOSnippetProduct'
 
 
 function Index() {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { UserCreateRequest, UserUpdateRequest } from '../../../types/api';
+import { UserCreateRequest, UserUpdateRequest } from '@/types/api';
 import Input from '../../inputs/Input'
 import TextArea from '../../inputs/TextArea'
 
@@ -53,7 +53,7 @@ export default function GeneralInfo({ onChange, ...data }: IProps) {
                 <div className="grid grid-cols-2 gap-4">
                     <div className="flex flex-col">
                         <label htmlFor="lastName" className="text-sm text-gray-600 mb-1">Фамилия</label>
-                        <Input type="text" id="SKU" name="lastName" placeholder="Фамилия" value={ state.lastName } onChange={onInputChange} />
+                        <Input type="text" id="lastName" name="lastName" placeholder="Фамилия" value={ state.lastName } onChange={onInputChange} />
                     </div>
                     <div className="flex flex-col">
                         <label htmlFor="firstName" className="text-sm text-gray-600 mb-1">Имя</label>

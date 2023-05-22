@@ -2,12 +2,12 @@
 import Head from 'next/head'
 import { useEffect } from 'react'
 import { toast } from 'react-toastify'
-import BotAction from '../components/bot/BotAction'
-import BotStatus from '../components/bot/BotStatus'
-import MainLayout from '../components/layouts/Main'
-import { useAppSelector } from '../hooks/store'
-import { useGetBotByIdQuery, useBotStartMutation, useBotCompleteMutation } from '../services/botService'
-import { IErrorResponse } from '../types/api'
+import BotAction from '@/components/bot/BotAction'
+import BotStatus from '@/components/bot/BotStatus'
+import MainLayout from '@/components/layouts/Main'
+import { useAppSelector } from '@/hooks/store'
+import { useGetBotByIdQuery, useBotStartMutation, useBotCompleteMutation } from '@/services/botService'
+import { IErrorResponse } from '@/types/api'
 
 
 export default function Index() {

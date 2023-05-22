@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ProductCreateRequest } from '../../../types/api';
+import { ProductCreateRequest } from '@/types/api';
 import Select from '../../inputs/Select'
 
 interface IProps {

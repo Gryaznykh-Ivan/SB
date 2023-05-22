@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify';
-import { productService } from '../../../services/productService';
-import { useGetSettingsBySearchQuery, useUpdateSettingMutation } from '../../../services/settingService';
-import { IErrorResponse, ProductCreateRequest, ProductUpdateRequest } from '../../../types/api';
+import { productService } from '@/services/productService';
+import { useGetSettingsBySearchQuery, useUpdateSettingMutation } from '@/services/settingService';
+import { IErrorResponse, ProductCreateRequest, ProductUpdateRequest } from '@/types/api';
 import Input from '../../inputs/Input'
 import TextArea from '../../inputs/TextArea'
 

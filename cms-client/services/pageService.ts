@@ -1,5 +1,5 @@
-import { api } from "../store/api";
-import { PageCreateRequest, PageCreateResponse, PageDeleteRequest, PageDeleteResponse, PageGetByIdRequest, PageGetByIdResponse, PageSearchRequest, PageSearchResponse, PageUpdateRequest, PageUpdateResponse } from "../types/api";
+import { api } from "@/store/api";
+import { PageCreateRequest, PageCreateResponse, PageDeleteRequest, PageDeleteResponse, PageGetByIdRequest, PageGetByIdResponse, PageSearchRequest, PageSearchResponse, PageUpdateRequest, PageUpdateResponse } from "@/types/api";
 
 export const pageService = api.injectEndpoints({
     endpoints: builder => ({

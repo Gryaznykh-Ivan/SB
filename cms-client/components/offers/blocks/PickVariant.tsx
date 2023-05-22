@@ -2,8 +2,8 @@
 import Image from 'next/image'
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
-import { useLazyGetVariantPreviewQuery } from '../../../services/variantService';
-import { IImage, OfferCreateRequest } from '../../../types/api';
+import { useLazyGetVariantPreviewQuery } from '@/services/variantService';
+import { IImage, OfferCreateRequest } from '@/types/api';
 import ImageLoader from '../../image/ImageLoader'
 import SelectVariants from '../../products/popups/SelectVariants'
 
@@ -12,8 +12,8 @@ interface IProps {
     product: string | null;
     variant: string | null;
     image: IImage | null;
-    variantId: string | null;
-    productId: string | null;
+    variantId: number | null;
+    productId: number | null;
     creatingPreview?: boolean;
     onChange: (obj: OfferCreateRequest) => void;
 }
@@ -33,7 +33,7 @@ export default function PickVariant({ onChange, creatingPreview = false, ...data
 
     const [getPreview] = useLazyGetVariantPreviewQuery()
 
-    const onVariantChange = async (id: string) => {
+    const onVariantChange = async (id: number) => {
         setState(prev => ({ ...prev, variantId: id }))
     }
 
@@ -96,7 +96,7 @@ export default function PickVariant({ onChange, creatingPreview = false, ...data
                 {state.variantId === null && creatingPreview === false &&
                     <div className="text-xs mb-2 text-red-600 font-bold">Товар не представлен в магазине</div>
                 }
-                <button className="border-blue-700 border-[1px] text-blue-700 px-4 py-2 font-medium rounded-md hover:bg-blue-700 hover:text-white justify-items-end" onClick={onPopupOpen}>Выбрать</button>
+                <button className="border-blue-700 border-[1px] text-blue-700 px-4 py-2 font-medium rounded-md hover:bg-blue-700 hover:text-white justify-items-end" onClick={onPopupOpen}>{ state.variantId === null ? "Выбрать" : "Изменить" }</button>
             </div>
             {popup && <SelectVariants title="Выбор варианта" variantId={state.variantId} onVariantChange={onVariantChange} onClose={onPopupClose} onDone={onDone} />}
         </div>

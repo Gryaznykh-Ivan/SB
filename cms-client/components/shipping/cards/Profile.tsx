@@ -3,7 +3,7 @@ import React from 'react'
 
 
 interface IProps {
-    id: string;
+    id: number;
     title: string;
     zonesCount: number;
     offersCount: number;

@@ -1,8 +1,8 @@
 import { test } from '@/store/slices/auth.slice';
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../hooks/store';
-import useSetBodyScroll from '../../hooks/useSetBodyScroll';
+import { useAppDispatch, useAppSelector } from '@/hooks/store';
+import useSetBodyScroll from '@/hooks/useSetBodyScroll';
 import Burger from '../sidebars/Burger';
 import MegaMenu from './MegaMenu';
 

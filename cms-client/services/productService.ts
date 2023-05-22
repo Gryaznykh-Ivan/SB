@@ -1,5 +1,5 @@
-import { api } from "../store/api";
-import { ProductCreateOptionRequest, ProductCreateOptionResponse, ProductCreateRequest, ProductCreateResponse, ProductDeleteRequest, ProductDeleteResponse, ProductGetByIdRequest, ProductGetByIdResponse, ProductRemoveImageRequest, ProductRemoveImageResponse, ProductRemoveOptionRequest, ProductRemoveOptionResponse, ProductSearchRequest, ProductSearchResponse, ProductUpdateImageRequest, ProductUpdateImageResponse, ProductUpdateOptionRequest, ProductUpdateOptionResponse, ProductUpdateRequest, ProductUpdateResponse, ProductUploadImagesRequest, ProductUploadImagesResponse } from "../types/api";
+import { api } from "@/store/api";
+import { ProductCreateOptionRequest, ProductCreateOptionResponse, ProductCreateRequest, ProductCreateResponse, ProductDeleteRequest, ProductDeleteResponse, ProductGetByIdRequest, ProductGetByIdResponse, ProductRemoveImageRequest, ProductRemoveImageResponse, ProductRemoveOptionRequest, ProductRemoveOptionResponse, ProductSearchRequest, ProductSearchResponse, ProductUpdateImageRequest, ProductUpdateImageResponse, ProductUpdateOptionRequest, ProductUpdateOptionResponse, ProductUpdateRequest, ProductUpdateResponse, ProductUploadImagesRequest, ProductUploadImagesResponse } from "@/types/api";
 
 export const productService = api.injectEndpoints({
     endpoints: builder => ({

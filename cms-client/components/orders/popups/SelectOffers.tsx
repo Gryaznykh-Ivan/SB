@@ -4,8 +4,8 @@ import Image from 'next/image'
 import Modal from '../../portals/Modal'
 import SearchInput from '../../inputs/SearchInput';
 import JSXAccordion from '../../accordions/JSXAccordion';
-import { IDeliveryProfile, IErrorResponse, IOffer, IOfferSearch, IOrderProduct } from '../../../types/api';
-import { useLazyGetOffersBySearchQuery } from '../../../services/offerService';
+import { IDeliveryProfile, IErrorResponse, IOffer, IOfferSearch, IOrderProduct } from '@/types/api';
+import { useLazyGetOffersBySearchQuery } from '@/services/offerService';
 import ImageLoader from '../../image/ImageLoader';
 import Link from 'next/link';
 

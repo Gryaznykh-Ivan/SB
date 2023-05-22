@@ -1,13 +1,13 @@
 import Link from 'next/link'
-import { IErrorResponse, IOption, IProductOption, ProductUpdateOptionRequest } from '../../../types/api'
+import { IErrorResponse, IOption, IProductOption, ProductUpdateOptionRequest } from '@/types/api'
 import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
-import { useCreateOptionMutation, useRemoveOptionMutation, useUpdateOptionMutation } from '../../../services/productService';
+import { useCreateOptionMutation, useRemoveOptionMutation, useUpdateOptionMutation } from '@/services/productService';
 import Input from '../../inputs/Input'
 import Option from '../cards/Option';
 
 interface IProps {
-    productId: string;
+    productId: number;
     options: IProductOption[];
 }
 
@@ -111,7 +111,7 @@ export default function OptionList({ productId, options }: IProps) {
     }
 
     const onItemsInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setItems(prev => prev.map(c => c.id === e.target.name ? { ...c, title: e.target.value } : c))
+        setItems(prev => prev.map(c => c.id.toString() === e.target.name ? { ...c, title: e.target.value } : c))
     }
 
     const onOptionCreate = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -144,7 +144,7 @@ export default function OptionList({ productId, options }: IProps) {
         await updateOption({ productId, optionId: item.id, title: item.title })
     }
 
-    const onOptionValuesUpdate = async (id: string, data: Pick<ProductUpdateOptionRequest, "createOptionValues" | "deleteOptionValues" | "updateOptionValues">): Promise<boolean> => {
+    const onOptionValuesUpdate = async (id: number, data: Pick<ProductUpdateOptionRequest, "createOptionValues" | "deleteOptionValues" | "updateOptionValues">): Promise<boolean> => {
         try {
             await updateOption({ productId, optionId: id, ...data }).unwrap()
 
@@ -154,7 +154,7 @@ export default function OptionList({ productId, options }: IProps) {
         }
     }
 
-    const onOptionRemove = async (id: string) => {
+    const onOptionRemove = async (id: number) => {
         await removeOption({ productId, optionId: id }).unwrap()
     }
 

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, UploadedFiles, UseInterceptors, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, UploadedFiles, UseInterceptors, ValidationPipe } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { Right, Role } from '@prisma/client';
 import { Auth } from 'src/decorators/auth.decorator';
@@ -30,7 +30,7 @@ export class VariantController {
     @Get('getPreview/:variantId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.PRODUCT_READ])
     getPreview(
-        @Param('variantId') variantId: string
+        @Param('variantId', ParseIntPipe) variantId: number
     ) {
         return this.variantService.getPreview(variantId)
     }
@@ -38,7 +38,7 @@ export class VariantController {
     @Get('getAll/:productId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.PRODUCT_READ])
     getVariants(
-        @Param('productId') productId: string
+        @Param('productId', ParseIntPipe) productId: number
     ) {
         return this.variantService.getVariants(productId)
     }
@@ -46,7 +46,7 @@ export class VariantController {
     @Get('getOptions/:productId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.PRODUCT_READ])
     getOptions(
-        @Param('productId') productId: string
+        @Param('productId', ParseIntPipe) productId: number
     ) {
         return this.variantService.getOptions(productId)
     }
@@ -54,7 +54,7 @@ export class VariantController {
     @Get(':variantId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.PRODUCT_READ])
     getVariantById(
-        @Param('variantId') variantId: string
+        @Param('variantId', ParseIntPipe) variantId: number
     ) {
         return this.variantService.getVariantById(variantId)
     }
@@ -72,7 +72,7 @@ export class VariantController {
     @Auth([Role.ADMIN, Role.MANAGER], [Right.PRODUCT_UPDATE, Right.MEDIA_UPLOAD])
     @UseInterceptors(FilesInterceptor('images'))
     uploadImages(
-        @Param('variantId') variantId: string,
+        @Param('variantId', ParseIntPipe) variantId: number,
         @UploadedFiles() images: Express.Multer.File[]
     ) {
         return this.variantService.uploadImages(variantId, images)
@@ -81,8 +81,8 @@ export class VariantController {
     @Put(':variantId/updateImage/:imageId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.PRODUCT_UPDATE])
     updateImage(
-        @Param('variantId') variantId: string,
-        @Param('imageId') imageId: string,
+        @Param('variantId', ParseIntPipe) variantId: number,
+        @Param('imageId', ParseIntPipe) imageId: number,
         @Body() data: UpdateImageDto
     ) {
         return this.variantService.updateImage(variantId, imageId, data)
@@ -91,8 +91,8 @@ export class VariantController {
     @Delete(':variantId/removeImage/:imageId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.PRODUCT_UPDATE, Right.MEDIA_DELETE])
     removeImage(
-        @Param('variantId') variantId: string,
-        @Param('imageId') imageId: string,
+        @Param('variantId', ParseIntPipe) variantId: number,
+        @Param('imageId', ParseIntPipe) imageId: number,
     ) {
         return this.variantService.removeImage(variantId, imageId)
     }
@@ -100,7 +100,7 @@ export class VariantController {
     @Put(':variantId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.PRODUCT_UPDATE])
     updateVariant(
-        @Param('variantId') variantId: string,
+        @Param('variantId', ParseIntPipe) variantId: number,
         @Body() data: UpdateVariantDto
     ) {
         return this.variantService.updateVariant(variantId, data)
@@ -109,7 +109,7 @@ export class VariantController {
     @Delete(':variantId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.PRODUCT_UPDATE])
     removeVariant(
-        @Param('variantId') variantId: string,
+        @Param('variantId', ParseIntPipe) variantId: number,
     ) {
         return this.variantService.removeVariant(variantId)
     }

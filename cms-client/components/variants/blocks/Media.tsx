@@ -1,12 +1,12 @@
 import Image from 'next/image'
 import React, { useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify';
-import { useRemoveVariantImageMutation, useUpdateVariantImageMutation, useUploadVariantImagesMutation } from '../../../services/variantService';
-import { IErrorResponse, IImage } from '../../../types/api';
+import { useRemoveVariantImageMutation, useUpdateVariantImageMutation, useUploadVariantImagesMutation } from '@/services/variantService';
+import { IErrorResponse, IImage } from '@/types/api';
 import MediaCard from '../../media/cards/MediaCard';
 
 interface IProps {
-    variantId: string;
+    variantId: number;
     images: IImage[];
 }
 
@@ -123,7 +123,7 @@ export default function Media({ variantId, images }: IProps) {
         await updateImage({ variantId, imageId: image.id, src: image.src, alt: image.alt })
     }
 
-    const onDeleteImage = async (id: string) => {
+    const onDeleteImage = async (id: number) => {
         await removeImage({ variantId, imageId: id })
     }
 

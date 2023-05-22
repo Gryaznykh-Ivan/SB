@@ -24,8 +24,8 @@ export class SearchProductDto {
     @Transform(({ value }) => value === "true")
     readonly available: boolean;
 
-    @IsNotEmpty()
-    @IsString()
+    @IsInt()
     @ValidateIf((obj, value) => value !== undefined)
-    notInCollectionId: string;
+    @Transform(({ value }) => parseInt(value, 10))
+    notInCollectionId: number;
 }

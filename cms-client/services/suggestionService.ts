@@ -1,5 +1,5 @@
-import { api } from "../store/api";
-import { CitiesSuggestionRequest, CitiesSuggestionResponse, CollectionsSuggestionRequest, CollectionsSuggestionResponse, CountriesSuggestionRequest, CountriesSuggestionResponse, DeliveryOptionsSuggestionRequest, DeliveryOptionsSuggestionResponse, DeliveryProfilesSuggestionRequest, DeliveryProfilesSuggestionResponse, DeliveryZonesSuggestionRequest, deliveryZonesSuggestionResponse, ProductTypesSuggestionRequest, ProductTypesSuggestionResponse, RegionsSuggestionRequest, RegionsSuggestionResponse, TagsSuggestionRequest, TagsSuggestionResponse, VendorsSuggestionRequest, VendorsSuggestionResponse } from "../types/api";
+import { api } from "@/store/api";
+import { CitiesSuggestionRequest, CitiesSuggestionResponse, CollectionsSuggestionRequest, CollectionsSuggestionResponse, CountriesSuggestionRequest, CountriesSuggestionResponse, DeliveryOptionsSuggestionRequest, DeliveryOptionsSuggestionResponse, DeliveryProfilesSuggestionRequest, DeliveryProfilesSuggestionResponse, DeliveryZonesSuggestionRequest, deliveryZonesSuggestionResponse, ProductTypesSuggestionRequest, ProductTypesSuggestionResponse, RegionsSuggestionRequest, RegionsSuggestionResponse, TagsSuggestionRequest, TagsSuggestionResponse, VendorsSuggestionRequest, VendorsSuggestionResponse } from "@/types/api";
 
 export const suggestionService = api.injectEndpoints({
     endpoints: builder => ({

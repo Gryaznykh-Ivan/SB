@@ -1,5 +1,5 @@
-import { api } from "../store/api";
-import { CollectionGetByHandleRequest, CollectionGetByHandleResponse, CollectionGetFiltersByHandleRequest, CollectionGetFiltersByHandleResponse, CollectionGetProductsByHandleRequest, CollectionGetProductsByHandleResponse, CollectionGetProductsRecommendationByHandleRequest, CollectionGetProductsRecommendationByHandleResponse } from "../types/api";
+import { api } from "@/store/api";
+import { CollectionGetByHandleRequest, CollectionGetByHandleResponse, CollectionGetFiltersByHandleRequest, CollectionGetFiltersByHandleResponse, CollectionGetProductsByHandleRequest, CollectionGetProductsByHandleResponse, CollectionGetProductsRecommendationByHandleRequest, CollectionGetProductsRecommendationByHandleResponse } from "@/types/api";
 
 export const collectionService = api.injectEndpoints({
     endpoints: builder => ({

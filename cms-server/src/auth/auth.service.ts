@@ -201,7 +201,7 @@ export class AuthService {
             where: {
                 email: login
             },
-            orderBy: [{ createdAt: 'desc' }]
+            orderBy: { createdAt: 'desc' }
         })
 
         if (vc != null && Date.parse(vc.createdAt.toString()) > Date.now() - (2 * 60 * 1000)) {

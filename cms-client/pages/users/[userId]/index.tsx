@@ -1,22 +1,22 @@
 import Link from 'next/link'
 import React, { useEffect, useMemo, useState } from 'react'
-import { IErrorResponse, UserUpdateRequest } from '../../../types/api'
-import Addresses from '../../../components/users/blocks/Addresses'
-import Consignment from '../../../components/users/blocks/Consignment'
-import GeneralInfo from '../../../components/users/blocks/GeneralInfo'
-import Status from '../../../components/users/blocks/Status'
-import MainLayout from '../../../components/layouts/Main'
-import Permissions from '../../../components/users/blocks/Permissions'
-import Roles from '../../../components/users/blocks/Roles'
+import { IErrorResponse, UserUpdateRequest } from '@/types/api'
+import Addresses from '@/components/users/blocks/Addresses'
+import Consignment from '@/components/users/blocks/Consignment'
+import GeneralInfo from '@/components/users/blocks/GeneralInfo'
+import Status from '@/components/users/blocks/Status'
+import MainLayout from '@/components/layouts/Main'
+import Permissions from '@/components/users/blocks/Permissions'
+import Roles from '@/components/users/blocks/Roles'
 import { useRouter } from 'next/router'
-import { useDeleteUserMutation, useGetUserByIdQuery, useUpdateUserMutation } from '../../../services/userService'
+import { useDeleteUserMutation, useGetUserByIdQuery, useUpdateUserMutation } from '@/services/userService'
 import { toast } from 'react-toastify'
-import { Role } from '../../../types/store'
+import { Role } from '@/types/store'
 
 export default function Index() {
     const router = useRouter()
 
-    const { isError, error, isLoading, data } = useGetUserByIdQuery({ userId: router.query.userId as string })
+    const { isError, error, isLoading, data } = useGetUserByIdQuery({ userId: Number(router.query.userId) }, { skip: router.query.userId === undefined })
 
     const [updateUser, { isSuccess: isUpdateUserSuccess, isError: isUpdateUserError, error: updateUserError }] = useUpdateUserMutation()
     const [deleteUser, { isSuccess: isDeleteUserSuccess, isError: isDeleteUserError, error: deleteUserError }] = useDeleteUserMutation()
@@ -55,7 +55,7 @@ export default function Index() {
     }, [isDeleteUserSuccess, isDeleteUserError])
 
     const onSaveChanges = async () => {
-        const result = await updateUser({ userId: router.query.userId as string, ...changes }).unwrap()
+        const result = await updateUser({ userId: Number(router.query.userId), ...changes }).unwrap()
         if (result.success === true) {
             setChanges({})
         }
@@ -66,7 +66,7 @@ export default function Index() {
     }, [changes])
 
     const onUserDelete = async () => {
-        const result = await deleteUser({ userId: router.query.userId as string }).unwrap();
+        const result = await deleteUser({ userId: Number(router.query.userId) }).unwrap();
         if (result.success === true) {
             setChanges({})
             router.push("/users")

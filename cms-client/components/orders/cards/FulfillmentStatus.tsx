@@ -1,5 +1,5 @@
 import React from 'react'
-import { FulfillmentStatus as Statuses } from '../../../types/store';
+import { FulfillmentStatus as Statuses } from '@/types/store';
 
 interface IProps {
     status: Statuses;

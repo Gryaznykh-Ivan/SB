@@ -2,20 +2,20 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useMemo, useState } from 'react'
-import GeneralInfo from '../../../components/collections/blocks/GeneralInfo'
-import CollectionProducts from '../../../components/collections/blocks/CollectionProducts'
-import Products from '../../../components/collections/blocks/CollectionProducts'
-import SeoSearch from '../../../components/collections/blocks/SeoSearch'
-import MainLayout from '../../../components/layouts/Main'
-import { CollectionUpdateRequest, IErrorResponse } from '../../../types/api'
-import { useDeleteCollectionMutation, useGetCollectionByIdQuery, useUpdateCollectionMutation } from '../../../services/collectionService'
+import GeneralInfo from '@/components/collections/blocks/GeneralInfo'
+import CollectionProducts from '@/components/collections/blocks/CollectionProducts'
+import Products from '@/components/collections/blocks/CollectionProducts'
+import SeoSearch from '@/components/collections/blocks/SeoSearch'
+import MainLayout from '@/components/layouts/Main'
+import { CollectionUpdateRequest, IErrorResponse } from '@/types/api'
+import { useDeleteCollectionMutation, useGetCollectionByIdQuery, useUpdateCollectionMutation } from '@/services/collectionService'
 import { toast } from 'react-toastify'
-import Media from '../../../components/collections/blocks/Media'
+import Media from '@/components/collections/blocks/Media'
 
 export default function Index() {
     const router = useRouter()
 
-    const { isError, error, isLoading, data } = useGetCollectionByIdQuery({ collectionId: router.query.collectionId as string })
+    const { isError, error, isLoading, data } = useGetCollectionByIdQuery({ collectionId: Number(router.query.collectionId)}, { skip: router.query.collectionId === undefined })
 
     const [updateCollection, { isSuccess: isUpdateCollectionSuccess, isError: isUpdateCollectionError, error: updateCollectionError }] = useUpdateCollectionMutation()
     const [deleteCollection, { isSuccess: isDeleteCollectionSuccess, isError: isDeleteCollectionError, error: deleteCollectionError }] = useDeleteCollectionMutation()
@@ -54,7 +54,7 @@ export default function Index() {
     }, [isDeleteCollectionSuccess, isDeleteCollectionError])
 
     const onSaveChanges = async () => {
-        const result = await updateCollection({ collectionId: router.query.collectionId as string, ...changes }).unwrap()
+        const result = await updateCollection({ collectionId: Number(router.query.collectionId), ...changes }).unwrap()
         if (result.success === true) {
             setChanges({})
         }
@@ -65,7 +65,7 @@ export default function Index() {
     }, [changes])
 
     const onCollectionDelete = async () => {
-        const result = await deleteCollection({ collectionId: router.query.collectionId as string }).unwrap();
+        const result = await deleteCollection({ collectionId: Number(router.query.collectionId) }).unwrap();
         if (result.success === true) {
             setChanges({})
             router.push("/collections")

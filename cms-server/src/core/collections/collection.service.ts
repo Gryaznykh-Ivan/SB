@@ -18,7 +18,7 @@ export class CollectionService {
         private files: FilesService
     ) { }
 
-    async getCollectionById(collectionId: string) {
+    async getCollectionById(collectionId: number) {
         const collection = await this.prisma.collection.findUnique({
             where: { id: collectionId },
             select: {
@@ -64,7 +64,7 @@ export class CollectionService {
         }
     }
 
-    async getCollectionProducts(collectionId: string, q: string, limit: number, skip: number) {
+    async getCollectionProducts(collectionId: number, q: string, limit: number, skip: number) {
         const fulltextSearch = q ? q.replace(/[+\-<>()~*\"@]+/g, " ").replace(/\s+/g, " ").trim().split(" ").filter(word => word.length > 2).map(word => `+${word}*`).join(" ") : undefined
         const products = await this.prisma.product.findMany({
             where: {
@@ -189,7 +189,7 @@ export class CollectionService {
     }
 
 
-    async uploadImages(collectionId: string, images: Express.Multer.File[], token: string) {
+    async uploadImages(collectionId: number, images: Express.Multer.File[], token: string) {
         const collection = await this.prisma.collection.findFirst({
             where: { id: collectionId },
             select: {
@@ -236,7 +236,7 @@ export class CollectionService {
     }
 
 
-    async updateImage(collectionId: string, imageId: string, data: UpdateImageDto) {
+    async updateImage(collectionId: number, imageId: number, data: UpdateImageDto) {
         try {
             await this.prisma.$transaction(async tx => {
                 if (data.src !== undefined || data.alt !== undefined) {
@@ -288,21 +288,18 @@ export class CollectionService {
         }
     }
 
-    async removeImage(imageId: string) {
+    async removeImage(collectionId: number, imageId: number) {
         try {
             await this.prisma.$transaction(async tx => {
-                const removedImage = await tx.image.delete({
+                await tx.image.update({
                     where: { id: imageId },
-                    select: {
-                        collectionId: true,
-                        path: true
+                    data: {
+                        collectionId: null,
                     }
                 })
 
-                await this.files.delete({ paths: [removedImage.path] })
-
                 const images = await tx.image.findMany({
-                    where: { collectionId: removedImage.collectionId },
+                    where: { collectionId: collectionId },
                     select: { id: true },
                     orderBy: [{ position: 'asc' }]
                 })
@@ -327,7 +324,7 @@ export class CollectionService {
         }
     }
 
-    async updateCollection(collectionId: string, data: UpdateCollectionDto) {
+    async updateCollection(collectionId: number, data: UpdateCollectionDto) {
         const updateCollectionQuery = {
             title: data.title,
             description: data.description,
@@ -368,7 +365,7 @@ export class CollectionService {
         }
     }
 
-    async removeCollection(collectionId: string) {
+    async removeCollection(collectionId: number) {
         try {
             const collection = await this.prisma.collection.delete({
                 where: { id: collectionId },

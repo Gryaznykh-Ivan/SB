@@ -29,7 +29,7 @@ export class ProductController {
     @Get(':productId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.PRODUCT_READ])
     getProductById(
-        @Param('productId') productId: string
+        @Param('productId', ParseIntPipe) productId: number
     ) {
         return this.productService.getProductById(productId)
     }
@@ -47,7 +47,7 @@ export class ProductController {
     @Auth([Role.ADMIN, Role.MANAGER], [Right.PRODUCT_UPDATE, Right.MEDIA_UPLOAD])
     @UseInterceptors(FilesInterceptor('images'))
     uploadImages(
-        @Param('productId') productId: string,
+        @Param('productId', ParseIntPipe) productId: number,
         @UploadedFiles() images: Express.Multer.File[],
     ) {
         return this.productService.uploadImages(productId, images)
@@ -56,8 +56,8 @@ export class ProductController {
     @Put(':productId/updateImage/:imageId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.PRODUCT_UPDATE])
     updateImage(
-        @Param('productId') productId: string,
-        @Param('imageId') imageId: string,
+        @Param('productId', ParseIntPipe) productId: number,
+        @Param('imageId', ParseIntPipe) imageId: number,
         @Body() data: UpdateImageDto
     ) {
         return this.productService.updateImage(productId, imageId, data)
@@ -66,8 +66,8 @@ export class ProductController {
     @Delete(':productId/removeImage/:imageId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.PRODUCT_UPDATE, Right.MEDIA_DELETE])
     removeImage(
-        @Param('productId') productId: string,
-        @Param('imageId') imageId: string,
+        @Param('productId', ParseIntPipe) productId: number,
+        @Param('imageId', ParseIntPipe) imageId: number,
     ) {
         return this.productService.removeImage(productId, imageId)
     }
@@ -75,7 +75,7 @@ export class ProductController {
     @Post(':productId/createOption')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.PRODUCT_UPDATE])
     createOption(
-        @Param('productId') productId: string,
+        @Param('productId', ParseIntPipe) productId: number,
         @Body() data: CreateOptionDto
     ) {
         return this.productService.createOption(productId, data)
@@ -84,8 +84,8 @@ export class ProductController {
     @Put(':productId/updateOption/:optionId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.PRODUCT_UPDATE])
     updateOption(
-        @Param('productId') productId: string,
-        @Param('optionId') optionId: string,
+        @Param('productId', ParseIntPipe) productId: number,
+        @Param('optionId', ParseIntPipe) optionId: number,
         @Body() data: UpdateOptionDto
     ) {
         return this.productService.updateOption(productId, optionId, data)
@@ -95,7 +95,7 @@ export class ProductController {
     @Delete(':productId/removeOption/:optionId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.PRODUCT_UPDATE])
     removeOption(
-        @Param('optionId') optionId: string,
+        @Param('optionId', ParseIntPipe) optionId: number,
     ) {
         return this.productService.removeOption(optionId)
     }
@@ -103,7 +103,7 @@ export class ProductController {
     @Put(':productId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.PRODUCT_UPDATE])
     updateProduct(
-        @Param('productId') productId: string,
+        @Param('productId', ParseIntPipe) productId: number,
         @Body() data: UpdateProductDto
     ) {
         return this.productService.updateProduct(productId, data)
@@ -112,7 +112,7 @@ export class ProductController {
     @Delete(':productId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.PRODUCT_UPDATE])
     removeProduct(
-        @Param('productId') productId: string,
+        @Param('productId', ParseIntPipe) productId: number,
     ) {
         return this.productService.removeProduct(productId)
     }

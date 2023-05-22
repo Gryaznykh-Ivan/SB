@@ -42,7 +42,7 @@ export class ShippingService {
         }
     }
 
-    async getDeliveryZones(profileId: string, data: SearchZoneDto) {
+    async getDeliveryZones(profileId: number, data: SearchZoneDto) {
         const fulltextSearch = data.q ? data.q.replace(/[+\-<>()~*\"@]+/g, " ").replace(/\s+/g, " ").trim().split(" ").filter(word => word.length > 2).map(word => `+${word}*`).join(" ") : undefined
         const zones = await this.prisma.deliveryZone.findMany({
             where: {
@@ -80,13 +80,14 @@ export class ShippingService {
         }
     }
 
-    async getProfileById(profileId: string) {
+    async getProfileById(profileId: number) {
         const profile = await this.prisma.deliveryProfile.findUnique({
             where: { id: profileId },
             select: {
                 id: true,
                 title: true,
-                location: true
+                location: true,
+                isDefault: true
             }
         })
 
@@ -120,7 +121,7 @@ export class ShippingService {
         }
     }
 
-    async createDeliveryZone(profileId: string, data: CreateDeliveryZoneDto) {
+    async createDeliveryZone(profileId: number, data: CreateDeliveryZoneDto) {
         try {
             await this.prisma.deliveryProfile.update({
                 where: { id: profileId },
@@ -148,7 +149,7 @@ export class ShippingService {
         }
     }
 
-    async updateDeliveryZone(profileId: string, zoneId: string, data: UpdateDeliveryZoneDto) {
+    async updateDeliveryZone(profileId: number, zoneId: number, data: UpdateDeliveryZoneDto) {
         const updateDeliveryZoneQuery = {}
 
         if (data.createDeliveryOptions !== undefined || data.deleteDeliveryOptions !== undefined) {
@@ -199,7 +200,7 @@ export class ShippingService {
     }
 
 
-    async updateProfile(profileId: string, data: UpdateProfileDto) {
+    async updateProfile(profileId: number, data: UpdateProfileDto) {
         const updateDeliveryProfileQuery = {
             title: data.title,
             location: data.location,
@@ -222,9 +223,19 @@ export class ShippingService {
                     data: updateDeliveryProfileQuery
                 })
 
+                const defaultProfile = await tx.deliveryProfile.findFirst({
+                    where: {
+                        isDefault: true
+                    }
+                })
+
+                if (defaultProfile === null) {
+                    throw new HttpException("Дефолтный профиль не определен", HttpStatus.BAD_REQUEST)
+                }
+
                 await tx.deliveryProfile.update({
                     where: {
-                        id: "default"
+                        id: defaultProfile.id
                     },
                     data: {
                         offers: {
@@ -238,6 +249,10 @@ export class ShippingService {
                 success: true
             }
         } catch (e) {
+            if (e.name === HttpException.name) {
+                throw new HttpException(e.message, e.status)
+            }
+
             if (e instanceof Prisma.PrismaClientKnownRequestError) {
                 if (e.code === 'P2002') {
                     throw new HttpException("Профиль с таким title уже существует", HttpStatus.BAD_REQUEST)
@@ -248,7 +263,7 @@ export class ShippingService {
         }
     }
 
-    async removeDeliveryZone(zoneId: string) {
+    async removeDeliveryZone(zoneId: number) {
         try {
             await this.prisma.deliveryZone.delete({
                 where: { id: zoneId }
@@ -262,16 +277,29 @@ export class ShippingService {
         }
     }
 
-    async removeProfile(profileId: string) {
-        if (profileId === "default") {
-            throw new HttpException(`Удалить дефолтный профиль невозможно`, HttpStatus.BAD_REQUEST)
-        }
-
+    async removeProfile(profileId: number) {
         try {
             await this.prisma.$transaction(async tx => {
+                const defaultProfile = await tx.deliveryProfile.findFirst({
+                    where: {
+                        isDefault: true
+                    }
+                })
+
+                if (defaultProfile === null) {
+                    throw new HttpException("Дефолтный профиль не определен", HttpStatus.BAD_REQUEST)
+                }
+
+                if (profileId === defaultProfile.id) {
+                    throw new HttpException(`Удалить дефолтный профиль невозможно`, HttpStatus.BAD_REQUEST)
+                }
+
                 await tx.deliveryProfile.delete({
                     where: {
                         id: profileId,
+                    },
+                    select: {
+                        isDefault: true
                     }
                 })
 
@@ -280,7 +308,7 @@ export class ShippingService {
                         deliveryProfileId: null
                     },
                     data: {
-                        deliveryProfileId: "default"
+                        deliveryProfileId: defaultProfile.id
                     }
                 })
             })
@@ -289,7 +317,11 @@ export class ShippingService {
                 success: true
             }
         } catch (e) {
-
+            if (e.name === HttpException.name) {
+                
+                throw new HttpException(e.message, e.status)
+            }
+            
             throw new HttpException("Произошла ошибка на стороне сервера", HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }

@@ -75,7 +75,7 @@ export class ProductService {
                         data: {
                             id: product.id,
                             title: product.title,
-                            pfactor: isNaN(+product.pfactor) === false ? product.pfactor : "1",
+                            pfactor: isNaN(+product.pfactor) === false ? product.pfactor : 1,
                             pamount: isNaN(+product.pamount) === false ? Math.floor(Number(product.pamount) > 10 ? 10 : Number(product.pamount)) : 3,
                             stockx: product.stockx,
                             status: ProductStatus.WAITING_STOCKX_DATA,

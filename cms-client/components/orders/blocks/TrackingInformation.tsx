@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
-import { OrderFulfillmentUpdateRequest, OrderReturnUpdateRequest } from '../../../types/api';
+import { OrderFulfillmentUpdateRequest, OrderReturnUpdateRequest } from '@/types/api';
 import Input from '../../inputs/Input'
 
 interface IProps {

@@ -1,13 +1,11 @@
 
 import { Type } from "class-transformer";
-import { ArrayMaxSize, IsArray, IsBoolean, IsNotEmpty, IsOptional, IsString, MaxLength, ValidateNested } from "class-validator";
+import { ArrayMaxSize, IsArray, IsBoolean, IsInt, IsNotEmpty, IsOptional, IsString, MaxLength, ValidateNested } from "class-validator";
 import { ConnectOfferDto } from "./offer.dto";
-import { ServiceDto } from "./service.dto";
 
 export class CreateOrderDto {
-    @IsNotEmpty()
-    @IsString()
-    userId: string;
+    @IsInt()
+    userId: number;
 
     @IsNotEmpty()
     @IsString()
@@ -28,12 +26,6 @@ export class CreateOrderDto {
     @IsOptional()
     @IsString()
     note: string;
-
-    @IsOptional()
-    @IsArray()
-    @ValidateNested({ each: true })
-    @Type(() => ServiceDto)
-    services: ServiceDto[]
 
     @IsArray()
     @ValidateNested({ each: true })

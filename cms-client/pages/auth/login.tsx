@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { useLoginMutation, useSendCodeMutation } from '../../services/authService'
-import { IErrorResponse } from '../../types/api'
-import AuthLayout from '../../components/layouts/Auth'
-import { useTimer } from '../../hooks/useTimer'
-import { useAppSelector } from '../../hooks/store'
+import { useLoginMutation, useSendCodeMutation } from '@/services/authService'
+import { IErrorResponse } from '@/types/api'
+import AuthLayout from '@/components/layouts/Auth'
+import { useTimer } from '@/hooks/useTimer'
+import { useAppSelector } from '@/hooks/store'
 
 export default function Login() {
     const router = useRouter()

@@ -58,10 +58,10 @@ model Bot {
 }
 
 model Product {
-    id        String        @id @default(cuid())
+    id        Int           @id @default(autoincrement()) @db.UnsignedInt
     title     String
     stockx    String
-    pfactor   Decimal       @db.Decimal(9, 2)
+    pfactor   Decimal       @db.Decimal(10, 2)
     pamount   Int
     status    ProductStatus @default(WAITING_STOCKX_DATA)
     variants  Variant[]
@@ -73,14 +73,14 @@ model Product {
 }
 
 model Variant {
-    id          String   @id @default(cuid())
+    id          Int   @id @default(autoincrement()) @db.UnsignedInt
     title       String
     searchTitle String
     shopAmount  Int
-    shopPrice   Decimal? @db.Decimal(9, 2)
+    shopPrice   Decimal? @db.Decimal(10, 2)
     price       Int?
     product     Product  @relation(fields: [productId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    productId   String
+    productId   Int      @db.UnsignedInt
 
     @@map("variant")
 }

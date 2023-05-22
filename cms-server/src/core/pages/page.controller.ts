@@ -28,7 +28,7 @@ export class PageController {
     @Get(':pageId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.PAGE_READ])
     getPageById(
-        @Param('pageId') pageId: string
+        @Param('pageId', ParseIntPipe) pageId: number
     ) {
         return this.pageService.getPageById(pageId)
     }
@@ -45,7 +45,7 @@ export class PageController {
     @Put(':pageId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.PAGE_UPDATE])
     updatePage(
-        @Param('pageId') pageId: string,
+        @Param('pageId', ParseIntPipe) pageId: number,
         @Body() data: UpdatePageDto
     ) {
         return this.pageService.updatePage(pageId, data)
@@ -54,7 +54,7 @@ export class PageController {
     @Delete(':pageId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.PAGE_UPDATE])
     removePage(
-        @Param('pageId') pageId: string,
+        @Param('pageId', ParseIntPipe) pageId: number,
     ) {
         return this.pageService.removePage(pageId)
     }

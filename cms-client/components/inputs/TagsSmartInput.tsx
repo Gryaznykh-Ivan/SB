@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react'
-import useDebounce from '../../hooks/useDebounce';
-import { useLazyTagsQuery } from '../../services/suggestionService';
-import { ITag } from '../../types/api';
+import useDebounce from '@/hooks/useDebounce';
+import { useLazyTagsQuery } from '@/services/suggestionService';
+import { ITag } from '@/types/api';
 import Input from './Input';
 
 interface IProps {
@@ -37,11 +37,11 @@ export default function TagsSmartInput({ onChange, placeholder, className, tags,
         setState("")
 
         if (tags.some(c => c.title === tag) === false) {
-            onChange([...tags, { id: `new${Math.random()}`, title: tag }])
+            onChange([...tags, { id: Math.random(), title: tag }])
         }
     }
 
-    const onDelete = (id: string) => {
+    const onDelete = (id: number) => {
         onChange(tags.filter(c => c.id !== id))
     }
 

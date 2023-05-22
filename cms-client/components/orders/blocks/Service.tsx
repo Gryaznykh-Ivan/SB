@@ -1,11 +1,11 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { useEffect, useState } from 'react'
-import { CollectionCreateRequest, CollectionUpdateRequest, ICollectionProduct, IErrorResponse, IProduct, IService, OrderCreateRequest } from '../../../types/api';
+import { CollectionCreateRequest, CollectionUpdateRequest, ICollectionProduct, IErrorResponse, IProduct, IService, OrderCreateRequest } from '@/types/api';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import AddService from '../popups/AddService';
 import ServiceType from '../cards/ServiceType';
-import { IOrderState, Service as ServiceEnum } from '../../../types/store';
+import { IOrderState, Service as ServiceEnum } from '@/types/store';
 
 
 interface IProps {
@@ -33,7 +33,7 @@ export default function Service({ onChange, ...data }: IProps) {
         onChange({ services: [...newState, service] })
     }
 
-    const onRemoveService = (id: string) => {
+    const onRemoveService = (id: number) => {
         const result = data.services.filter(a => a.id !== id)
 
         onChange({ services: result })

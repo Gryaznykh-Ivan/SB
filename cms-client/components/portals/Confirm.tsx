@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../hooks/store'
-import useConfirm from '../../hooks/useConfirm'
+import { useAppDispatch, useAppSelector } from '@/hooks/store'
+import useConfirm from '@/hooks/useConfirm'
 import Modal from './Modal'
 
 export default function Confirm() {

@@ -45,7 +45,7 @@ export class FilesService {
 
             return { success: true, data: result }
         } catch (e) {
-            throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
+            throw new HttpException(e.message, e.status)
         }
     }
 
@@ -69,7 +69,7 @@ export class FilesService {
 
             return { success: true }
         } catch (e) {
-            throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
+            throw new HttpException(e.message, e.status)
         }
     }
 

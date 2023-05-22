@@ -1,5 +1,5 @@
-import { api } from "../store/api";
-import { UserAddAddressRequest, UserAddAddressResponse, UserAddPermissionRequest, UserAddPermissionResponse, UserCreateRequest, UserCreateResponse, UserDeleteRequest, UserDeleteResponse, UserGetAddressesRequest, UserGetAddressesResponse, UserGetByIdRequest, UserGetByIdResponse, UserRemoveAddressRequest, UserRemoveAddressResponse, UserRemovePermissionRequest, UserRemovePermissionResponse, UserSearchRequest, UserSearchResponse, UserUpdateRequest, UserUpdateResponse } from "../types/api";
+import { api } from "@/store/api";
+import { UserAddAddressRequest, UserAddAddressResponse, UserAddPermissionRequest, UserAddPermissionResponse, UserCreateRequest, UserCreateResponse, UserDeleteRequest, UserDeleteResponse, UserGetAddressesRequest, UserGetAddressesResponse, UserGetByIdRequest, UserGetByIdResponse, UserRemoveAddressRequest, UserRemoveAddressResponse, UserRemovePermissionRequest, UserRemovePermissionResponse, UserSearchRequest, UserSearchResponse, UserUpdateRequest, UserUpdateResponse } from "@/types/api";
 
 export const userService = api.injectEndpoints({
     endpoints: builder => ({

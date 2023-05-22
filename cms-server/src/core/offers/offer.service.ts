@@ -15,7 +15,7 @@ export class OfferService {
         private prisma: PrismaService,
     ) { }
 
-    async getOfferById(offerId: string) {
+    async getOfferById(offerId: number) {
         const offer = await this.prisma.offer.findUnique({
             where: { id: offerId },
             select: {
@@ -96,9 +96,9 @@ export class OfferService {
                             search: fulltextSearch ? fulltextSearch : undefined,
                         }
                     }, {
-                        variantId: data.q ? data.q : undefined
+                        variantId: (data.q && isNaN(+data.q) === false) ? Number(data.q) : undefined
                     }, {
-                        userId: data.q ? data.q : undefined
+                        userId: (data.q && isNaN(+data.q) === false) ? Number(data.q) : undefined
                     }, {
                         user: data.q ? {
                             fullName: {
@@ -208,23 +208,43 @@ export class OfferService {
             throw new HttpException("Вариант не найден", HttpStatus.BAD_REQUEST)
         }
 
-        const createOfferQuery = {
-            productId: variant.product.id,
-            productTitle: variant.product.title,
-            variantTitle: variant.product.options.map((option) => variant[`option${option.option}`]).join(' | '),
-            variantId: data.variantId,
-            userId: data.userId,
-            status: data.status,
-            price: data.price,
-            offerPrice: data.offerPrice,
-            deliveryProfileId: data.deliveryProfileId ?? "default", // дефолтный профиль
-            compareAtPrice: data.compareAtPrice,
-            comment: data.comment
-        }
-
         try {
-            const offer = await this.prisma.offer.create({
-                data: createOfferQuery
+            const offer = await this.prisma.$transaction(async tx => {
+                const createOfferQuery = {
+                    productId: variant.product.id,
+                    productTitle: variant.product.title,
+                    variantTitle: variant.product.options.map((option) => variant[`option${option.option}`]).join(' | '),
+                    variantId: data.variantId,
+                    userId: data.userId,
+                    status: data.status,
+                    price: data.price,
+                    offerPrice: data.offerPrice,
+                    deliveryProfileId: data.deliveryProfileId,
+                    compareAtPrice: data.compareAtPrice,
+                    comment: data.comment
+                }
+
+                if (createOfferQuery.deliveryProfileId === undefined) {
+                    const defaultProfile = await tx.deliveryProfile.findFirst({
+                        where: {
+                            isDefault: true
+                        }
+                    })
+
+                    if (defaultProfile === null) {
+                        throw new HttpException("Дефолтный профиль не определен", HttpStatus.BAD_REQUEST)
+                    }
+
+                    Object.assign(createOfferQuery, {
+                        deliveryProfileId: defaultProfile.id,
+                    })
+                }
+
+                const offer = await tx.offer.create({
+                    data: createOfferQuery
+                })
+
+                return offer
             })
 
             return {
@@ -232,12 +252,15 @@ export class OfferService {
                 data: offer.id
             }
         } catch (e) {
-            console.log(e)
+            if (e.name === HttpException.name) {
+                throw new HttpException(e.message, e.status)
+            }
+            
             throw new HttpException("Произошла ошибка на стороне сервера", HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 
-    async updateOffer(offerId: string, data: UpdateOfferDto) {
+    async updateOffer(offerId: number, data: UpdateOfferDto) {
         const offer = await this.prisma.offer.findUnique({
             where: { id: offerId },
             select: {
@@ -322,12 +345,12 @@ export class OfferService {
             }
         } catch (e) {
 
-            console.log(e)
+            
             throw new HttpException("Произошла ошибка на стороне сервера", HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 
-    async removeOffer(offerId: string) {
+    async removeOffer(offerId: number) {
         const offer = await this.prisma.offer.findUnique({
             where: { id: offerId },
             select: {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ProductCreateRequest, ProductUpdateRequest } from '../../../types/api';
+import { ProductCreateRequest, ProductUpdateRequest } from '@/types/api';
 import Input from '../../inputs/Input'
 import TextArea from '../../inputs/TextArea'
 import ReactJodit from '../../textEditor/ReactJodit';

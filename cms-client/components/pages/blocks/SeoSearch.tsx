@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { PageCreateRequest, PageUpdateRequest } from '../../../types/api';
+import { PageCreateRequest, PageUpdateRequest } from '@/types/api';
 import Input from '../../inputs/Input'
 import TextArea from '../../inputs/TextArea'
 

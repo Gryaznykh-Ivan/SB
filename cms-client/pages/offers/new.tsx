@@ -2,19 +2,19 @@ import Link from 'next/link'
 import React, { useEffect, useMemo, useState } from 'react'
 
 
-import MainLayout from '../../components/layouts/Main'
-import GeneralInfo from '../../components/products/blocks/GeneralInfo'
+import MainLayout from '@/components/layouts/Main'
+import GeneralInfo from '@/components/products/blocks/GeneralInfo'
 
-import Status from '../../components/offers/blocks/Status'
-import DeliveryProfile from '../../components/offers/blocks/DeliveryProfile'
-import Prices from '../../components/offers/blocks/Prices'
-import PickVariant from '../../components/offers/blocks/PickVariant'
-import Provider from '../../components/offers/blocks/Provider'
-import Comment from '../../components/offers/blocks/Comment'
-import { IErrorResponse, OfferCreateRequest } from '../../types/api'
+import Status from '@/components/offers/blocks/Status'
+import DeliveryProfile from '@/components/offers/blocks/DeliveryProfile'
+import Prices from '@/components/offers/blocks/Prices'
+import PickVariant from '@/components/offers/blocks/PickVariant'
+import Provider from '@/components/offers/blocks/Provider'
+import Comment from '@/components/offers/blocks/Comment'
+import { IErrorResponse, OfferCreateRequest } from '@/types/api'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
-import { useCreateOfferMutation } from '../../services/offerService'
+import { useCreateOfferMutation } from '@/services/offerService'
 
 function New() {
     const router = useRouter()
@@ -94,7 +94,7 @@ function New() {
                             onChange={onCollectChanges}
                         />
                         <DeliveryProfile
-                            deliveryProfileId={"default"}
+                            deliveryProfileId={null}
                             onChange={onCollectChanges}
                         />
                         <Provider

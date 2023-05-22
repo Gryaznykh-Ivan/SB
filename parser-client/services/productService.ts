@@ -1,5 +1,5 @@
-import { api } from "../store/api";
-import { ProductGetBySearchRequest, ProductGetBySearchResponse, ProductsUpdateRequest, ProductsUpdateResponse } from "../types/api";
+import { api } from "@/store/api";
+import { ProductGetBySearchRequest, ProductGetBySearchResponse, ProductsUpdateRequest, ProductsUpdateResponse } from "@/types/api";
 
 export const productService = api.injectEndpoints({
     endpoints: builder => ({

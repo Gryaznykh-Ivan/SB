@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from 'react'
-import useDebounce from '../../hooks/useDebounce';
-import { useLazyProductTypesQuery } from '../../services/suggestionService';
+import useDebounce from '@/hooks/useDebounce';
+import { useLazyProductTypesQuery } from '@/services/suggestionService';
 
 interface IProps {
     className?: string;

@@ -92,7 +92,7 @@ export class SuggestionService {
         }
     }
 
-    async deliveryZones(profileId: string, data: SearchDto) {
+    async deliveryZones(profileId: number, data: SearchDto) {
         const fulltextSearch = data.q ? data.q.replace(/[+\-<>()~*\"@]+/g, " ").replace(/\s+/g, " ").trim().split(" ").filter(word => word.length > 2).map(word => `+${word}*`).join(" ") : undefined
 
         const profile = await this.prisma.deliveryProfile.findUnique({
@@ -137,7 +137,7 @@ export class SuggestionService {
         }
     }
 
-    async deliveryOptions(deliveryProfileId: string, region: string) {
+    async deliveryOptions(deliveryProfileId: number, region: string) {
         const zone = await this.prisma.deliveryZone.findFirst({
             where: {
                 region: region,
@@ -167,7 +167,7 @@ export class SuggestionService {
 
 
 
-    async collections(q: string, ids: string[]) {
+    async collections(q: string, ids: number[]) {
         const fulltextSearch = q ? q.replace(/[+\-<>()~*\"@]+/g, " ").replace(/\s+/g, " ").trim().split(" ").filter(word => word.length > 2).map(word => `+${word}*`).join(" ") : undefined
         const collections = await this.prisma.collection.findMany({
             where: {

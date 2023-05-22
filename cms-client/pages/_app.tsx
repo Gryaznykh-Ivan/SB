@@ -1,14 +1,14 @@
 import type { AppProps } from 'next/app'
 import Head from 'next/head';
 import { ToastContainer } from 'react-toastify';
-import { wrapper } from '../store';
+import { wrapper } from '@/store';
 import { Provider } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { refresh } from '../services/authService';
+import { refresh } from '@/services/authService';
 import { useRouter } from 'next/router';
-import Confirm from '../components/portals/Confirm';
+import Confirm from '@/components/portals/Confirm';
 
-import '../styles/globals.css'
+import '@/styles/globals.css'
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function App({ Component, ...rest }: AppProps) {

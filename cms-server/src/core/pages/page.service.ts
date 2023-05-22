@@ -12,7 +12,7 @@ export class PageService {
         private url: UrlService
     ) { }
 
-    async getPageById(pageId: string) {
+    async getPageById(pageId: number) {
         const page = await this.prisma.page.findUnique({
             where: { id: pageId },
             select: {
@@ -105,7 +105,7 @@ export class PageService {
         }
     }
 
-    async updatePage(pageId: string, data: UpdatePageDto) {
+    async updatePage(pageId: number, data: UpdatePageDto) {
         const updatePageQuery = {
             title: data.title,
             content: data.content,
@@ -136,7 +136,7 @@ export class PageService {
         }
     }
 
-    async removePage(pageId: string) {
+    async removePage(pageId: number) {
         try {
             await this.prisma.page.delete({
                 where: { id: pageId }

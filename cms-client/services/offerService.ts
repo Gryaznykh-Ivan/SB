@@ -1,5 +1,5 @@
-import { api } from "../store/api";
-import { OfferCreateRequest, OfferCreateResponse, OfferDeleteRequest, OfferDeleteResponse, OfferGetByIdRequest, OfferGetByIdResponse, OfferSearchRequest, OfferSearchResponse, OfferUpdateRequest, OfferUpdateResponse} from "../types/api";
+import { api } from "@/store/api";
+import { OfferCreateRequest, OfferCreateResponse, OfferDeleteRequest, OfferDeleteResponse, OfferGetByIdRequest, OfferGetByIdResponse, OfferSearchRequest, OfferSearchResponse, OfferUpdateRequest, OfferUpdateResponse} from "@/types/api";
 
 export const offerService = api.injectEndpoints({
     endpoints: builder => ({

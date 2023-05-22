@@ -1,4 +1,4 @@
-import { Controller, DefaultValuePipe, Get, Param, ParseArrayPipe, Query, ValidationPipe } from '@nestjs/common';
+import { Controller, DefaultValuePipe, Get, Param, ParseArrayPipe, ParseIntPipe, Query, ValidationPipe } from '@nestjs/common';
 import { SearchDto } from './dto/search.dto';
 import { SuggestionService } from './suggestion.service';
 
@@ -33,7 +33,7 @@ export class SuggestionController {
 
     @Get('deliveryZones')
     deliveryZones(
-        @Query('profileId') profileId: string,
+        @Query('profileId', ParseIntPipe) profileId: number,
         @Query(new ValidationPipe({ transform: true })) data: SearchDto,
     ) {
         return this.suggestionService.deliveryZones(profileId, data)
@@ -42,7 +42,7 @@ export class SuggestionController {
     @Get('collections')
     collections(
         @Query('q') q: string,
-        @Query('ids', new DefaultValuePipe([]), ParseArrayPipe) ids: string[]
+        @Query('ids', new DefaultValuePipe([]), new ParseArrayPipe({ items: Number })) ids: number[]
     ) {
         return this.suggestionService.collections(q, ids)
     }
@@ -75,7 +75,7 @@ export class SuggestionController {
 
     @Get('deliveryOptions')
     deliveryOptions(
-        @Query('deliveryProfileId') deliveryProfileId: string,
+        @Query('deliveryProfileId', ParseIntPipe) deliveryProfileId: number,
         @Query('region') region: string
     ) {
         return this.suggestionService.deliveryOptions(deliveryProfileId, region)

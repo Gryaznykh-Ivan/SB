@@ -1,4 +1,4 @@
-import { IsEmail, IsOptional, IsString } from "class-validator";
+import { IsEmail, IsInt, IsOptional, IsString } from "class-validator";
 
 export class LoginDto {
     @IsEmail()
@@ -8,5 +8,6 @@ export class LoginDto {
     readonly code: string;
 
     @IsOptional()
-    readonly guestId: string;
+    @IsInt()
+    readonly guestId: number;
 }

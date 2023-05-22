@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Modal from '../../portals/Modal'
 import SearchInput from '../../inputs/SearchInput';
-import { useLazyGetProductsBySearchQuery } from '../../../services/productService';
+import { useLazyGetProductsBySearchQuery } from '@/services/productService';
 import { useRouter } from 'next/router';
 
 interface IProps {
     title: string;
-    collectionId: string;
+    collectionId: number;
     onClose: () => void;
 }
 

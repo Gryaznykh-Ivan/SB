@@ -1,17 +1,21 @@
 import { Right, Role } from "@prisma/client";
-import { Type } from "class-transformer";
-import { IsArray, IsBoolean, IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, ValidateNested } from "class-validator";
+import { Transform, TransformFnParams, Type } from "class-transformer";
+import { IsArray, IsBoolean, IsEmail, IsEnum, IsInt, isNotEmpty, IsNotEmpty, IsOptional, IsString, Length, MinLength, NotEquals, ValidateIf, ValidateNested } from "class-validator";
 import { CreateAddressDto, UpdateAddressDto } from "./address.dto";
 
 export class UpdateUserDto {
-    @IsOptional()
-    @IsNotEmpty()
     @IsString()
+    @MinLength(2)
+    @NotEquals(null)
+    @ValidateIf((object, value) => value !== undefined)
+    @Transform(({ value }: TransformFnParams) => value?.trim() ?? null)
     firstName: string;
 
-    @IsOptional()
-    @IsNotEmpty()
     @IsString()
+    @MinLength(2)
+    @NotEquals(null)
+    @ValidateIf((object, value) => value !== undefined)
+    @Transform(({ value }: TransformFnParams) => value?.trim() ?? null)
     lastName: string;
 
     @IsOptional()
@@ -72,8 +76,8 @@ export class UpdateUserDto {
     createPermissions: Right[];
 
     @IsOptional()
-    @IsString({ each: true })
-    deletePermissions: string[];
+    @IsInt({ each: true })
+    deletePermissions: number[];
 
     @IsOptional()
     @IsArray()
@@ -88,6 +92,6 @@ export class UpdateUserDto {
     updateAddresses: UpdateAddressDto[]
 
     @IsOptional()
-    @IsString({ each: true })
-    deleteAddresses: string[];
+    @IsInt({ each: true })
+    deleteAddresses: number[];
 }

@@ -1,5 +1,5 @@
-import { api } from "../store/api";
-import { PageGetByHandleResponse, PageGetByHandleRequest } from "../types/api";
+import { api } from "@/store/api";
+import { PageGetByHandleResponse, PageGetByHandleRequest } from "@/types/api";
 
 export const pageService = api.injectEndpoints({
     endpoints: builder => ({

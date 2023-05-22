@@ -51,7 +51,7 @@ export class SettingsService {
                 success: true
             }
         } catch (e) {
-            console.log(e)
+            
             throw new HttpException("Произошла ошибка на стороне сервера", HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }

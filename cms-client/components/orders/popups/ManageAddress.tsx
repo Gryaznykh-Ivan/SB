@@ -4,12 +4,12 @@ import Image from 'next/image'
 import Modal from '../../portals/Modal'
 import SearchInput from '../../inputs/SearchInput';
 import Input from '../../inputs/Input';
-import { IOrderAddress } from '../../../types/api';
+import { IOrderAddress } from '@/types/api';
 import { toast } from 'react-toastify';
 import CountriesSmartInput from '../../inputs/CountriesSmartInput';
 import RegionsSmartInput from '../../inputs/RegionsSmartInput';
 import CitiesSmartInput from '../../inputs/CitiesSmartInput';
-import { useLazyGetUserAddressesQuery, useLazyGetUserByIdQuery } from '../../../services/userService';
+import { useLazyGetUserAddressesQuery, useLazyGetUserByIdQuery } from '@/services/userService';
 import Select from '../../inputs/Select';
 
 interface IProps {
@@ -18,7 +18,7 @@ interface IProps {
     mailingCity: string;
     mailingRegion: string;
     mailingAddress: string;
-    userId: string | null;
+    userId: number | null;
     onClose: () => void;
     onDone: (obj: IOrderAddress) => void;
 }

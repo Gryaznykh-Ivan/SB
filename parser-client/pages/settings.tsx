@@ -2,10 +2,10 @@
 import Head from 'next/head'
 import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
-import MainLayout from '../components/layouts/Main'
-import { useAppSelector } from '../hooks/store'
-import { useGetSettingsByIdQuery, useUpdateSettingsMutation } from '../services/settingsService'
-import { IErrorResponse } from '../types/api'
+import MainLayout from '@/components/layouts/Main'
+import { useAppSelector } from '@/hooks/store'
+import { useGetSettingsByIdQuery, useUpdateSettingsMutation } from '@/services/settingsService'
+import { IErrorResponse } from '@/types/api'
 
 export default function Settings() {
     const { data } = useGetSettingsByIdQuery({ settingId: process.env.NEXT_PUBLIC_BOT_ID as string })

@@ -20,7 +20,7 @@ export class ProductService {
         private files: FilesService
     ) { }
 
-    async getProductById(productId: string) {
+    async getProductById(productId: number) {
         const product = await this.prisma.product.findUnique({
             where: { id: productId },
             select: {
@@ -119,11 +119,6 @@ export class ProductService {
                         vendor: {
                             search: fulltextSearch ? fulltextSearch : undefined,
                         },
-                    },
-                    {
-                        id: {
-                            endsWith: fulltextSearch,
-                        }
                     }
                 ]
             }, {
@@ -285,7 +280,7 @@ export class ProductService {
     }
 
 
-    async uploadImages(productId: string, images: Express.Multer.File[]) {
+    async uploadImages(productId: number, images: Express.Multer.File[]) {
         const product = await this.prisma.product.findFirst({
             where: { id: productId },
             select: {
@@ -329,13 +324,13 @@ export class ProductService {
                 success: true
             }
         } catch (e) {
-            console.log(e)
+            
             throw new HttpException("Произошла ошибка на стороне сервера", HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 
 
-    async updateImage(productId: string, imageId: string, data: UpdateImageDto) {
+    async updateImage(productId: number, imageId: number, data: UpdateImageDto) {
         try {
             await this.prisma.$transaction(async tx => {
                 if (data.src !== undefined || data.alt !== undefined) {
@@ -388,7 +383,7 @@ export class ProductService {
         }
     }
 
-    async removeImage(productId: string, imageId: string) {
+    async removeImage(productId: number, imageId: number) {
         try {
             await this.prisma.$transaction(async tx => {
                 await tx.image.update({
@@ -420,13 +415,13 @@ export class ProductService {
                 success: true,
             }
         } catch (e) {
-            console.log(e)
+            
             throw new HttpException("Произошла ошибка на стороне сервера", HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 
 
-    async createOption(productId: string, data: CreateOptionDto) {
+    async createOption(productId: number, data: CreateOptionDto) {
         const cOptions = await this.prisma.option.findMany({
             where: { productId },
             select: { option: true },
@@ -540,7 +535,7 @@ export class ProductService {
         }
     }
 
-    async updateOption(productId: string, optionId: string, data: UpdateOptionDto) {
+    async updateOption(productId: number, optionId: number, data: UpdateOptionDto) {
         const OptionUpdateQuery = {
             title: data.title
         }
@@ -835,7 +830,7 @@ export class ProductService {
         }
     }
 
-    async removeOption(optionId: string) {
+    async removeOption(optionId: number) {
         try {
             await this.prisma.$transaction(async tx => {
                 // Удаление опции
@@ -932,7 +927,7 @@ export class ProductService {
     }
 
 
-    async updateProduct(productId: string, data: UpdateProductDto) {
+    async updateProduct(productId: number, data: UpdateProductDto) {
         if (data.title !== undefined && data.title.length > 255) {
             throw new HttpException("Максимальная длина названия 255 символов", HttpStatus.BAD_REQUEST)
         }
@@ -1031,7 +1026,7 @@ export class ProductService {
                 success: true
             }
         } catch (e) {
-            console.log(e)
+            
 
             if (e instanceof Prisma.PrismaClientKnownRequestError) {
                 if (e.code === 'P2002') {
@@ -1047,7 +1042,7 @@ export class ProductService {
         }
     }
 
-    async removeProduct(productId: string) {
+    async removeProduct(productId: number) {
         try {
             await this.prisma.$transaction(async tx => {
                 await tx.product.delete({
@@ -1076,10 +1071,10 @@ export class ProductService {
         }
     }
 
-    private getCombinations = (arrays: { option: number; id: string; title: string; }[][]) => {
-        return arrays.reduce((result: { option: number; id: string; title: string; }[][], array: { option: number; id: string; title: string; }[]) => {
-            return result.reduce((newResult: { option: number; id: string; title: string; }[][], combination: { option: number; id: string; title: string; }[]) => {
-                return newResult.concat(array.map((num: { option: number; id: string; title: string; }) => [...combination, num]));
+    private getCombinations = (arrays: { option: number; id: number; title: string; }[][]) => {
+        return arrays.reduce((result: { option: number; id: number; title: string; }[][], array: { option: number; id: number; title: string; }[]) => {
+            return result.reduce((newResult: { option: number; id: number; title: string; }[][], combination: { option: number; id: number; title: string; }[]) => {
+                return newResult.concat(array.map((num: { option: number; id: number; title: string; }) => [...combination, num]));
             }, []);
         }, [[]]);
     }

@@ -1,10 +1,9 @@
 import { Type } from "class-transformer";
-import { ArrayMaxSize, IsArray, IsBoolean, IsNotEmpty, IsOptional, IsString, MaxLength, NotEquals, ValidateIf, ValidateNested } from "class-validator";
+import { ArrayMaxSize, IsArray, IsBoolean, IsInt, IsNotEmpty, IsOptional, IsString, MaxLength, NotEquals, ValidateIf, ValidateNested } from "class-validator";
 
 export class CreateVariantDto {
-    @IsNotEmpty()
-    @IsString()
-    productId: string;
+    @IsInt()
+    productId: number;
 
     @IsNotEmpty()
     @IsString()

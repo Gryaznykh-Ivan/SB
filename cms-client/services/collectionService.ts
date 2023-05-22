@@ -1,5 +1,5 @@
-import { api } from "../store/api";
-import { CollectionCreateRequest, CollectionCreateResponse, CollectionDeleteRequest, CollectionDeleteResponse, CollectionGetByIdRequest, CollectionGetByIdResponse, CollectionGetProductsRequest, CollectionGetProductsResponse, CollectionRemoveImageRequest, CollectionRemoveImageResponse, CollectionSearchRequest, CollectionSearchResponse, CollectionUpdateImageRequest, CollectionUpdateImageResponse, CollectionUpdateRequest, CollectionUpdateResponse, CollectionUploadImagesRequest, CollectionUploadImagesResponse } from "../types/api";
+import { api } from "@/store/api";
+import { CollectionCreateRequest, CollectionCreateResponse, CollectionDeleteRequest, CollectionDeleteResponse, CollectionGetByIdRequest, CollectionGetByIdResponse, CollectionGetProductsRequest, CollectionGetProductsResponse, CollectionRemoveImageRequest, CollectionRemoveImageResponse, CollectionSearchRequest, CollectionSearchResponse, CollectionUpdateImageRequest, CollectionUpdateImageResponse, CollectionUpdateRequest, CollectionUpdateResponse, CollectionUploadImagesRequest, CollectionUploadImagesResponse } from "@/types/api";
 
 export const collectionService = api.injectEndpoints({
     endpoints: builder => ({

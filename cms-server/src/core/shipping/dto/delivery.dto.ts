@@ -16,9 +16,8 @@ export class CreateDeliveryOptionDto {
 }
 
 export class UpdateDeliveryOptionDto {
-    @IsNotEmpty()
-    @IsString()
-    id: string;
+    @IsInt()
+    id: number;
 
     @IsNotEmpty()
     @IsString()
@@ -65,6 +64,6 @@ export class UpdateDeliveryZoneDto {
     updateDeliveryOptions: UpdateDeliveryOptionDto[]
 
     @IsOptional()
-    @IsString({ each: true })
-    deleteDeliveryOptions: string[];
+    @IsInt({ each: true })
+    deleteDeliveryOptions: number[];
 }

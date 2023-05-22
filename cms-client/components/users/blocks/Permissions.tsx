@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { IUserPermission, UserUpdateRequest } from '../../../types/api';
-import { Right } from '../../../types/store';
+import { IUserPermission, UserUpdateRequest } from '@/types/api';
+import { Right } from '@/types/store';
 import Input from '../../inputs/Input'
 import TextArea from '../../inputs/TextArea'
 

@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import { Navigation, Pagination, Swiper as SwiperType } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { SwiperOptions } from 'swiper/types';
-import { IProduct } from '../../types/api';
+import { IProduct } from '@/types/api';
 import ProductCard from '../products/ProductCard';
 
 import 'swiper/css';

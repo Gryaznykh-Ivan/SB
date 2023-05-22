@@ -3,20 +3,20 @@ import React, { useEffect, useMemo, useState } from 'react'
 
 
 import { useRouter } from 'next/router'
-import MainLayout from '../../../../../components/layouts/Main'
-import Return from '../../../../../components/orders/blocks/Return'
-import TrackingInformation from '../../../../../components/orders/blocks/TrackingInformation'
-import ReturnStatus from '../../../../../components/orders/blocks/ReturnPickStatus'
-import { useDeleteReturnMutation, useGetReturnByIdQuery, useUpdateReturnMutation } from '../../../../../services/orderService'
+import MainLayout from '@/components/layouts/Main'
+import Return from '@/components/orders/blocks/Return'
+import TrackingInformation from '@/components/orders/blocks/TrackingInformation'
+import ReturnStatus from '@/components/orders/blocks/ReturnPickStatus'
+import { useDeleteReturnMutation, useGetReturnByIdQuery, useUpdateReturnMutation } from '@/services/orderService'
 import { toast } from 'react-toastify'
-import { OrderReturnUpdateRequest, IErrorResponse } from '../../../../../types/api'
+import { OrderReturnUpdateRequest, IErrorResponse } from '@/types/api'
 
 
 
 function Index() {
     const router = useRouter()
 
-    const { isError, error, isLoading, data } = useGetReturnByIdQuery({ orderId: Number(router.query.orderId as string), returnId: router.query.returnId as string })
+    const { isError, error, isLoading, data } = useGetReturnByIdQuery({ orderId: Number(router.query.orderId), returnId: Number(router.query.returnId) })
 
     const [updateReturn, { isSuccess: isUpdateReturnSuccess, isError: isUpdateReturnError, error: updateReturnError }] = useUpdateReturnMutation()
     const [deleteReturn, { isSuccess: isDeleteReturnSuccess, isError: isDeleteReturnError, error: deleteReturnError }] = useDeleteReturnMutation()
@@ -56,8 +56,8 @@ function Index() {
 
     const onSaveChanges = async () => {
         const result = await updateReturn({
-            orderId: Number(router.query.orderId as string),
-            returnId: router.query.returnId as string,
+            orderId: Number(router.query.orderId),
+            returnId: Number(router.query.returnId),
             ...changes
         }).unwrap()
         if (result.success === true) {
@@ -75,9 +75,10 @@ function Index() {
 
     const onReturnDelete = async () => {
         const result = await deleteReturn({
-            returnId: router.query.returnId as string,
-            orderId: Number(router.query.orderId as string)
+            returnId: Number(router.query.returnId),
+            orderId: Number(router.query.orderId)
         }).unwrap();
+        
         if (result.success === true) {
             setChanges({})
             router.push(`/orders/${router.query.orderId}`)

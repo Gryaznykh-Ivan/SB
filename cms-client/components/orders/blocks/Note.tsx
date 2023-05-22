@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { OrderCreateRequest } from '../../../types/api';
+import { OrderCreateRequest } from '@/types/api';
 import Input from '../../inputs/Input'
 
 interface IProps {

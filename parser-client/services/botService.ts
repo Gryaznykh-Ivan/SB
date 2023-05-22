@@ -1,5 +1,5 @@
-import { api } from "../store/api";
-import { BotCompleteRequest, BotCompleteResponse, BotGetByIdRequest, BotGetByIdResponse, BotStartRequest, BotStartResponse } from "../types/api";
+import { api } from "@/store/api";
+import { BotCompleteRequest, BotCompleteResponse, BotGetByIdRequest, BotGetByIdResponse, BotStartRequest, BotStartResponse } from "@/types/api";
 
 export const botService = api.injectEndpoints({
     endpoints: builder => ({

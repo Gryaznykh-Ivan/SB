@@ -1,5 +1,5 @@
-import { api } from "../store/api";
-import { VariantCreateRequest, VariantCreateResponse, VariantDeleteRequest, VariantDeleteResponse, VariantGetAllRequest, VariantGetAllResponse, VariantGetByIdRequest, VariantGetByIdResponse, VariantGetOptionsRequest, VariantGetOptionsResponse, VariantGetPreviewRequest, VariantGetPreviewResponse, VariantRemoveImageRequest, VariantRemoveImageResponse, VariantSearchRequest, VariantSearchResponse, VariantUpdateImageRequest, VariantUpdateImageResponse, VariantUpdateRequest, VariantUpdateResponse, VariantUploadImagesRequest, VariantUploadImagesResponse } from "../types/api";
+import { api } from "@/store/api";
+import { VariantCreateRequest, VariantCreateResponse, VariantDeleteRequest, VariantDeleteResponse, VariantGetAllRequest, VariantGetAllResponse, VariantGetByIdRequest, VariantGetByIdResponse, VariantGetOptionsRequest, VariantGetOptionsResponse, VariantGetPreviewRequest, VariantGetPreviewResponse, VariantRemoveImageRequest, VariantRemoveImageResponse, VariantSearchRequest, VariantSearchResponse, VariantUpdateImageRequest, VariantUpdateImageResponse, VariantUpdateRequest, VariantUpdateResponse, VariantUploadImagesRequest, VariantUploadImagesResponse } from "@/types/api";
 
 export const variantService = api.injectEndpoints({
     endpoints: builder => ({

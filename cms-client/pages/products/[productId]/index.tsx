@@ -1,25 +1,25 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/router'
-import MainLayout from '../../../components/layouts/Main'
+import MainLayout from '@/components/layouts/Main'
 import Link from 'next/link'
-import GeneralInfo from '../../../components/products/blocks/GeneralInfo'
-import SeoSearch from '../../../components/products/blocks/SeoSearch'
-import Status from '../../../components/products/blocks/Status'
-import OrganizationInfo from '../../../components/products/blocks/OrganizationInfo'
-import Inventory from '../../../components/products/blocks/Inventory'
-import VariantList from '../../../components/variants/blocks/VariantList'
-import OptionList from '../../../components/products/blocks/OptionList'
-import { useDeleteProductMutation, useGetProductByIdQuery, useUpdateProductMutation } from '../../../services/productService'
-import { IErrorResponse, ProductUpdateRequest } from '../../../types/api'
+import GeneralInfo from '@/components/products/blocks/GeneralInfo'
+import SeoSearch from '@/components/products/blocks/SeoSearch'
+import Status from '@/components/products/blocks/Status'
+import OrganizationInfo from '@/components/products/blocks/OrganizationInfo'
+import Inventory from '@/components/products/blocks/Inventory'
+import VariantList from '@/components/variants/blocks/VariantList'
+import OptionList from '@/components/products/blocks/OptionList'
+import { useDeleteProductMutation, useGetProductByIdQuery, useUpdateProductMutation } from '@/services/productService'
+import { IErrorResponse, ProductUpdateRequest } from '@/types/api'
 import { toast } from 'react-toastify'
-import Media from '../../../components/products/blocks/Media'
-import Metafields from '../../../components/products/blocks/Metafields'
+import Media from '@/components/products/blocks/Media'
+import Metafields from '@/components/products/blocks/Metafields'
 
 function Index() {
     const router = useRouter()
 
-    const { isError, error, isLoading, data } = useGetProductByIdQuery({ productId: router.query.productId as string })
+    const { isError, error, isLoading, data } = useGetProductByIdQuery({ productId: Number(router.query.productId) }, { skip: router.query.productId === undefined })
 
     const [updateProduct, { isSuccess: isUpdateProductSuccess, isError: isUpdateProductError, error: updateProductError }] = useUpdateProductMutation()
     const [deleteProduct, { isSuccess: isDeleteProductSuccess, isError: isDeleteProductError, error: deleteProductError }] = useDeleteProductMutation()
@@ -58,7 +58,7 @@ function Index() {
     }, [isDeleteProductSuccess, isDeleteProductError])
 
     const onSaveChanges = async () => {
-        const result = await updateProduct({ productId: router.query.productId as string, ...changes }).unwrap()
+        const result = await updateProduct({ productId: Number(router.query.productId), ...changes }).unwrap()
         if (result.success === true) {
             setChanges({})
         }
@@ -69,7 +69,7 @@ function Index() {
     }, [changes])
 
     const onProductDelete = async () => {
-        const result = await deleteProduct({ productId: router.query.productId as string }).unwrap();
+        const result = await deleteProduct({ productId: Number(router.query.productId) }).unwrap();
         if (result.success === true) {
             setChanges({})
             router.push("/products")

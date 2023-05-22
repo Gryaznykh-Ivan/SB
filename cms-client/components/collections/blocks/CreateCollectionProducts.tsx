@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import SearchInput from '../../inputs/SearchInput'
 import SelectProducts from '../popups/SelectProducts'
-import { CollectionCreateRequest, CollectionUpdateRequest, ICollectionProduct, IErrorResponse, IProduct } from '../../../types/api';
+import { CollectionCreateRequest, CollectionUpdateRequest, ICollectionProduct, IErrorResponse, IProduct } from '@/types/api';
 import ImageLoader from '../../image/ImageLoader';
-import { useLazyGetCollectionProductsQuery } from '../../../services/collectionService';
+import { useLazyGetCollectionProductsQuery } from '@/services/collectionService';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Status from '../../products/cards/Status';

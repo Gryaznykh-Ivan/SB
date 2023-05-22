@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { UserUpdateRequest } from '../../../types/api';
-import { Role } from '../../../types/store';
+import { UserUpdateRequest } from '@/types/api';
+import { Role } from '@/types/store';
 import Select from '../../inputs/Select'
 
 interface IProps {

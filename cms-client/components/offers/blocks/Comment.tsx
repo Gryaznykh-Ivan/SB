@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { OfferCreateRequest } from '../../../types/api';
+import { OfferCreateRequest } from '@/types/api';
 import TextArea from '../../inputs/TextArea'
 
 interface IProps {

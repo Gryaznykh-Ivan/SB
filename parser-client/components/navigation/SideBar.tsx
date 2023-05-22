@@ -1,7 +1,7 @@
 import React from 'react'
-import { useAppSelector } from '../../hooks/store'
+import { useAppSelector } from '@/hooks/store'
 import NavLink from './NavLink'
-import { Role } from '../../types/store'
+import { Role } from '@/types/store'
 
 interface IProps {
     onClick?: () => void

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { OrderReturnUpdateRequest } from '../../../types/api';
+import { OrderReturnUpdateRequest } from '@/types/api';
 import Select from '../../inputs/Select'
 
 interface IProps {
@@ -39,7 +39,8 @@ export default function ReturnStatus({ onChange, ...data }: IProps) {
                     options={{
                         RETURN_REQUESTED: { value: "Запрошен возврат", disabled: false },
                         RETURN_IN_PROGRESS: { value: "В процессе", disabled: false },
-                        RETURNED: { value: "Обработан", disabled: false },
+                        PARTIALLY_RETURNED: { value: "Частично выполнен", disabled: false },
+                        RETURNED: { value: "Выполнен", disabled: false },
                     }}
                     name="status"
                     value={state.status}

@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { FreeMode, Navigation, Thumbs, Swiper as SwiperType } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { SwiperOptions } from 'swiper/types';
-import { IImage } from '../../types/api';
+import { IImage } from '@/types/api';
 
 import 'swiper/css';
 

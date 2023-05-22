@@ -1,16 +1,16 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { useDeliveryProfilesQuery } from '../../../services/suggestionService';
-import { OfferCreateRequest } from '../../../types/api';
+import { useDeliveryProfilesQuery } from '@/services/suggestionService';
+import { OfferCreateRequest } from '@/types/api';
 import Select from '../../inputs/Select'
 
 interface IProps {
-    deliveryProfileId: string | null;
+    deliveryProfileId: number | null;
     onChange: (obj: OfferCreateRequest) => void;
 }
 
 export default function DeliveryProfile({ onChange, ...data }: IProps) {
     const [state, setState] = useState({
-        deliveryProfileId: data.deliveryProfileId ?? "default",
+        deliveryProfileId: data.deliveryProfileId,
     })
 
     const { data: deliveryProfiles } = useDeliveryProfilesQuery()
@@ -38,7 +38,7 @@ export default function DeliveryProfile({ onChange, ...data }: IProps) {
     }, [state])
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setState(prev => ({ ...prev, [e.target.name]: e.target.value }))
+        setState(prev => ({ ...prev, [e.target.name]: Number(e.target.value) }))
     }
 
     return (
@@ -48,7 +48,7 @@ export default function DeliveryProfile({ onChange, ...data }: IProps) {
                 <Select
                     options={profiles}
                     name="deliveryProfileId"
-                    value={state.deliveryProfileId}
+                    value={state.deliveryProfileId?.toString()}
                     onChange={onInputChange}
                 />
             </div>

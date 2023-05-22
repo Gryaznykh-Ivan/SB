@@ -1,6 +1,6 @@
 import Head from 'next/head'
-import MainLayout from '../components/layouts/Main'
-import { useAppSelector } from '../hooks/store'
+import MainLayout from '@/components/layouts/Main'
+import { useAppSelector } from '@/hooks/store'
 
 
 export default function Index() {

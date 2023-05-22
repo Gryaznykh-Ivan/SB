@@ -1,5 +1,5 @@
 import React from 'react'
-import { Service } from '../../../types/store';
+import { Service } from '@/types/store';
 
 interface IProps {
     type: Service;

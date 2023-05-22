@@ -2,13 +2,13 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import MediaSetting from '../popups/MediaSetting';
 import ImageLoader from '../../image/ImageLoader';
-import { IImage } from '../../../types/api';
+import { IImage } from '@/types/api';
 
 interface IProps {
     className: string;
     image: IImage;
     onUpdate: (image: IImage) => void;
-    onDelete: (id: string) => void;
+    onDelete: (id: number) => void;
 }
 
 export default function MediaCard({ className, image, onDelete, onUpdate }: IProps) {
@@ -22,7 +22,7 @@ export default function MediaCard({ className, image, onDelete, onUpdate }: IPro
         onUpdate(image)
     }
 
-    const onDeleteEvent = (id: string) => {
+    const onDeleteEvent = (id: number) => {
         onPopupClose()
         onDelete(id)
     }

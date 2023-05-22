@@ -4,8 +4,8 @@ import { IsArray, IsDecimal, IsEnum, IsInt, IsNotEmpty, IsOptional, IsString, Mi
 
 export class CreateOfferDto {
     @IsNotEmpty()
-    @IsString()
-    variantId: string;
+    @IsInt()
+    variantId: number;
 
     @IsDecimal()
     price: number;
@@ -26,9 +26,9 @@ export class CreateOfferDto {
     status: OfferStatus;
 
     @IsOptional()
-    @IsString()
-    deliveryProfileId: string;
+    @IsInt()
+    deliveryProfileId: number;
 
-    @IsString()
-    userId: string;
+    @IsInt()
+    userId: number;
 }

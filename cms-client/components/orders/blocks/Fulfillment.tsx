@@ -3,18 +3,18 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import SearchInput from '../../inputs/SearchInput'
 import SelectProducts from '../../collections/popups/SelectProducts'
-import { CollectionCreateRequest, CollectionUpdateRequest, ICollectionProduct, IErrorResponse, IOrderProduct, IProduct } from '../../../types/api';
+import { CollectionCreateRequest, CollectionUpdateRequest, ICollectionProduct, IErrorResponse, IOrderProduct, IProduct } from '@/types/api';
 import ImageLoader from '../../image/ImageLoader';
-import { useLazyGetCollectionProductsQuery } from '../../../services/collectionService';
+import { useLazyGetCollectionProductsQuery } from '@/services/collectionService';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Status from '../../products/cards/Status';
 import SelectOffers from '../popups/SelectOffers';
-import { FulfillmentStatus as FulfillmentStatuses } from '../../../types/store';
+import { FulfillmentStatus as FulfillmentStatuses } from '@/types/store';
 import FulfillmentStatus from '../cards/FulfillmentStatus';
 
 interface IProps {
-    id: string;
+    id: number;
     offers: IOrderProduct[];
     status: FulfillmentStatuses;
     hideEdit?: boolean;

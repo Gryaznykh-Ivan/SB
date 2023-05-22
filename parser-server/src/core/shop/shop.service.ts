@@ -11,7 +11,7 @@ export class ShopService {
         private shop: ShopDBService,
     ) { }
 
-    async getProducts(data: { skip: number; limit: number; providerId: string }) {
+    async getProducts(data: { skip: number; limit: number; providerId: number }) {
         const products = await this.shop.product.findMany({
             select: {
                 id: true,
@@ -83,7 +83,7 @@ export class ShopService {
 
     }
 
-    async getProductsByIds(data: { ids: string[]; providerId: string }) {
+    async getProductsByIds(data: { ids: number[]; providerId: number }) {
         const products = await this.shop.product.findMany({
             where: {
                 id: {
@@ -158,33 +158,28 @@ export class ShopService {
 
     }
 
-    async upsertOffers(data: { variantId: string; userId: string; price: string; offerPrice: string; amount: number }) {
+    async upsertOffers(data: { variantId: number; deliveryProfileId: number; userId: number; price: string; offerPrice: string; amount: number }) {
         try {
+            console.log(data)
+
             await this.shop.$transaction(async tx => {
                 const variant = await tx.variant.findUnique({
                     where: { id: data.variantId },
                     select: {
+                        id: true,
                         option0: true,
                         option1: true,
                         option2: true,
                         product: {
                             select: {
+                                id: true,
                                 title: true,
                                 options: {
                                     select: {
                                         title: true,
                                         option: true,
                                     },
-                                    orderBy: [{ position: 'asc' }]
-                                },
-                                images: {
-                                    select: {
-                                        id: true
-                                    },
-                                    orderBy: {
-                                        position: 'asc'
-                                    },
-                                    take: 1
+                                    orderBy: { position: 'asc' }
                                 }
                             }
                         }
@@ -195,18 +190,16 @@ export class ShopService {
                     throw new HttpException("Вариант не найден", HttpStatus.BAD_REQUEST)
                 }
 
-                const offerImageId = variant.product.images[0]?.id ?? null
-
                 const createOfferQuery = {
                     productTitle: variant.product.title,
                     variantTitle: variant.product.options.map((option) => variant[`option${option.option}`]).join(' | '),
-                    imageId: offerImageId,
-                    variantId: data.variantId,
+                    productId: variant.product.id,
+                    variantId: variant.id,
+                    deliveryProfileId: data.deliveryProfileId,
                     userId: data.userId,
                     status: OfferStatus.ACTIVE,
                     price: data.price,
-                    offerPrice: data.offerPrice,
-                    deliveryProfileId: "default"
+                    offerPrice: data.offerPrice
                 }
 
                 await tx.offer.deleteMany({
@@ -235,17 +228,17 @@ export class ShopService {
         try {
             const provider = await this.shop.user.upsert({
                 where: {
-                    id: "stockx"
+                    id: 1
                 },
                 create: {
-                    id: "stockx",
+                    id: 1,
                     role: Role.ADMIN,
                     firstName: "Stockx",
                     lastName: "Provider",
                     fullName: "Stockx Provider"
                 },
                 update: {
-                    id: "stockx",
+                    id: 1,
                     role: Role.ADMIN,
                     firstName: "Stockx",
                     lastName: "Provider",
@@ -257,6 +250,23 @@ export class ShopService {
             })
 
             return provider
+        } catch (e) {
+            throw new HttpException("Произошла ошибка на стороне сервера", HttpStatus.INTERNAL_SERVER_ERROR)
+        }
+    }
+
+    async getDefaultDeliveryProfile() {
+        try {
+            const deliveryProfile = await this.shop.deliveryProfile.findFirst({
+                where: {
+                    isDefault: true
+                },
+                select: {
+                    id: true
+                }
+            })
+
+            return deliveryProfile
         } catch (e) {
             throw new HttpException("Произошла ошибка на стороне сервера", HttpStatus.INTERNAL_SERVER_ERROR)
         }

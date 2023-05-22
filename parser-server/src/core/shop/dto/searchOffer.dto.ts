@@ -29,7 +29,7 @@ export class SearchOfferDto {
 
     @IsOptional()
     @IsString()
-    deliveryProfileId: string;
+    deliveryProfileId: number;
 
     @IsOptional()
     @IsString()
@@ -37,9 +37,9 @@ export class SearchOfferDto {
 
     @IsOptional()
     @IsString()
-    variantId: string;
+    variantId: number;
 
     @IsOptional()
     @IsString()
-    userId: string;
+    userId: number;
 }

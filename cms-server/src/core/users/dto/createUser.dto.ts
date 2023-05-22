@@ -4,12 +4,10 @@ import { IsArray, IsBoolean, IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, 
 import { CreateAddressDto } from "./address.dto";
 
 export class CreateUserDto {
-    @IsOptional()
     @IsNotEmpty()
     @IsString()
     firstName: string;
 
-    @IsOptional()
     @IsNotEmpty()
     @IsString()
     lastName: string;

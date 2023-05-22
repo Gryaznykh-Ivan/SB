@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { IMetafield, ProductUpdateRequest } from '../../../types/api';
+import { IMetafield, ProductUpdateRequest } from '@/types/api';
 import Input from '../../inputs/Input'
 
 interface IProps {
@@ -8,7 +8,7 @@ interface IProps {
 }
 
 export default function Metafields({ onChange, ...data }: IProps) {
-    const initialState = useMemo(() => [...data.metafields, { id: Math.random().toString(), key: "", value: "" }], [data.metafields])
+    const initialState = useMemo(() => [...data.metafields, { id: Math.random(), key: "", value: "" }], [data.metafields])
     const [state, setState] = useState<IMetafield[]>(initialState)
 
     useEffect(() => {
@@ -16,8 +16,8 @@ export default function Metafields({ onChange, ...data }: IProps) {
         metafields.pop();
 
         const createMetafields = metafields.filter(metafield => !data.metafields.some(c => c.id === metafield.id)).map(c => ({ key: c.key, value: c.value }))
-        const deleteMetafields = data.metafields.filter(metafield => !metafields.some(c => c.id === metafield.id)).map(c => ({ id: c.id }))
         const updateMetafields = metafields.filter(metafield => data.metafields.some(c => c.id === metafield.id && (c.key !== metafield.key || c.value !== metafield.value)))
+        const deleteMetafields = data.metafields.filter(metafield => !metafields.some(c => c.id === metafield.id)).map(c => ({ id: c.id }))
 
         onChange({
             createMetafields: createMetafields.length !== 0 ? createMetafields : undefined,
@@ -29,18 +29,18 @@ export default function Metafields({ onChange, ...data }: IProps) {
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         console.log(state)
 
-        if (state.at(-1)?.id === e.target.id && e.target.name === "key" && e.target.value !== "") {
-            setState(prev => ([...prev, { id: Math.random().toString(), key: "", value: "" }]))
+        if (state.at(-1)?.id.toString() === e.target.id && e.target.name === "key" && e.target.value !== "") {
+            setState(prev => ([...prev, { id: Math.random(), key: "", value: "" }]))
         }
 
         if (e.target.name === "key" && e.target.value === "") {
-            onDelete(e.target.id)
+            onDelete(Number(e.target.id))
         }
 
-        setState(prev => prev.map(item => item.id === e.target.id ? { ...item, [e.target.name]: e.target.value } : item))
+        setState(prev => prev.map(item => item.id.toString() === e.target.id ? { ...item, [e.target.name]: e.target.value } : item))
     };
 
-    const onDelete = (id: string) => {
+    const onDelete = (id: number) => {
         setState(prev => prev.filter(item => item.id !== id));
     };
 
@@ -53,8 +53,8 @@ export default function Metafields({ onChange, ...data }: IProps) {
                 {state.map((metafield, index) =>
                     <div key={metafield.id} className="flex">
                         <div className="flex-1 flex gap-3">
-                            <Input type="text" className="bg-gray-100 hover:bg-gray-200 focus:bg-gray-200 focus:ring-0 border-0 w-40" placeholder="Ключ" id={metafield.id} name="key" value={metafield.key} onChange={onInputChange} />
-                            <Input type="text" className="bg-gray-100 hover:bg-gray-200 focus:bg-gray-200 focus:ring-0 border-0 flex-1" placeholder="Значение" id={metafield.id} name="value" value={metafield.value} onChange={onInputChange} />
+                            <Input type="text" className="bg-gray-100 hover:bg-gray-200 focus:bg-gray-200 focus:ring-0 border-0 w-40" placeholder="Ключ" id={metafield.id.toString()} name="key" value={metafield.key} onChange={onInputChange} />
+                            <Input type="text" className="bg-gray-100 hover:bg-gray-200 focus:bg-gray-200 focus:ring-0 border-0 flex-1" placeholder="Значение" id={metafield.id.toString()} name="value" value={metafield.value} onChange={onInputChange} />
                         </div>
                         {state.length !== index + 1 &&
                             <button className="ml-2 p-2 rounded-md hover:bg-gray-100" onClick={() => onDelete(metafield.id)}>

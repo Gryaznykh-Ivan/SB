@@ -1,16 +1,16 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify';
-import { IOption, IProductOption, IProductOptionValue, ProductUpdateOptionRequest } from '../../../types/api';
+import { IOption, IProductOption, IProductOptionValue, ProductUpdateOptionRequest } from '@/types/api';
 import Input from '../../inputs/Input'
 
 interface IProps {
     className: string;
     item: IProductOption;
     index: number;
-    onOptionValuesUpdate: (id: string, data: Pick<ProductUpdateOptionRequest, "createOptionValues" | "deleteOptionValues" | "updateOptionValues" | "reorderOptionValue">) => Promise<boolean>;
+    onOptionValuesUpdate: (id: number, data: Pick<ProductUpdateOptionRequest, "createOptionValues" | "deleteOptionValues" | "updateOptionValues" | "reorderOptionValue">) => Promise<boolean>;
     onItemsInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     onOptionUpdate: (item: IProductOption) => void;
-    onOptionRemove: (id: string) => void;
+    onOptionRemove: (id: number) => void;
     onDragStart: (e: React.DragEvent) => void;
     onDragEnd: (e: React.DragEvent) => void;
     onDragOver: (e: React.DragEvent, item: IProductOption, index: number) => void;
@@ -80,10 +80,10 @@ export default function Option({ className, item, index, onItemsInputChange, onD
     }
 
     const onOptionValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setState(prev => ({ ...prev, values: state.values.map(c => c.id === e.target.name ? { ...c, title: e.target.value } : c) }))
+        setState(prev => ({ ...prev, values: state.values.map(c => c.id.toString() === e.target.name ? { ...c, title: e.target.value } : c) }))
     }
 
-    const onRemoveOptionValue = (id: string) => {
+    const onRemoveOptionValue = (id: number) => {
         setState(prev => ({ ...prev, values: state.values.filter(c => c.id !== id) }))
     }
 
@@ -93,7 +93,7 @@ export default function Option({ className, item, index, onItemsInputChange, onD
             return toast.error("Такое значение уже создано")
         }
 
-        setState(prev => ({ ...prev, newOptionValue: "", values: [...state.values, { id: `new${Math.random()}`, title: prev.newOptionValue, position: state.values.length }] }))
+        setState(prev => ({ ...prev, newOptionValue: "", values: [...state.values, { id: Math.random(), title: prev.newOptionValue, position: state.values.length }] }))
     }
 
     const mustBeSaved = useMemo(() => state.values.length !== item.values.length || state.values.some(c => item.values.find(a => a.id === c.id)?.title !== c.title), [state])
@@ -109,7 +109,7 @@ export default function Option({ className, item, index, onItemsInputChange, onD
 
         setState(prev => ({ ...prev, edit: false }))
 
-        const createOptionValues = state.values.filter(c => c.id.startsWith('new')).map(c => ({ title: c.title }))
+        const createOptionValues = state.values.filter(c => item.values.find(a => a.id === c.id) === undefined).map(c => ({ title: c.title }))
         const deleteOptionValues = item.values.filter(c => state.values.find(a => a.id === c.id) === undefined).map(c => c.id)
         const updateOptionValues = state.values.filter(c => item.values.find(a => a.id === c.id && a.title !== c.title))
 
@@ -146,7 +146,7 @@ export default function Option({ className, item, index, onItemsInputChange, onD
                         </svg>
                     </div>
 
-                    <Input type="text" placeholder="option1" name={item.id} value={item.title} onChange={onItemsInputChange} onBlur={() => onOptionUpdate(item)} />
+                    <Input type="text" placeholder="option1" name={item.id.toString()} value={item.title} onChange={onItemsInputChange} onBlur={() => onOptionUpdate(item)} />
                     <button className="m-1 p-2 rounded-md hover:bg-gray-100" onClick={onActionButtonClick}>
                         {state.edit ? (
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -192,7 +192,7 @@ export default function Option({ className, item, index, onItemsInputChange, onD
                                         <div className="w-6 h-6"></div>
                                     </div>
                                 }
-                                <Input type="text" placeholder="Значение опции" name={value.id} value={value.title} onChange={onOptionValueChange} />
+                                <Input type="text" placeholder="Значение опции" name={value.id.toString()} value={value.title} onChange={onOptionValueChange} />
                                 <button className={`m-1 p-2 rounded-md hover:bg-gray-100 ${state.values.length < 2 && "invisible"}`} onClick={() => onRemoveOptionValue(value.id)}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M10 11V17M14 11V17M4 7H20M19 7L18.133 19.142C18.0971 19.6466 17.8713 20.1188 17.5011 20.4636C17.1309 20.8083 16.6439 21 16.138 21H7.862C7.35614 21 6.86907 20.8083 6.49889 20.4636C6.1287 20.1188 5.90292 19.6466 5.867 19.142L5 7H19ZM15 7V4C15 3.73478 14.8946 3.48043 14.7071 3.29289C14.5196 3.10536 14.2652 3 14 3H10C9.73478 3 9.48043 3.10536 9.29289 3.29289C9.10536 3.48043 9 3.73478 9 4V7H15Z" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />

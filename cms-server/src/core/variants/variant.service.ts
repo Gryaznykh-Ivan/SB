@@ -87,7 +87,7 @@ export class VariantService {
         }
     }
 
-    async getVariants(productId: string) {
+    async getVariants(productId: number) {
         const options = await this.prisma.option.findMany({
             where: { productId },
             select: {
@@ -173,7 +173,7 @@ export class VariantService {
         }
     }
 
-    async getOptions(productId: string) {
+    async getOptions(productId: number) {
         const options = await this.prisma.option.findMany({
             where: { productId },
             select: {
@@ -191,7 +191,7 @@ export class VariantService {
         }
     }
 
-    async getPreview(variantId: string) {
+    async getPreview(variantId: number) {
         const variant = await this.prisma.variant.findUnique({
             where: { id: variantId },
             select: {
@@ -259,7 +259,7 @@ export class VariantService {
         }
     }
 
-    async getVariantById(variantId: string) {
+    async getVariantById(variantId: number) {
         const variant = await this.prisma.variant.findUnique({
             where: { id: variantId },
             select: {
@@ -392,7 +392,7 @@ export class VariantService {
     }
 
 
-    async uploadImages(variantId: string, images: Express.Multer.File[]) {
+    async uploadImages(variantId: number, images: Express.Multer.File[]) {
         const variant = await this.prisma.variant.findFirst({
             where: { id: variantId },
             select: {
@@ -443,7 +443,7 @@ export class VariantService {
         }
     }
 
-    async updateImage(variantId: string, imageId: string, data: UpdateImageDto) {
+    async updateImage(variantId: number, imageId: number, data: UpdateImageDto) {
         try {
             if (data.src !== undefined || data.alt !== undefined) {
                 await this.prisma.image.update({
@@ -496,22 +496,18 @@ export class VariantService {
         }
     }
 
-    async removeImage(variantId: string, imageId: string) {
+    async removeImage(variantId: number, imageId: number) {
         try {
             await this.prisma.$transaction(async tx => {
-                const removedImage = await tx.image.update({
+                await tx.image.update({
                     where: { id: imageId },
                     data: {
                         variantId: null
-                    },
-                    select: {
-                        variantId: true,
-                        path: true,
                     }
                 })
 
                 const images = await tx.image.findMany({
-                    where: { variantId: removedImage.variantId },
+                    where: { variantId },
                     select: { id: true },
                     orderBy: [{ position: 'asc' }]
                 })
@@ -537,7 +533,7 @@ export class VariantService {
     }
 
 
-    async updateVariant(variantId: string, data: UpdateVariantDto) {
+    async updateVariant(variantId: number, data: UpdateVariantDto) {
         const options = await this.prisma.option.findMany({
             where: {
                 product: {
@@ -638,14 +634,14 @@ export class VariantService {
             }
         } catch (e) {
             if (e.name === HttpException.name) {
-                throw new HttpException(e.message, HttpStatus.INTERNAL_SERVER_ERROR)
+                throw new HttpException(e.message, e.status)
             }
 
             throw new HttpException("Произошла ошибка на стороне сервера", HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 
-    async removeVariant(variantId: string) {
+    async removeVariant(variantId: number) {
         try {
             await this.prisma.$transaction(async tx => {
                 await tx.variant.delete({

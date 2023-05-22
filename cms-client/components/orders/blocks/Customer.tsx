@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
-import { useLazyGetUserByIdQuery } from '../../../services/userService';
-import { OrderCreateRequest } from '../../../types/api';
+import { useLazyGetUserByIdQuery } from '@/services/userService';
+import { OrderCreateRequest } from '@/types/api';
 import UsersSmartInput from '../../inputs/UsersSmartInput';
 
 interface IProps {
-    userId: string | null;
+    userId: number | null;
     onChange: (obj: OrderCreateRequest) => void;
 }
 
@@ -26,7 +26,7 @@ export default function Customer({ onChange, ...data }: IProps) {
         setState({ canChangeUser: true })
     }
 
-    const onUserChange = async (id: string) => {
+    const onUserChange = async (id: number) => {
         const user = await getUser({ userId: id }).unwrap()
         if (user.success === true) {
             setState(prev => ({

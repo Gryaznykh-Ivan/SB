@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, ValidationPipe } from '@nestjs/common';
 import { Right, Role } from '@prisma/client';
 import { Auth } from 'src/decorators/auth.decorator';
 import { CreateProfileDto } from './dto/createProfile.dto';
@@ -22,7 +22,7 @@ export class ShippingController {
     @Get(':profileId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.SHIPPING_READ])
     getProfileById(
-        @Param('profileId') profileId: string
+        @Param('profileId', ParseIntPipe) profileId: number
     ) {
         return this.productService.getProfileById(profileId)
     }
@@ -30,7 +30,7 @@ export class ShippingController {
     @Get(':profileId/getDeliveryZones')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.SHIPPING_READ])
     getDeliveryZones(
-        @Param('profileId') profileId: string,
+        @Param('profileId', ParseIntPipe) profileId: number,
         @Query(new ValidationPipe({ transform: true })) data: SearchZoneDto
     ) {
         return this.productService.getDeliveryZones(profileId, data)
@@ -48,7 +48,7 @@ export class ShippingController {
     @Post(':profileId/createDeliveryZone')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.SHIPPING_UPDATE])
     createDeliveryZone(
-        @Param('profileId') profileId: string,
+        @Param('profileId', ParseIntPipe) profileId: number,
         @Body() data: CreateDeliveryZoneDto
     ) {
         return this.productService.createDeliveryZone(profileId, data)
@@ -57,8 +57,8 @@ export class ShippingController {
     @Put(':profileId/updateDeliveryZone/:zoneId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.SHIPPING_UPDATE])
     updateDeliveryZone(
-        @Param('profileId') profileId: string,
-        @Param('zoneId') zoneId: string,
+        @Param('profileId', ParseIntPipe) profileId: number,
+        @Param('zoneId', ParseIntPipe) zoneId: number,
         @Body() data: UpdateDeliveryZoneDto
     ) {
         return this.productService.updateDeliveryZone(profileId, zoneId, data)
@@ -68,7 +68,7 @@ export class ShippingController {
     @Delete(':profileId/removeDeliveryZone/:zoneId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.SHIPPING_UPDATE])
     removeDeliveryZone(
-        @Param('zoneId') zoneId: string,
+        @Param('zoneId', ParseIntPipe) zoneId: number,
     ) {
         return this.productService.removeDeliveryZone(zoneId)
     }
@@ -76,7 +76,7 @@ export class ShippingController {
     @Put(':profileId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.SHIPPING_UPDATE])
     updateProfile(
-        @Param('profileId') profileId: string,
+        @Param('profileId', ParseIntPipe) profileId: number,
         @Body() data: UpdateProfileDto
     ) {
         return this.productService.updateProfile(profileId, data)
@@ -85,7 +85,7 @@ export class ShippingController {
     @Delete(':profileId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.SHIPPING_UPDATE])
     removeProfile(
-        @Param('profileId') profileId: string,
+        @Param('profileId', ParseIntPipe) profileId: number,
     ) {
         return this.productService.removeProfile(profileId)
     }

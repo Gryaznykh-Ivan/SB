@@ -1,5 +1,5 @@
-import { api } from "../store/api";
-import { SettingSearchRequest, SettingSearchResponse, SettingUpdateRequest, SettingUpdateResponse } from "../types/api";
+import { api } from "@/store/api";
+import { SettingSearchRequest, SettingSearchResponse, SettingUpdateRequest, SettingUpdateResponse } from "@/types/api";
 
 export const settingService = api.injectEndpoints({
     endpoints: builder => ({

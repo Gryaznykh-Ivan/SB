@@ -11,7 +11,7 @@ export class UserService {
         private readonly prisma: PrismaService
     ) { }
 
-    async getUserById(userId: string) {
+    async getUserById(userId: number) {
         const user = await this.prisma.user.findUnique({
             where: { id: userId },
             include: {
@@ -103,7 +103,7 @@ export class UserService {
     }
 
 
-    async getUserAddresses(userId: string) {
+    async getUserAddresses(userId: number) {
         const user = await this.prisma.user.findUnique({
             where: { id: userId },
             select: {
@@ -137,7 +137,7 @@ export class UserService {
         const createUserQuery = {
             firstName: data.firstName,
             lastName: data.lastName,
-            fullName: `${data.firstName ?? ""} ${data.lastName ?? ""}`,
+            fullName: (`${data.firstName ?? ""} ${data.lastName ?? ""}`).trim(),
             account: data.account,
             bic: data.bic,
             comment: data.comment,
@@ -187,7 +187,7 @@ export class UserService {
         }
     }
 
-    async updateUser(userId: string, data: UpdateUserDto, self: IUser) {
+    async updateUser(userId: number, data: UpdateUserDto, self: IUser) {
         const user = await this.prisma.user.findUnique({
             where: { id: userId },
             select: {
@@ -233,7 +233,7 @@ export class UserService {
 
         if (data.firstName || data.lastName) {
             Object.assign(updateUserQuery, {
-                fullName: `${data.firstName ?? user.firstName ?? ""} ${data.lastName ?? user.lastName ?? ""}`
+                fullName: (`${data.firstName ?? user.firstName ?? ""} ${data.lastName ?? user.lastName ?? ""}`).trim()
             })
         }
 
@@ -298,9 +298,9 @@ export class UserService {
         }
     }
 
-    async deleteUser(id: string, self: IUser) {
+    async removeUser(userId: number, self: IUser) {
         const user = await this.prisma.user.findUnique({
-            where: { id },
+            where: { id: userId },
             select: {
                 firstName: true,
                 lastName: true,
@@ -324,7 +324,7 @@ export class UserService {
 
         try {
             await this.prisma.user.delete({
-                where: { id }
+                where: { id: userId }
             })
 
             return {

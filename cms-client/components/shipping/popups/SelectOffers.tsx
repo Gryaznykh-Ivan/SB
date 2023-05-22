@@ -4,13 +4,13 @@ import Image from 'next/image'
 import Modal from '../../portals/Modal'
 import SearchInput from '../../inputs/SearchInput';
 import JSXAccordion from '../../accordions/JSXAccordion';
-import { IDeliveryProfile, IErrorResponse, IOffer, IOfferSearch } from '../../../types/api';
-import { useLazyGetOffersBySearchQuery } from '../../../services/offerService';
+import { IDeliveryProfile, IErrorResponse, IOffer, IOfferSearch } from '@/types/api';
+import { useLazyGetOffersBySearchQuery } from '@/services/offerService';
 import ImageLoader from '../../image/ImageLoader';
-import { OfferStatus } from '../../../types/store';
+import { OfferStatus } from '@/types/store';
 
 interface IProps {
-    deliveryProfileId: string;
+    deliveryProfileId: number;
     title: string;
     connectOffers: Pick<IDeliveryProfile, "id">[] | undefined;
     onAddOffer: (item: IOfferSearch) => void;
@@ -90,9 +90,9 @@ export default function SelectOffers({ title, deliveryProfileId, connectOffers, 
                         }
                         <div className="divide-y-[1px] max-h-96 overflow-y-auto">
                             {state.map(offer =>
-                                <label key={offer.id} htmlFor={offer.id} className="flex items-center px-5 py-2 space-x-4 hover:bg-gray-100">
+                                <label key={offer.id} htmlFor={offer.id.toString()} className="flex items-center px-5 py-2 space-x-4 hover:bg-gray-100">
                                     <div className="">
-                                        <input type="checkbox" readOnly id={offer.id} name="" className="rounded" checked={connectOffers?.find(c => c.id === offer.id) !== undefined} onClick={() => onAddOffer(offer)} />
+                                        <input type="checkbox" readOnly id={offer.id.toString()} name="" className="rounded" checked={connectOffers?.find(c => c.id === offer.id) !== undefined} onClick={() => onAddOffer(offer)} />
                                     </div>
                                     <div className="relative w-12 aspect-square border-[1px] rounded-md">
                                         {offer.image !== null ?
