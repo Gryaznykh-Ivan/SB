@@ -1,9 +1,10 @@
 {
     "eslint.workingDirectories": [
-        "./admin",
-        "./parser/server",
-        "./parser/client",
-        "./store",
-        "./server",
+        "./cms-client",
+        "./cms-server",
+        "./parser-client",
+        "./parser-server",
+        "./store-client",
+        "./store-server",
     ]
 }
