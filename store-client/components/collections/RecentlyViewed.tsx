@@ -7,7 +7,7 @@ export default function RecentlyViewed() {
             <div className="px-4 md:px-10 text-lg mb-5">Недавно просмотренные</div>
             <CollectionSlider
                 products={[{
-                    handle: "2",
+                    handle: "550-sea-salt-burgundy",
                     title: "Air Jordan 1 Retro High Primer",
                     vendor: "NIKE",
                     type: "Кроссовки",

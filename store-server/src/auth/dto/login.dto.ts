@@ -8,5 +8,5 @@ export class LoginDto {
     readonly code: string;
 
     @IsOptional()
-    readonly guestId: string;
+    readonly guestId: number;
 }

@@ -21,6 +21,7 @@ export default function Index() {
                 <h1 className="text-center text-xl mb-10">Избранное</h1>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                     <ProductCard
+                        handle=""
                         title="Air Jordan 1 Retro High Primer"
                         vendor="NIKE"
                         type="Кроссовки"

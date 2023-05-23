@@ -17,7 +17,7 @@ export default function FeaturedProducts() {
 
     return (
         <div className="container">
-            {/* px-4 md:px-10 */}
+
             <div className="px-4 md:px-10 text-lg mb-5">Вам может понравиться</div>
             {isCollectionProductsFetching === true &&
                 <div className="flex justify-center p-5 z-10 ">
