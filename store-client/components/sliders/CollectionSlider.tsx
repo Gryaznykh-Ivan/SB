@@ -2,14 +2,14 @@ import React, { useRef, useState } from 'react'
 import { Navigation, Pagination, Swiper as SwiperType } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { SwiperOptions } from 'swiper/types';
-import { IProduct } from '@/types/api';
+import { IProductCard } from '@/types/api';
 import ProductCard from '../products/ProductCard';
 
 import 'swiper/css';
 
 interface IProps {
     className?: string;
-    products: IProduct[];
+    products: IProductCard[];
 }
 
 export default function CollectionSlider({ className, products }: IProps) {
@@ -86,6 +86,7 @@ export default function CollectionSlider({ className, products }: IProps) {
                 {products.map(product =>
                     <SwiperSlide key={product.handle}>
                         <ProductCard
+                            handle={product.handle}
                             title={product.title}
                             vendor={product.vendor}
                             image={product.image}
