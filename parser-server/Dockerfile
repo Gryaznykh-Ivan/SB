@@ -9,7 +9,7 @@ COPY tsconfig.json ./
 
 RUN npm install
 RUN npx prisma generate --schema ./db/parser/prisma/schema.prisma
-RUN npx prisma generate --schema ./db/shop/prisma/schema.prisma
+RUN npx prisma generate --schema ./db/store/prisma/schema.prisma
 
 COPY . .
 
