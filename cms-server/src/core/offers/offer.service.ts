@@ -96,10 +96,6 @@ export class OfferService {
                             search: fulltextSearch ? fulltextSearch : undefined,
                         }
                     }, {
-                        variantId: (data.q && isNaN(+data.q) === false) ? Number(data.q) : undefined
-                    }, {
-                        userId: (data.q && isNaN(+data.q) === false) ? Number(data.q) : undefined
-                    }, {
                         user: data.q ? {
                             fullName: {
                                 search: fulltextSearch ? fulltextSearch : undefined,
