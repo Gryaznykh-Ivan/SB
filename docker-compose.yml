@@ -43,8 +43,8 @@ services:
       DATABASE_URL: mysql://root:adminsbtest@db:3306/sb
       SECRET: ade8959dd56e2b039e862b59ec6c0e3eb0879f456c7a5874467ea6677e34e219
       STATIC_FILES_PATH: /static
-      SMTP_EMAIL: gryaznykh.ivan@gmail.com
-      SMTP_PASSWORD: qunzzygesomjogxd
+      SMTP_EMAIL: support@adminsb.space
+      SMTP_PASSWORD: Z2RLfjReiTWSLC1QRvqk
       COOKIE_DOMAIN: adminsb.space
       EXPIRES_IN: 15d
     volumes:
@@ -70,8 +70,8 @@ services:
       PORT: 5001
       DATABASE_URL: mysql://root:adminsbtest@db:3306/sb
       SECRET: ade8959dd56e2b039e862b59ec6c0e3eb0879f456c7a5874467ea6677e34e219
-      SMTP_EMAIL: gryaznykh.ivan@gmail.com
-      SMTP_PASSWORD: qunzzygesomjogxd
+      SMTP_EMAIL: support@adminsb.space
+      SMTP_PASSWORD: Z2RLfjReiTWSLC1QRvqk
       COOKIE_DOMAIN: adminsb.space
       EXPIRES_IN: 15d
     depends_on:
