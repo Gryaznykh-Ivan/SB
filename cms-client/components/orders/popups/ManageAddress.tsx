@@ -46,7 +46,7 @@ export default function ManageAddress({ title, onClose, onDone, ...data }: IProp
     const onSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         if (addresses?.data === undefined) return
 
-        const address = addresses.data.find(a => a.id === e.target.value)
+        const address = addresses.data.find(a => a.id.toString() === e.target.value)
         if (address === undefined) return
 
         setState(prev => ({
