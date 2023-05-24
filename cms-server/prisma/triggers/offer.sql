@@ -1,4 +1,9 @@
-CREATE DEFINER=`root`@`localhost` TRIGGER `offer_AFTER_INSERT` AFTER INSERT ON `offer` FOR EACH ROW BEGIN
+DROP TRIGGER IF EXISTS `sb`.`offer_AFTER_INSERT`;
+
+DELIMITER $$
+USE `sb`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sb`.`offer_AFTER_INSERT` AFTER INSERT ON `offer` FOR EACH ROW
+BEGIN
 	DECLARE new_min_price DECIMAL(10,2);
     DECLARE new_max_price DECIMAL(10,2);
     
@@ -10,9 +15,14 @@ CREATE DEFINER=`root`@`localhost` TRIGGER `offer_AFTER_INSERT` AFTER INSERT ON `
     UPDATE product 
     SET minPrice = new_min_price, maxPrice = new_max_price 
     WHERE id = NEW.productId;
-END
+END$$
+DELIMITER ;
+DROP TRIGGER IF EXISTS `sb`.`offer_AFTER_UPDATE`;
 
-CREATE DEFINER=`root`@`localhost` TRIGGER `offer_AFTER_UPDATE` AFTER UPDATE ON `offer` FOR EACH ROW BEGIN
+DELIMITER $$
+USE `sb`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sb`.`offer_AFTER_UPDATE` AFTER UPDATE ON `offer` FOR EACH ROW
+BEGIN
 	DECLARE new_min_price DECIMAL(10,2);
     DECLARE new_max_price DECIMAL(10,2);
 	DECLARE old_min_price DECIMAL(10,2);
@@ -37,9 +47,14 @@ CREATE DEFINER=`root`@`localhost` TRIGGER `offer_AFTER_UPDATE` AFTER UPDATE ON `
 		SET minPrice = old_min_price, maxPrice = old_max_price 
 		WHERE id = OLD.productId;
     END IF;
-END
+END$$
+DELIMITER ;
+DROP TRIGGER IF EXISTS `sb`.`offer_AFTER_DELETE`;
 
-CREATE DEFINER=`root`@`localhost` TRIGGER `offer_AFTER_DELETE` AFTER DELETE ON `offer` FOR EACH ROW BEGIN
+DELIMITER $$
+USE `sb`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sb`.`offer_AFTER_DELETE` AFTER DELETE ON `offer` FOR EACH ROW
+BEGIN
 	DECLARE old_min_price DECIMAL(10,2);
 	DECLARE old_max_price DECIMAL(10,2);
     
@@ -51,4 +66,5 @@ CREATE DEFINER=`root`@`localhost` TRIGGER `offer_AFTER_DELETE` AFTER DELETE ON `
     UPDATE product 
     SET minPrice = old_min_price, maxPrice = old_max_price 
     WHERE id = OLD.productId;
-END
+END$$
+DELIMITER ;
