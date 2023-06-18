@@ -12,9 +12,11 @@ import { useRouter } from 'next/router'
 import { useDeleteUserMutation, useGetUserByIdQuery, useUpdateUserMutation } from '@/services/userService'
 import { toast } from 'react-toastify'
 import { Role } from '@/types/store'
+import useConfirm from '@/hooks/useConfirm'
 
 export default function Index() {
     const router = useRouter()
+    const { show } = useConfirm()
 
     const { isError, error, isLoading, data } = useGetUserByIdQuery({ userId: Number(router.query.userId) }, { skip: router.query.userId === undefined })
 
@@ -66,10 +68,14 @@ export default function Index() {
     }, [changes])
 
     const onUserDelete = async () => {
-        const result = await deleteUser({ userId: Number(router.query.userId) }).unwrap();
-        if (result.success === true) {
-            setChanges({})
-            router.push("/users")
+        const isConfirmed = await show("Подтверждение", "Подтвердите удаление пользователя")
+
+        if (isConfirmed === true) {
+            const result = await deleteUser({ userId: Number(router.query.userId) }).unwrap();
+            if (result.success === true) {
+                setChanges({})
+                router.push("/users")
+            }
         }
     }
 

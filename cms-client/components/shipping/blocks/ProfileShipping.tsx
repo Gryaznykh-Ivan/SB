@@ -131,7 +131,7 @@ export default function ProfileShipping({ profileId }: IProps) {
                     <span className="ml-2">Добавить</span>
                 </button>
             </div>
-            <div className="flex space-x-4 p-5 border-b-[1px]">
+            <div className="flex space-x-4 p-3 border-b-[1px]">
                 <SearchInput className="" placeholder="Поиск регионов" onChange={onSearch} />
             </div>
             {isError &&

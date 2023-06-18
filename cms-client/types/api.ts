@@ -328,13 +328,6 @@ export interface IOrderReturn {
     tracking: string;
 }
 
-export interface IService {
-    id: number;
-    type: Service;
-    description: string | null;
-    amount: string;
-}
-
 export interface IRemovedOffer {
     id: number;
     product: string;
@@ -360,7 +353,6 @@ export interface IOrder {
     returns: IOrderReturn[];
     removedOffers: IRemovedOffer[];
     fulfillments: IFulfillment[];
-    services: IService[];
     paid: number;
 }
 
@@ -1008,7 +1000,6 @@ export type OrderCreateRequest = {
     mailingRegion?: string;
     mailingAddress?: string;
     note?: string | null;
-    services?: Omit<IService, "id">[];
     offers?: Pick<IOffer, "id">[];
 }
 
@@ -1021,9 +1012,7 @@ export type OrderUpdateRequest = {
     mailingRegion?: string;
     mailingAddress?: string;
     note?: string | null;
-    createServices?: Omit<IService, "id">[];
     createOffers?: Pick<IOffer, "id">[];
-    deleteServices?: Pick<IService, "id">[];
     deleteOffers?: Pick<IOffer, "id">[];
 }
 

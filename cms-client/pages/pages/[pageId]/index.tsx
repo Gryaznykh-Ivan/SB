@@ -8,9 +8,11 @@ import MainLayout from '@/components/layouts/Main'
 import { PageUpdateRequest, IErrorResponse } from '@/types/api'
 import { useDeletePageMutation, useGetPageByIdQuery, useUpdatePageMutation } from '@/services/pageService'
 import { toast } from 'react-toastify'
+import useConfirm from '@/hooks/useConfirm'
 
 export default function Index() {
     const router = useRouter()
+    const { show } = useConfirm()
 
     const { isError, error, isLoading, data } = useGetPageByIdQuery({ pageId: Number(router.query.pageId) }, { skip: router.query.pageId === undefined })
 
@@ -62,12 +64,17 @@ export default function Index() {
     }, [changes])
 
     const onPageDelete = async () => {
-        const result = await deletePage({ pageId: Number(router.query.pageId) }).unwrap();
-        if (result.success === true) {
-            setChanges({})
-            router.push("/pages")
+        const isConfirmed = await show("Подтверждение", "Подтвердите удаление страницы")
+
+        if (isConfirmed === true) {
+            const result = await deletePage({ pageId: Number(router.query.pageId) }).unwrap();
+            if (result.success === true) {
+                setChanges({})
+                router.push("/pages")
+            }
         }
     }
+
     return (
         <MainLayout>
             <div className="px-6 my-4 max-w-3xl mx-auto">

@@ -15,9 +15,11 @@ import { IErrorResponse, ProductUpdateRequest } from '@/types/api'
 import { toast } from 'react-toastify'
 import Media from '@/components/products/blocks/Media'
 import Metafields from '@/components/products/blocks/Metafields'
+import useConfirm from '@/hooks/useConfirm'
 
 function Index() {
     const router = useRouter()
+    const { show } = useConfirm()
 
     const { isError, error, isLoading, data } = useGetProductByIdQuery({ productId: Number(router.query.productId) }, { skip: router.query.productId === undefined })
 
@@ -69,10 +71,14 @@ function Index() {
     }, [changes])
 
     const onProductDelete = async () => {
-        const result = await deleteProduct({ productId: Number(router.query.productId) }).unwrap();
-        if (result.success === true) {
-            setChanges({})
-            router.push("/products")
+        const isConfirmed = await show("Подтверждение", "Подтвердите удаление товара")
+
+        if (isConfirmed === true) {
+            const result = await deleteProduct({ productId: Number(router.query.productId) }).unwrap();
+            if (result.success === true) {
+                setChanges({})
+                router.push("/products")
+            }
         }
     }
 

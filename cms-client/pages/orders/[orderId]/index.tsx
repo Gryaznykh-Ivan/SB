@@ -10,7 +10,6 @@ import Customer from '@/components/orders/blocks/Customer'
 import Payment from '@/components/orders/blocks/Payment'
 import Address from '@/components/orders/blocks/Address'
 import Fulfillment from '@/components/orders/blocks/Fulfillment'
-import Service from '@/components/orders/blocks/Service'
 import Note from '@/components/orders/blocks/Note'
 import Timeline from '@/components/orders/blocks/Timeline'
 import { useGetOrderByIdQuery, useUpdateOrderMutation } from '@/services/orderService'
@@ -178,11 +177,6 @@ function Index() {
                                         offers={data.data.removedOffers}
                                     />
                                 }
-                                <Service
-                                    services={state.services}
-                                    region={data.data.mailingRegion}
-                                    onChange={onStateChanges}
-                                />
                                 <Payment
                                     orderId={data.data.id}
                                     offers={[...state.offers, ...data.data.fulfillments.map(fulfillment => fulfillment.offers).reduce((a, c) => [...a, ...c], [])]}

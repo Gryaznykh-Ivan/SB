@@ -64,7 +64,7 @@ export default function GeneralInfo({ onChange, ...data }: IProps) {
                 </div>
                 <div className="flex items-center">
                     <input type="checkbox" className="rounded" id="hidden" name="hidden" checked={state.hidden} onChange={onInputCheckboxChange} />
-                    <label htmlFor="hidden" className="text-sm text-gray-600 ml-3">Коллекция для внутреннего использования</label>
+                    <label htmlFor="hidden" className="text-sm text-gray-600 ml-3">Скрыть коллекцию от пользователей</label>
                 </div>
             </div>
         </div>

@@ -196,14 +196,14 @@ model Address {
 }
 
 model Order {
-    id                 Int           @id @default(autoincrement()) @db.UnsignedInt
-    orderStatus        OrderStatus   @default(UNFULFILLED)
-    paymentStatus      PaymentStatus @default(UNPAID)
+    id                 Int                 @db.UnsignedInt
+    orderStatus        OrderStatus         @default(UNFULFILLED)
+    paymentStatus      PaymentStatus       @default(UNPAID)
     returnStatus       ReturnStatus?
-    subtotalPrice      Decimal       @db.Decimal(10, 2)
-    totalDiscount      Decimal       @db.Decimal(10, 2)
-    totalShippingPrice Decimal       @db.Decimal(10, 2)
-    totalPrice         Decimal       @db.Decimal(10, 2)
+    subtotalPrice      Decimal             @db.Decimal(10, 2)
+    totalDiscount      Decimal             @db.Decimal(10, 2)
+    totalShippingPrice Decimal             @db.Decimal(10, 2)
+    totalPrice         Decimal             @db.Decimal(10, 2)
     mailingCountry     String
     mailingCity        String
     mailingRegion      String
@@ -212,71 +212,78 @@ model Order {
     discountInfo       String?
     note               String?
     invoices           Invoice[]
-    offers             Offer[]       @relation(name: "orderoffers")
+    offers             Offer[]             @relation(name: "orderoffers")
     fulfillments       Fulfillment[]
     returns            Return[]
     timeline           Timeline[]
-    removedOffers      Offer[]       @relation(name: "orderremovedoffers")
-    user               User          @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    userId             Int           @db.UnsignedInt
-    createdAt          DateTime      @default(now())
-    updatedAt          DateTime      @updatedAt
+    removedOffers      OrderRemovedOffer[]
+    user               User                @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    userId             Int                 @db.UnsignedInt
+    deliveryProfile    DeliveryProfile     @relation(fields: [deliveryProfileId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    deliveryProfileId  Int                 @db.UnsignedInt
+    createdAt          DateTime            @default(now())
+    updatedAt          DateTime            @updatedAt
 
+    @@id([id, deliveryProfileId])
     @@map("order")
 }
 
 model Invoice {
-    id        Int           @id @default(autoincrement()) @db.UnsignedInt
-    type      InvoiceType   @default(PAYMENT)
-    status    InvoiceStatus @default(PENDING)
-    method    InvoiceMethod
-    amount    Decimal       @db.Decimal(10, 2)
-    currency  Currency      @default(RUB)
-    order     Order         @relation(fields: [orderId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    orderId   Int           @db.UnsignedInt
-    createdAt DateTime      @default(now())
-    updatedAt DateTime      @updatedAt
+    id                Int           @id @default(autoincrement()) @db.UnsignedInt
+    type              InvoiceType   @default(PAYMENT)
+    status            InvoiceStatus @default(PENDING)
+    method            InvoiceMethod
+    amount            Decimal       @db.Decimal(10, 2)
+    currency          Currency      @default(RUB)
+    order             Order         @relation(fields: [orderId, deliveryProfileId], references: [id, deliveryProfileId], onUpdate: Cascade, onDelete: Cascade)
+    orderId           Int           @db.UnsignedInt
+    deliveryProfileId Int           @db.UnsignedInt
+    createdAt         DateTime      @default(now())
+    updatedAt         DateTime      @updatedAt
 
     @@map("invoice")
 }
 
 model Timeline {
-    id        Int      @id @default(autoincrement()) @db.UnsignedInt
-    title     String   @db.VarChar(255)
-    message   String?  @db.Text
-    order     Order    @relation(fields: [orderId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    orderId   Int      @db.UnsignedInt
-    user      User?    @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: SetNull)
-    userId    Int?     @db.UnsignedInt
-    createdAt DateTime @default(now())
+    id                Int      @id @default(autoincrement()) @db.UnsignedInt
+    title             String   @db.VarChar(255)
+    message           String?  @db.Text
+    order             Order    @relation(fields: [orderId, deliveryProfileId], references: [id, deliveryProfileId], onUpdate: Cascade, onDelete: Cascade)
+    orderId           Int      @db.UnsignedInt
+    deliveryProfileId Int      @db.UnsignedInt
+    user              User?    @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+    userId            Int?     @db.UnsignedInt
+    createdAt         DateTime @default(now())
 
     @@map("timeline")
 }
 
 model Fulfillment {
-    id        Int               @id @default(autoincrement()) @db.UnsignedInt
-    status    FulfillmentStatus @default(SENT)
-    tracking  String?
-    carrier   String?
-    offers    Offer[]
-    order     Order             @relation(fields: [orderId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    orderId   Int               @db.UnsignedInt
-    createdAt DateTime          @default(now())
-    updatedAt DateTime          @updatedAt
+    id                Int               @id @default(autoincrement()) @db.UnsignedInt
+    status            FulfillmentStatus @default(SENT)
+    tracking          String?
+    carrier           String?
+    offers            Offer[]
+    order             Order             @relation(fields: [orderId, deliveryProfileId], references: [id, deliveryProfileId], onUpdate: Cascade, onDelete: Cascade)
+    orderId           Int               @db.UnsignedInt
+    deliveryProfileId Int               @db.UnsignedInt
+    createdAt         DateTime          @default(now())
+    updatedAt         DateTime          @updatedAt
 
     @@map("fulfillment")
 }
 
 model Return {
-    id        Int           @id @default(autoincrement()) @db.UnsignedInt
-    status    ReturnStatus  @default(RETURN_REQUESTED)
-    tracking  String?
-    carrier   String?
-    offers    ReturnOffer[]
-    order     Order         @relation(fields: [orderId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    orderId   Int           @db.UnsignedInt
-    createdAt DateTime      @default(now())
-    updatedAt DateTime      @updatedAt
+    id                Int           @id @default(autoincrement()) @db.UnsignedInt
+    status            ReturnStatus  @default(RETURN_REQUESTED)
+    tracking          String?
+    carrier           String?
+    offers            ReturnOffer[]
+    order             Order         @relation(fields: [orderId, deliveryProfileId], references: [id, deliveryProfileId], onUpdate: Cascade, onDelete: Cascade)
+    orderId           Int           @db.UnsignedInt
+    deliveryProfileId Int           @db.UnsignedInt
+    createdAt         DateTime      @default(now())
+    updatedAt         DateTime      @updatedAt
 
     @@map("return")
 }
@@ -293,32 +300,44 @@ model ReturnOffer {
     @@map("returnoffer")
 }
 
+model OrderRemovedOffer {
+    order                  Order    @relation(fields: [orderId, orderDeliveryProfileId], references: [id, deliveryProfileId], onUpdate: Cascade, onDelete: Cascade)
+    orderId                Int      @db.UnsignedInt
+    orderDeliveryProfileId Int      @db.UnsignedInt
+    offer                  Offer    @relation(fields: [offerId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    offerId                Int      @db.UnsignedInt
+    createdAt              DateTime @default(now())
+
+    @@id([orderId, orderDeliveryProfileId, offerId])
+    @@map("orderremovedoffer")
+}
+
 model Offer {
-    id                Int              @id @default(autoincrement()) @db.UnsignedInt
-    productTitle      String           @db.VarChar(255)
+    id                Int                 @id @default(autoincrement()) @db.UnsignedInt
+    productTitle      String              @db.VarChar(255)
     variantTitle      String
-    price             Decimal          @db.Decimal(10, 2)
-    offerPrice        Decimal          @db.Decimal(10, 2)
-    compareAtPrice    Decimal?         @db.Decimal(10, 2)
+    price             Decimal             @db.Decimal(10, 2)
+    offerPrice        Decimal             @db.Decimal(10, 2)
+    compareAtPrice    Decimal?            @db.Decimal(10, 2)
     comment           String?
-    status            OfferStatus      @default(OFFERED)
-    user              User             @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    userId            Int              @db.UnsignedInt
-    order             Order?           @relation(name: "orderoffers", fields: [orderId], references: [id], onUpdate: Cascade, onDelete: SetNull)
-    orderId           Int?             @db.UnsignedInt
-    product           Product?         @relation(fields: [productId], references: [id], onUpdate: Cascade, onDelete: SetNull)
-    productId         Int?             @db.UnsignedInt
-    variant           Variant?         @relation(fields: [variantId], references: [id], onUpdate: Cascade, onDelete: SetNull)
-    variantId         Int?             @db.UnsignedInt
-    deliveryProfile   DeliveryProfile? @relation(fields: [deliveryProfileId], references: [id], onUpdate: Cascade, onDelete: SetNull)
-    deliveryProfileId Int?             @db.UnsignedInt
-    fulfillment       Fulfillment?     @relation(fields: [fulfillmentId], references: [id], onUpdate: Cascade, onDelete: SetNull)
-    fulfillmentId     Int?             @db.UnsignedInt
+    status            OfferStatus         @default(OFFERED)
+    user              User                @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    userId            Int                 @db.UnsignedInt
+    order             Order?              @relation(name: "orderoffers", fields: [orderId, deliveryProfileId], references: [id, deliveryProfileId], onUpdate: Cascade, onDelete: SetNull)
+    orderId           Int?                @db.UnsignedInt
+    product           Product?            @relation(fields: [productId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+    productId         Int?                @db.UnsignedInt
+    variant           Variant?            @relation(fields: [variantId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+    variantId         Int?                @db.UnsignedInt
+    deliveryProfile   DeliveryProfile?    @relation(fields: [deliveryProfileId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+    deliveryProfileId Int?                @db.UnsignedInt
+    fulfillment       Fulfillment?        @relation(fields: [fulfillmentId], references: [id], onUpdate: Cascade, onDelete: SetNull)
+    fulfillmentId     Int?                @db.UnsignedInt
     cartProduct       CartProduct[]
     returned          ReturnOffer[]
-    removedFromOrders Order[]          @relation(name: "orderremovedoffers")
-    createdAt         DateTime         @default(now())
-    updatedAt         DateTime         @updatedAt
+    removedFromOrders OrderRemovedOffer[]
+    createdAt         DateTime            @default(now())
+    updatedAt         DateTime            @updatedAt
 
     @@fulltext([productTitle])
     @@map("offer")
@@ -493,6 +512,7 @@ model DeliveryProfile {
     isDefault Boolean        @default(false)
     title     String         @unique
     location  String
+    orders    Order[]
     offers    Offer[]
     zones     DeliveryZone[]
     createdAt DateTime       @default(now())

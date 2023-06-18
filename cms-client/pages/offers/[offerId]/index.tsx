@@ -12,11 +12,13 @@ import StatusBlock from '@/components/offers/blocks/Status'
 import OfferStatus from '@/components/offers/cards/OfferStatus'
 import { useDeleteOfferMutation, useGetOfferByIdQuery, useUpdateOfferMutation } from '@/services/offerService'
 import { IErrorResponse, OfferUpdateRequest } from '@/types/api'
+import useConfirm from '@/hooks/useConfirm'
 
 
 
 function New() {
     const router = useRouter()
+    const {show} = useConfirm()
 
     const { isError, error, isLoading, data } = useGetOfferByIdQuery({ offerId: Number(router.query.offerId) }, { skip: router.query.offerId === undefined })
 
@@ -68,10 +70,14 @@ function New() {
     }, [changes])
 
     const onOfferDelete = async () => {
-        const result = await deleteOffer({ offerId: Number(router.query.offerId) }).unwrap();
-        if (result.success === true) {
-            setChanges({})
-            router.push("/offers")
+        const isConfirmed = await show("Подтверждение", "Подтвердите удаление оффера")
+
+        if (isConfirmed === true) {
+            const result = await deleteOffer({ offerId: Number(router.query.offerId) }).unwrap();
+            if (result.success === true) {
+                setChanges({})
+                router.push("/offers")
+            }
         }
     }
 

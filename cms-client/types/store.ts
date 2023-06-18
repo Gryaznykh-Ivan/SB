@@ -1,4 +1,4 @@
-import { IOfferSearch, IOrderProduct, IService } from "./api"
+import { IOfferSearch, IOrderProduct } from "./api"
 
 export enum Right {
     ORDER_READ = "ORDER_READ",
@@ -93,5 +93,4 @@ export interface IConfirmState {
 
 export interface IOrderState {
     offers: IOrderProduct[];
-    services: IService[];
 }

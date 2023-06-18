@@ -36,7 +36,7 @@ export default function MediaSetting({ image, onClose, onUpdate, onDelete }: IPr
                             </svg>
                         </button>
                     </div>
-                    <div className="p-5 border-b-[1px] space-y-4">
+                    <div className="p-3 border-b-[1px] space-y-4">
                         <div className="relative w-full aspect-5/3">
                             <Image
                                 loader={ImageLoader}

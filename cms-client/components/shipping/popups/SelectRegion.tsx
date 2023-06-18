@@ -87,7 +87,7 @@ export default function SelectRegion({ profileId, title, onClose, onDone }: IPro
                         </button>
                     </div>
                     <div className="relative max-h-[60vh] overflow-y-auto">
-                        <div className="p-5 border-b-[1px] space-y-4">
+                        <div className="p-3 border-b-[1px] space-y-4">
                             <div className="flex flex-col">
                                 <SearchInput placeholder="Поиск зоны" onChange={onSearch} />
                             </div>

@@ -62,7 +62,7 @@ export default function SelectProducts({ title, collectionId, onClose }: IProps)
                         </button>
                     </div>
                     <div className="max-h-[60vh] overflow-y-auto">
-                        <div className="p-5 border-b-[1px] space-y-4">
+                        <div className="p-3 border-b-[1px] space-y-4">
                             <div className="flex flex-col">
                                 <SearchInput placeholder="Поиск" onChange={() => { }} />
                             </div>

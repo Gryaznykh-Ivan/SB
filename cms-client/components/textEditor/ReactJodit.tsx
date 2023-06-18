@@ -16,7 +16,7 @@ interface IProps {
 
 const joditConfig = {
     readonly: false,
-    placeholder: 'Start typings...',
+    placeholder: 'Начинайте писать...',
     showCharsCounter: false,
     showWordsCounter: false,
     showXPathInStatusbar: false,
@@ -38,7 +38,7 @@ export default function ReactJodit({ value, onChange }: IProps) {
     const editor = useRef(null);
 
     return <ReactJoditDynamic
-        className="prose font-['Roboto'] !rounded-lg overflow-hidden"
+        className="prose prose-p:m-0 font-['Roboto'] !rounded-lg overflow-hidden"
         ref={editor}
         config={joditConfig}
         value={value}

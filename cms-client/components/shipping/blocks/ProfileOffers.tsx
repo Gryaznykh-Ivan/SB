@@ -90,7 +90,7 @@ export default function ProfileOffers({ onChange, deliveryProfileId, isDefault, 
     return (
         <div className="rounded-md bg-white shadow-sm">
             <div className="flex justify-between items-center p-3 border-b-[1px]">
-                <h2 className="font-semibold pl-3">Офферы</h2>
+                <h2 className="font-semibold pl-3">Наличие</h2>
                 <button className="text-gray-800 text-sm p-2 font-medium rounded-md hover:bg-gray-100 flex items-center" onClick={onPopupOpen}>
                     <svg className="stroke-blue-800" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 9V12M12 12V15M12 12H15M12 12H9M21 12C21 13.1819 20.7672 14.3522 20.3149 15.4442C19.8626 16.5361 19.1997 17.5282 18.364 18.364C17.5282 19.1997 16.5361 19.8626 15.4442 20.3149C14.3522 20.7672 13.1819 21 12 21C10.8181 21 9.64778 20.7672 8.55585 20.3149C7.46392 19.8626 6.47177 19.1997 5.63604 18.364C4.80031 17.5282 4.13738 16.5361 3.68508 15.4442C3.23279 14.3522 3 13.1819 3 12C3 9.61305 3.94821 7.32387 5.63604 5.63604C7.32387 3.94821 9.61305 3 12 3C14.3869 3 16.6761 3.94821 18.364 5.63604C20.0518 7.32387 21 9.61305 21 12Z" stroke="inherit" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -98,7 +98,7 @@ export default function ProfileOffers({ onChange, deliveryProfileId, isDefault, 
                     <span className="ml-2">Добавить</span>
                 </button>
             </div>
-            <div className="flex space-x-4 p-5 border-b-[1px]">
+            <div className="flex space-x-4 p-3 border-b-[1px]">
                 <SearchInput className="" placeholder="Поиск офферов" onChange={onSearch} />
             </div>
             <div className="divide-y-[1px] max-h-96 overflow-y-auto">
@@ -174,18 +174,20 @@ export default function ProfileOffers({ onChange, deliveryProfileId, isDefault, 
             {connectOffers !== undefined && connectOffers.length !== 0 &&
                 <div className="flex justify-center items-center h-10 font-medium bg-red-50 border-t-[1px]">Добавлено несохраненных офферов: {connectOffers.length}</div>
             }
-            <div className="flex items-center justify-center py-3 w-full space-x-1 border-t-[1px]">
-                <button className={`p-2 font-bold border-[1px] rounded-md ${query.skip === 0 && "bg-gray-100 cursor-not-allowed"}`} onClick={onPrevPage} disabled={query.skip === 0 || isFetching === true}>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M10 19L3 12M3 12L10 5M3 12H21" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                </button>
-                <button className={`p-2 font-bold border-[1px] rounded-md ${data?.data.length !== itemPerPage && "bg-gray-100 cursor-not-allowed"}`} onClick={onNextPage} disabled={data?.data.length !== itemPerPage || isFetching === true}>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M14 5L21 12M21 12L14 19M21 12H3" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                </button>
-            </div>
+            {query.skip !== 0 || data?.data.length === itemPerPage &&
+                <div className="flex items-center justify-center py-3 w-full space-x-1 border-t-[1px]">
+                    <button className={`p-2 font-bold border-[1px] rounded-md ${query.skip === 0 && "bg-gray-100 cursor-not-allowed"}`} onClick={onPrevPage} disabled={query.skip === 0 || isFetching === true}>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 19L3 12M3 12L10 5M3 12H21" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                    </button>
+                    <button className={`p-2 font-bold border-[1px] rounded-md ${data?.data.length !== itemPerPage && "bg-gray-100 cursor-not-allowed"}`} onClick={onNextPage} disabled={data?.data.length !== itemPerPage || isFetching === true}>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14 5L21 12M21 12L14 19M21 12H3" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                    </button>
+                </div>
+            }
             {popup && <SelectOffers title="Выбор офферов" deliveryProfileId={deliveryProfileId} connectOffers={connectOffers} onAddOffer={onAddOffer} onClose={onPopupClose} />}
         </div>
     )

@@ -63,7 +63,7 @@ export default function SEOSnippetProduct() {
 
     return (
         <div className="rounded-md bg-white shadow-sm">
-            <h2 className="font-semibold p-5 border-b-[1px]">Шаблон снипета продукта</h2>
+            <h2 className="font-semibold p-5 border-b-[1px]">SEO снипет товара</h2>
             <div className="space-y-4 p-5">
                 <div className="flex flex-col">
                     <div className="flex justify-between mb-1">
@@ -71,7 +71,7 @@ export default function SEOSnippetProduct() {
                         <div className="text-gray-500 text-sm">{state.title.length} символов</div>
                     </div>
                     <Input type="text" id="title" placeholder="Мета название" name="title" value={state.title} onChange={onInputChange} />
-                    <div className="text-gray-400 text-sm mt-1">Пример: [vendor] [title] [SKU] | SB</div>
+                    <div className="text-gray-400 text-sm mt-1">Пример: [vendor] [title] [SKU] | EXAMPLE</div>
                 </div>
                 <div className="flex flex-col">
                     <div className="flex justify-between mb-1">
@@ -79,12 +79,15 @@ export default function SEOSnippetProduct() {
                         <div className="text-gray-500 text-sm">{state.description.length} символов</div>
                     </div>
                     <TextArea id="description" placeholder="Mета описание" name="description" value={state.description} onChange={onInputChange} />
-                    <div className="text-gray-400 text-sm mt-1">Пример: Покупай кроссовки [title] [SKU] в магазине SB</div>
+                    <div className="mt-1 text-sm text-gray-400">
+                        <div className="">Пример: Покупай [title] [SKU] в магазине EXAMPLE</div>
+                        <div className="">Снипет будет применен при создании товара</div>
+                    </div>
                 </div>
             </div>
             {isLoading === false && mustBeSaved === true &&
                 <div className="flex">
-                    <button className="flex-1 border-t-[1px] font-medium hover:bg-gray-50 py-3" onClick={onSave}>Сохранить</button>
+                    <button className="flex-1 border-t-[1px] font-medium bg-green-600 rounded-b-md text-white py-3" onClick={onSave}>Сохранить</button>
                 </div>
             }
         </div>

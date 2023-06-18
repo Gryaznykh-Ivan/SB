@@ -11,11 +11,13 @@ import { CollectionUpdateRequest, IErrorResponse } from '@/types/api'
 import { useDeleteCollectionMutation, useGetCollectionByIdQuery, useUpdateCollectionMutation } from '@/services/collectionService'
 import { toast } from 'react-toastify'
 import Media from '@/components/collections/blocks/Media'
+import useConfirm from '@/hooks/useConfirm'
 
 export default function Index() {
     const router = useRouter()
+    const { show } = useConfirm()
 
-    const { isError, error, isLoading, data } = useGetCollectionByIdQuery({ collectionId: Number(router.query.collectionId)}, { skip: router.query.collectionId === undefined })
+    const { isError, error, isLoading, data } = useGetCollectionByIdQuery({ collectionId: Number(router.query.collectionId) }, { skip: router.query.collectionId === undefined })
 
     const [updateCollection, { isSuccess: isUpdateCollectionSuccess, isError: isUpdateCollectionError, error: updateCollectionError }] = useUpdateCollectionMutation()
     const [deleteCollection, { isSuccess: isDeleteCollectionSuccess, isError: isDeleteCollectionError, error: deleteCollectionError }] = useDeleteCollectionMutation()
@@ -65,12 +67,19 @@ export default function Index() {
     }, [changes])
 
     const onCollectionDelete = async () => {
-        const result = await deleteCollection({ collectionId: Number(router.query.collectionId) }).unwrap();
-        if (result.success === true) {
-            setChanges({})
-            router.push("/collections")
+        const isConfirmed = await show("Подтверждение", "Подтвердите удаление коллекции")
+
+        if (isConfirmed === true) {
+            const result = await deleteCollection({ collectionId: Number(router.query.collectionId) }).unwrap();
+            if (result.success === true) {
+                setChanges({})
+                router.push("/collections")
+            }
         }
     }
+
+    
+
     return (
         <MainLayout>
             <div className="px-6 my-4 max-w-3xl mx-auto">

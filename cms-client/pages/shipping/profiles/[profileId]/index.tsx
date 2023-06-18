@@ -8,9 +8,11 @@ import ProfileOffers from '@/components/shipping/blocks/ProfileOffers'
 import ProfileShipping from '@/components/shipping/blocks/ProfileShipping'
 import { useDeleteDeliveryProfileMutation, useGetDeliveryProfileByIdQuery, useUpdateDeliveryProfileMutation } from '@/services/shippingService'
 import { DeliveryProfileUpdateRequest, IErrorResponse } from '@/types/api'
+import useConfirm from '@/hooks/useConfirm'
 
 export default function Index() {
     const router = useRouter()
+    const { show } = useConfirm()
 
     const { isError, error, isLoading, data } = useGetDeliveryProfileByIdQuery({ profileId: Number(router.query.profileId) }, { skip: router.query.profileId === undefined })
 
@@ -62,10 +64,14 @@ export default function Index() {
     }, [changes])
 
     const onDeliveryProfileDelete = async () => {
-        const result = await deleteDeliveryProfile({ profileId: Number(router.query.profileId) }).unwrap();
-        if (result.success === true) {
-            setChanges({})
-            router.push("/shipping")
+        const isConfirmed = await show("Подтверждение", "Подтвердите удаление профиля доставки")
+
+        if (isConfirmed === true) {
+            const result = await deleteDeliveryProfile({ profileId: Number(router.query.profileId) }).unwrap();
+            if (result.success === true) {
+                setChanges({})
+                router.push("/shipping")
+            }
         }
     }
 

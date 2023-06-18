@@ -25,7 +25,7 @@ export default function Index() {
     })
 
     const [getProductBySearch, { isError: isGetProductError, isFetching: isGetProductFetching, data: getProductData, error: getProductError }] = useLazyGetProductsBySearchQuery();
-    const [updateProducts, { isSuccess: isUpdateProductsSuccess ,isError: isUpdateProductsError, error: updateProductsError }] = useUpdateProductsMutation();
+    const [updateProducts, { isSuccess: isUpdateProductsSuccess, isError: isUpdateProductsError, error: updateProductsError }] = useUpdateProductsMutation();
 
     useEffect(() => {
         if (isUpdateProductsSuccess) {
@@ -103,7 +103,7 @@ export default function Index() {
                 <div className="flex items-center justify-between">
                     <h1 className="text-xl font-medium py-2">Продукты</h1>
                     <div className="">
-                        <button className={`block ${ selected.length !== 0 ? "bg-green-700" : "bg-gray-300" } px-4 py-2 text-white font-medium rounded-md`} disabled={ selected.length === 0 } onClick={ onUpdateProducts }>В очередь</button>
+                        <button className={`block ${selected.length !== 0 ? "bg-green-700" : "bg-gray-300"} px-4 py-2 text-white font-medium rounded-md`} disabled={selected.length === 0} onClick={onUpdateProducts}>В очередь</button>
                     </div>
                 </div>
                 <div className="mt-4 px-4 bg-white rounded-md">
@@ -120,7 +120,7 @@ export default function Index() {
                         <div className="">
                             <SearchInput placeholder="Поиск" onChange={onSearch} />
                         </div>
-                        <div className="relative block overflow-x-auto">
+                        <div className="relative block overflow-x-auto min-h-[68px]">
                             {isGetProductError &&
                                 <div className="flex flex-col items-center py-5">
                                     <div className="text-2xl font-bold text-red-600">Что-то пошло не так</div>
@@ -169,18 +169,20 @@ export default function Index() {
                                 </table>
                             }
                         </div>
-                        <div className="flex justify-center mt-4 space-x-1">
-                            <button className={`p-2 font-bold border-[1px] rounded-md ${query.skip === 0 && "bg-gray-100 cursor-not-allowed"}`} onClick={onPrevPage} disabled={query.skip === 0 || isGetProductFetching === true}>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M10 19L3 12M3 12L10 5M3 12H21" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                            </button>
-                            <button className={`p-2 font-bold border-[1px] rounded-md ${getProductData?.data.length !== itemPerPage && "bg-gray-100 cursor-not-allowed"}`} onClick={onNextPage} disabled={getProductData?.data.length !== itemPerPage || isGetProductFetching === true}>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M14 5L21 12M21 12L14 19M21 12H3" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                            </button>
-                        </div>
+                        {query.skip !== 0 || getProductData?.data.length === itemPerPage &&
+                            <div className="flex justify-center mt-4 space-x-1">
+                                <button className={`p-2 font-bold border-[1px] rounded-md ${query.skip === 0 && "bg-gray-100 cursor-not-allowed"}`} onClick={onPrevPage} disabled={query.skip === 0 || isGetProductFetching === true}>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M10 19L3 12M3 12L10 5M3 12H21" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                </button>
+                                <button className={`p-2 font-bold border-[1px] rounded-md ${getProductData?.data.length !== itemPerPage && "bg-gray-100 cursor-not-allowed"}`} onClick={onNextPage} disabled={getProductData?.data.length !== itemPerPage || isGetProductFetching === true}>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14 5L21 12M21 12L14 19M21 12H3" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                </button>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>

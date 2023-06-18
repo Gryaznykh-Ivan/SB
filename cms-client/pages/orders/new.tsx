@@ -8,13 +8,11 @@ import { useRouter } from 'next/router'
 import OrderProducts from '@/components/orders/blocks/OrderProducts'
 import Customer from '@/components/orders/blocks/Customer'
 import Address from '@/components/orders/blocks/Address'
-import Service from '@/components/orders/blocks/Service'
 import Note from '@/components/orders/blocks/Note'
-import { IErrorResponse, IOfferSearch, IService, OrderCreateRequest } from '@/types/api'
+import { IErrorResponse, IOfferSearch, OrderCreateRequest } from '@/types/api'
 import { toast } from 'react-toastify'
 import { useCreateOrderMutation } from '@/services/orderService'
 import { IOrderState } from '@/types/store'
-import ServiceType from '@/components/orders/cards/ServiceType'
 import Payment from '@/components/orders/blocks/Payment'
 
 function New() {
@@ -23,8 +21,7 @@ function New() {
     const [createOrder, { isSuccess: isCreateOrderSuccess, isError: isCreateOrderError, error: createOrderError, data }] = useCreateOrderMutation()
 
     const [state, setState] = useState<IOrderState>({
-        offers: [],
-        services: []
+        offers: []
     })
 
     const [changes, setChanges] = useState<OrderCreateRequest>({})
@@ -61,7 +58,6 @@ function New() {
 
         setState(result)
         onCollectChanges({
-            services: result.services.map(({ id, ...data }) => data),
             offers: result.offers.map(({ id }) => ({ id }))
         })
     }
@@ -87,16 +83,10 @@ function New() {
                             offers={state.offers}
                             onChange={onStateChanges}
                         />
-                        <Service
-                            services={state.services}
-                            region={changes.mailingRegion ?? null}
-                            onChange={onStateChanges}
-                        />
                         <Payment
                             orderId={null}
-                            services={state.services}
                             offers={state.offers}
-                            priceDiffrence={ 0 }
+                            priceDiffrence={0}
                         />
                     </div>
                     <div className="space-y-4 lg:w-80">
