@@ -60,7 +60,7 @@ export default function VendorsSmartInput({ onChange, value, placeholder, classN
                     }
                     {!isFetching && isSuccess &&
                         data?.data.map(vendor =>
-                            <div key={vendor} className="px-3 py-2 hover:bg-gray-100 cursor-pointer" onMouseDown={() => onSelect(vendor)}>{vendor}</div>
+                            <div key={vendor} className="px-3 py-2 hover:bg-gray-50 cursor-pointer" onMouseDown={() => onSelect(vendor)}>{vendor}</div>
                         )
                     }
                 </div>

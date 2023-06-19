@@ -85,7 +85,7 @@ function Index() {
                                         {data.data.map(page => (
                                             <tr
                                                 key={page.id}
-                                                className="border-b-[1px] hover:bg-gray-100 cursor-pointer whitespace-nowrap"
+                                                className="border-b-[1px] hover:bg-gray-50 cursor-pointer whitespace-nowrap"
                                                 onClick={() => router.push(`/pages/${page.id}`)}
                                             >
                                                 <td className="px-3 py-2 font-medium">{page.title}</td>

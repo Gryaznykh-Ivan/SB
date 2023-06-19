@@ -117,7 +117,7 @@ export default function SelectRegion({ profileId, title, onClose, onDone }: IPro
                                 </div>
                             }
                             {state.map(zone =>
-                                <label key={zone.region} htmlFor={zone.region} className="flex items-center px-5 py-2 space-x-4 hover:bg-gray-100">
+                                <label key={zone.region} htmlFor={zone.region} className="flex items-center px-5 py-2 space-x-4 hover:bg-gray-50">
                                     <input type="checkbox" name="" id={zone.region} className="rounded" checked={selected?.country === zone.country && selected.region === zone.region} onChange={() => onSelectProfileZone(zone)} />
                                     <div className="text-sm flex-1">
                                         <div className="text-gray-500">{zone.country}</div>

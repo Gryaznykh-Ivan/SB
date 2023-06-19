@@ -15,7 +15,7 @@ export default function JSXAccordion({ name, content }: IProps) {
 
     return (
         <div className="w-full">
-            <div className={`flex justify-between items-center py-3 cursor-pointer hover:bg-gray-100 px-4 ${isOpened && "bg-gray-50"}`} onClick={onToggle}>
+            <div className={`flex justify-between items-center py-3 cursor-pointer hover:bg-gray-50 px-4 ${isOpened && "bg-gray-50"}`} onClick={onToggle}>
                 <div className="flex items-center">
                     <h2 className="ml-3">{name}</h2>
                 </div>

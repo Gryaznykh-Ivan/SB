@@ -66,7 +66,7 @@ export default function CollectionsSmartInput({ onChange, placeholder, className
                     }
                     {!isFetching && isSuccess &&
                         data?.data.map(collection =>
-                            <div key={collection.id} className="px-3 py-2 hover:bg-gray-100 cursor-pointer" onMouseDown={() => onSelect(collection)}>{collection.title}</div>
+                            <div key={collection.id} className="px-3 py-2 hover:bg-gray-50 cursor-pointer" onMouseDown={() => onSelect(collection)}>{collection.title}</div>
                         )
                     }
                 </div>

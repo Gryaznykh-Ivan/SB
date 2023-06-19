@@ -107,7 +107,7 @@ function Index() {
                                         {data.data.map(offer => (
                                             <tr
                                                 key={offer.id}
-                                                className="border-b-[1px] hover:bg-gray-100 cursor-pointer"
+                                                className="border-b-[1px] hover:bg-gray-50 cursor-pointer"
                                                 onClick={() => router.push(`/offers/${offer.id}`)}
                                             >
                                                 <td className="py-2 flex justify-center">

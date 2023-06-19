@@ -57,7 +57,7 @@ export default function UsersSmartInput({ onChange, value, placeholder, classNam
                     }
                     {!isFetching && isSuccess &&
                         data?.data.map(user =>
-                            <div key={user.id} className="px-3 py-2 hover:bg-gray-100 cursor-pointer" onMouseDown={() => onSelect(user.id)}>{user.fullName}</div>
+                            <div key={user.id} className="px-3 py-2 hover:bg-gray-50 cursor-pointer" onMouseDown={() => onSelect(user.id)}>{user.fullName}</div>
                         )
                     }
                 </div>

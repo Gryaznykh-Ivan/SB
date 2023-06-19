@@ -33,7 +33,7 @@ export default function RemovedOffers({ offers }: IProps) {
             </div>
             <div className="divide-y-[1px] overflow-y-auto border-b-[1px]">
                 {offers.map((offer) =>
-                    <div key={offer.id} className="flex items-center px-5 py-2 space-x-4 hover:bg-gray-100">
+                    <div key={offer.id} className="flex items-center px-5 py-2 space-x-4 hover:bg-gray-50">
                         <div className="relative w-12 aspect-square border-[1px] rounded-md">
                             {offer.image !== null ?
                                 <Image
@@ -52,7 +52,7 @@ export default function RemovedOffers({ offers }: IProps) {
                                 </div>
                             }
                         </div>
-                        <div className="flex-1 flex items-center py-1 space-x-4 hover:bg-gray-100">
+                        <div className="flex-1 flex items-center py-1 space-x-4 hover:bg-gray-50">
                             <div className="flex-1 text-sm py-1">
                                 <Link href={`/offers/${offer.id}`} className="hover:underline">{offer.product} • {offer.variant}</Link>
                                 <div className="text-gray-500">{offer.deliveryProfile.title}</div>

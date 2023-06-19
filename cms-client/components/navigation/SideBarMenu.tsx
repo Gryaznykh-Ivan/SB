@@ -20,10 +20,10 @@ export default function SideBarMenu() {
 
     return (
         <div className="hidden md:block border-r-[1px] bg-white">
-            <div className="sticky top-[64px]">
+            <div className="sticky top-[64px] pb-14">
                 <SideBar isMenuFolded={isMenuFoldedMemo} />
-                <div className="border-t-[1px] p-2 text-sm hidden md:block">
-                    <button className="flex w-full items-center font-semibold px-3 py-2 hover:bg-gray-100 rounded-md stroke-black" onClick={onToggle}>
+                <div className="fixed bottom-0 bg-white border-t-[1px] p-2 text-sm hidden md:block">
+                    <button className="flex w-full items-center font-semibold px-3 py-2 hover:bg-gray-50 rounded-md stroke-black" onClick={onToggle}>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M4 17L8 13M8 7H20H8ZM20 7L16 3L20 7ZM20 7L16 11L20 7ZM16 17H4H16ZM4 17L8 21L4 17Z" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>

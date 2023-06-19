@@ -93,7 +93,7 @@ export default function SelectVariants({ title, variantId, onVariantChange, onCl
                             <div className="divide-y-[1px] max-h-96 overflow-y-auto">
                                 {state.map(product => (
                                     <div key={product.id} className="">
-                                        <div className="flex items-center px-5 py-2 space-x-4 hover:bg-gray-100 border-b-[1px]">
+                                        <div className="flex items-center px-5 py-2 space-x-4 hover:bg-gray-50 border-b-[1px]">
                                             <div className="relative w-12 aspect-square border-[1px] rounded-md">
                                                 {product.image !== null ?
                                                     <Image
@@ -116,7 +116,7 @@ export default function SelectVariants({ title, variantId, onVariantChange, onCl
                                         </div>
                                         <div className="divide-y-[1px]">
                                             {product.variants.map(variant => (
-                                                <label key={variant.id} htmlFor={variant.id.toString()} className="flex items-center py-3 space-x-4 hover:bg-gray-100 px-5">
+                                                <label key={variant.id} htmlFor={variant.id.toString()} className="flex items-center py-3 space-x-4 hover:bg-gray-50 px-5">
                                                     <div className="">
                                                         <input type="checkbox" readOnly id={variant.id.toString()} name="" className="rounded" checked={variantId === variant.id} onClick={() => onVariantChange(variant.id)} />
                                                     </div>

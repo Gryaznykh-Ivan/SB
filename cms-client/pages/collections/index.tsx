@@ -86,7 +86,7 @@ function Index() {
                                         {data.data.map(collection => (
                                             <tr
                                                 key={collection.id}
-                                                className="border-b-[1px] hover:bg-gray-100 cursor-pointer whitespace-nowrap"
+                                                className="border-b-[1px] hover:bg-gray-50 cursor-pointer whitespace-nowrap"
                                                 onClick={() => router.push(`/collections/${collection.id}`)}
                                             >
                                                 <td className="px-3 py-2 font-medium">{collection.title}</td>

@@ -109,7 +109,7 @@ function Index() {
                                         {data.data.map(order => (
                                             <tr
                                                 key={order.id}
-                                                className="border-b-[1px] hover:bg-gray-100 cursor-pointer"
+                                                className="border-b-[1px] hover:bg-gray-50 cursor-pointer"
                                                 onClick={() => router.push(`/orders/${order.id}`)}
                                             >
                                                 <td className="px-3 py-2 font-medium">№{order.id}</td>

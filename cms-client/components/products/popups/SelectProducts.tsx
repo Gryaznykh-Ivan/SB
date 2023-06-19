@@ -68,7 +68,7 @@ export default function SelectProducts({ title, collectionId, onClose }: IProps)
                             </div>
                         </div>
                         <div className="divide-y-[1px] max-h-96 overflow-y-auto">
-                            <div className="flex items-center px-5 py-2 space-x-4 hover:bg-gray-100">
+                            <div className="flex items-center px-5 py-2 space-x-4 hover:bg-gray-50">
                                 <div className="">
                                     <input type="checkbox" name="" id="test" className="rounded" />
                                 </div>
@@ -77,7 +77,7 @@ export default function SelectProducts({ title, collectionId, onClose }: IProps)
                                 </div>
                                 <div className="text-sm flex-1">Air Jordan 1 Low "Shattered Backboard"</div>
                             </div>
-                            <div className="flex items-center px-5 py-2 space-x-4 hover:bg-gray-100">
+                            <div className="flex items-center px-5 py-2 space-x-4 hover:bg-gray-50">
                                 <div className="">
                                     <input type="checkbox" name="" id="test" className="rounded" />
                                 </div>
@@ -86,7 +86,7 @@ export default function SelectProducts({ title, collectionId, onClose }: IProps)
                                 </div>
                                 <div className="text-sm flex-1">Air Jordan 1 Low "Shattered Backboard"</div>
                             </div>
-                            <div className="flex items-center px-5 py-2 space-x-4 hover:bg-gray-100">
+                            <div className="flex items-center px-5 py-2 space-x-4 hover:bg-gray-50">
                                 <div className="">
                                     <input type="checkbox" name="" id="test" className="rounded" />
                                 </div>
@@ -95,7 +95,7 @@ export default function SelectProducts({ title, collectionId, onClose }: IProps)
                                 </div>
                                 <div className="text-sm flex-1">Air Jordan 1 Low "Shattered Backboard"</div>
                             </div>
-                            <div className="flex items-center px-5 py-2 space-x-4 hover:bg-gray-100">
+                            <div className="flex items-center px-5 py-2 space-x-4 hover:bg-gray-50">
                                 <div className="">
                                     <input type="checkbox" name="" id="test" className="rounded" />
                                 </div>
@@ -104,7 +104,7 @@ export default function SelectProducts({ title, collectionId, onClose }: IProps)
                                 </div>
                                 <div className="text-sm flex-1">Air Jordan 1 Low "Shattered Backboard"</div>
                             </div>
-                            <div className="flex items-center px-5 py-2 space-x-4 hover:bg-gray-100">
+                            <div className="flex items-center px-5 py-2 space-x-4 hover:bg-gray-50">
                                 <div className="">
                                     <input type="checkbox" name="" id="test" className="rounded" />
                                 </div>
@@ -113,7 +113,7 @@ export default function SelectProducts({ title, collectionId, onClose }: IProps)
                                 </div>
                                 <div className="text-sm flex-1">Air Jordan 1 Low "Shattered Backboard"</div>
                             </div>
-                            <div className="flex items-center px-5 py-2 space-x-4 hover:bg-gray-100">
+                            <div className="flex items-center px-5 py-2 space-x-4 hover:bg-gray-50">
                                 <div className="">
                                     <input type="checkbox" name="" id="test" className="rounded" />
                                 </div>

@@ -60,7 +60,7 @@ export default function CountriesSmartInput({ onChange, value, placeholder, clas
                     }
                     {!isFetching && isSuccess &&
                         data?.data.map(country =>
-                            <div key={country} className="px-3 py-2 hover:bg-gray-100 cursor-pointer" onMouseDown={() => onSelect(country)}>{country}</div>
+                            <div key={country} className="px-3 py-2 hover:bg-gray-50 cursor-pointer" onMouseDown={() => onSelect(country)}>{country}</div>
                         )
                     }
                 </div>

@@ -90,7 +90,7 @@ export default function SelectOffers({ title, deliveryProfileId, connectOffers, 
                         }
                         <div className="divide-y-[1px] max-h-96 overflow-y-auto">
                             {state.map(offer =>
-                                <label key={offer.id} htmlFor={offer.id.toString()} className="flex items-center px-5 py-2 space-x-4 hover:bg-gray-100">
+                                <label key={offer.id} htmlFor={offer.id.toString()} className="flex items-center px-5 py-2 space-x-4 hover:bg-gray-50">
                                     <div className="">
                                         <input type="checkbox" readOnly id={offer.id.toString()} name="" className="rounded" checked={connectOffers?.find(c => c.id === offer.id) !== undefined} onClick={() => onAddOffer(offer)} />
                                     </div>
@@ -112,7 +112,7 @@ export default function SelectOffers({ title, deliveryProfileId, connectOffers, 
                                             </div>
                                         }
                                     </div>
-                                    <div className="flex-1 flex items-center py-1 space-x-4 hover:bg-gray-100">
+                                    <div className="flex-1 flex items-center py-1 space-x-4 hover:bg-gray-50">
                                         <div className="flex-1 text-sm py-1">
                                             <div className="">{offer.product} • {offer.variant}</div>
                                             <div className="text-gray-500">{offer.user}</div>

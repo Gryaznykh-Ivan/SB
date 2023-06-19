@@ -64,13 +64,13 @@ export default function TagsSmartInput({ onChange, placeholder, className, tags,
                         </div>
                     }
                     {isFetching === false && data?.data.length === 0 && state.trim().length !== 0 &&
-                        <div className="px-3 py-2 hover:bg-gray-100 cursor-pointer rounded-md border-[1px]" onMouseDown={() => onSelect(state)}>
+                        <div className="px-3 py-2 hover:bg-gray-50 cursor-pointer rounded-md border-[1px]" onMouseDown={() => onSelect(state)}>
                             <span className="font-medium">Создать </span>
                             {state}
                         </div>
                     }
                     {isFetching === false && isSuccess === true &&
-                        data?.data.map(tag => <div key={tag} className="px-3 py-2 hover:bg-gray-100 cursor-pointer" onMouseDown={() => onSelect(tag)}>{tag}</div>)
+                        data?.data.map(tag => <div key={tag} className="px-3 py-2 hover:bg-gray-50 cursor-pointer" onMouseDown={() => onSelect(tag)}>{tag}</div>)
                     }
                 </div>
             }

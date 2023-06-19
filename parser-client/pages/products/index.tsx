@@ -152,7 +152,7 @@ export default function Index() {
                                         {getProductData.data.map(product => (
                                             <tr
                                                 key={product.id}
-                                                className="border-b-[1px] hover:bg-gray-100"
+                                                className="border-b-[1px] hover:bg-gray-50"
                                                 onClick={() => onSelect(product.id)}
                                             >
                                                 <td className="px-3 py-2">
