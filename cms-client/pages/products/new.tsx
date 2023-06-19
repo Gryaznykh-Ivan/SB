@@ -25,7 +25,7 @@ function New() {
 
     useEffect(() => {
         if (isCreateProductSuccess) {
-            setTimeout(() => toast.success("Продукт создан"), 100)
+            setTimeout(() => toast.success("Товар создан"), 100)
         }
 
         if (isCreateProductError) {
@@ -60,7 +60,7 @@ function New() {
                             <path d="M10 19L3 12M3 12L10 5M3 12H21" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                     </Link>
-                    <h1 className="text-xl font-medium">Создание продукта</h1>
+                    <h1 className="text-xl font-medium">Создание товара</h1>
                 </div>
                 <div className="my-4 flex flex-col space-y-4 pb-4 border-b-[1px] lg:flex-row lg:space-x-4 lg:space-y-0">
                     <div className="flex-1 space-y-4">

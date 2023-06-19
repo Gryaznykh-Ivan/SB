@@ -48,7 +48,7 @@ export default function CountriesSmartInput({ onChange, value, placeholder, clas
         <div className="relative">
             <input className={`w-full text-sm border-[1px] border-gray-300 rounded-md ${className}`} type="text" autoComplete="off" name={name} value={value} id={id} placeholder={placeholder} ref={ref} onChange={onInputChange} onFocus={onFocus} onBlur={onBlur} />
             {focus &&
-                <div className={`absolute inset-x-0 flex flex-col bg-white mt-2 rounded-md z-10 ${ data?.data.length !== 0 && "border-[1px] shadow-md" }`}>
+                <div className={`absolute inset-x-0 flex flex-col bg-white z-40 mt-2 rounded-md ${data?.data.length !== 0 && "border-[1px] shadow-md"}`}>
                     {isFetching &&
                         <div className="flex justify-center">
                             <div className="animate-spin p-3">

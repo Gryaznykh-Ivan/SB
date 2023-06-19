@@ -39,7 +39,7 @@ export default function ProductsToReturn({ onChange, offers }: IProps) {
     return (
         <div className="rounded-md bg-white shadow-sm">
             <div className="p-5 border-b-[1px] flex justify-between items-center">
-                <h2 className="font-semibold">Продукты доступные к возврату</h2>
+                <h2 className="font-semibold">Товары доступные к возврату</h2>
             </div>
             {isError &&
                 <div className="flex flex-col items-center py-5">

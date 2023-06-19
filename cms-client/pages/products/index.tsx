@@ -52,7 +52,7 @@ function Index() {
         <MainLayout>
             <div className="px-6 my-4">
                 <div className="flex items-center justify-between">
-                    <h1 className="text-xl font-medium">Продукты</h1>
+                    <h1 className="text-xl font-medium">Товары</h1>
                     <div className="">
                         <Link href="/products/new" className="block bg-green-700 px-4 py-2 text-white font-medium rounded-md">Создать</Link>
                     </div>
@@ -90,7 +90,7 @@ function Index() {
                                     <thead>
                                         <tr className="border-b-[1px] text-sm">
                                             <th className="font-medium text-gray-500 text-start px-3 py-2 min-w-[80px] w-20"></th>
-                                            <th className="font-medium text-gray-500 text-start px-3 py-2 min-w-[200px]">Продукт</th>
+                                            <th className="font-medium text-gray-500 text-start px-3 py-2 min-w-[200px]">Товар</th>
                                             <th className="font-medium text-gray-500 text-start px-3 py-2 w-32">Статус</th>
                                             <th className="font-medium text-gray-500 text-start px-3 py-2 w-32">Наличие</th>
                                             <th className="font-medium text-gray-500 text-start px-3 py-2 w-32">Производитель</th>
@@ -135,7 +135,7 @@ function Index() {
                                 </table>
                             }
                         </div>
-                        {query.skip !== 0 || data?.data.length === itemPerPage &&
+                        {(query.skip !== 0 || data?.data.length === itemPerPage) &&
                             <div className="flex justify-center mt-4 space-x-1">
                                 <button className={`p-2 font-bold border-[1px] rounded-md ${query.skip === 0 && "bg-gray-100 cursor-not-allowed"}`} onClick={onPrevPage} disabled={query.skip === 0 || isFetching === true}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

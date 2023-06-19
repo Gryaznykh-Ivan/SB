@@ -351,7 +351,7 @@ export class VariantService {
         })
 
         if (product === null) {
-            throw new HttpException("Продукт не найден", HttpStatus.BAD_REQUEST)
+            throw new HttpException("Товар не найден", HttpStatus.BAD_REQUEST)
         }
 
         if (product.variants.length !== 0) {

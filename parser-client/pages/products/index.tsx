@@ -29,7 +29,7 @@ export default function Index() {
 
     useEffect(() => {
         if (isUpdateProductsSuccess) {
-            toast.success("Продукты добавлены в очередь")
+            toast.success("Товары добавлены в очередь")
         }
 
         if (isUpdateProductsError) {
@@ -101,7 +101,7 @@ export default function Index() {
             </Head>
             <div className="px-6 my-4">
                 <div className="flex items-center justify-between">
-                    <h1 className="text-xl font-medium py-2">Продукты</h1>
+                    <h1 className="text-xl font-medium py-2">Товары</h1>
                     <div className="">
                         <button className={`block ${selected.length !== 0 ? "bg-green-700" : "bg-gray-300"} px-4 py-2 text-white font-medium rounded-md`} disabled={selected.length === 0} onClick={onUpdateProducts}>В очередь</button>
                     </div>
@@ -141,7 +141,7 @@ export default function Index() {
                                     <thead>
                                         <tr className="border-b-[1px] text-sm">
                                             <th className="font-medium text-gray-500 text-start px-3 py-2 w-10"></th>
-                                            <th className="font-medium text-gray-500 text-start px-3 py-2 min-w-[200px]">Продукт</th>
+                                            <th className="font-medium text-gray-500 text-start px-3 py-2 min-w-[200px]">Товары</th>
                                             <th className="font-medium text-gray-500 text-start px-3 py-2 w-32">Статус</th>
                                             <th className="font-medium text-gray-500 text-start px-3 py-2 w-32">Фактор</th>
                                             <th className="font-medium text-gray-500 text-start px-3 py-2 w-32">Количество</th>
@@ -169,7 +169,7 @@ export default function Index() {
                                 </table>
                             }
                         </div>
-                        {query.skip !== 0 || getProductData?.data.length === itemPerPage &&
+                        {(query.skip !== 0 || getProductData?.data.length === itemPerPage) &&
                             <div className="flex justify-center mt-4 space-x-1">
                                 <button className={`p-2 font-bold border-[1px] rounded-md ${query.skip === 0 && "bg-gray-100 cursor-not-allowed"}`} onClick={onPrevPage} disabled={query.skip === 0 || isGetProductFetching === true}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

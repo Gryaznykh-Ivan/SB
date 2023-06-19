@@ -44,7 +44,7 @@ export default function Header() {
                                 </svg>
                             </button>
                             <Link href="/" className="text-lg font-bold whitespace-nowrap ml-2 md:ml-0">
-                                SUPER BRAND
+                                ЛОГОТИП МАГАЗИНА
                             </Link>
                         </div>
                         <div className="flex justify-self-end">

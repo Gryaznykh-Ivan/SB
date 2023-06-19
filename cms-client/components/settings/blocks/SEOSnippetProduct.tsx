@@ -31,7 +31,7 @@ export default function SEOSnippetProduct() {
 
     useEffect(() => {
         if (isSuccess) {
-            toast.success("Шаблон снипета продукта обновлен")
+            toast.success("Шаблон снипета товара обновлен")
         }
 
         if (isError) {

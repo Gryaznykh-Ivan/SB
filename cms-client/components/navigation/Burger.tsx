@@ -28,7 +28,7 @@ export default function Burger({ isActive, onClose }: IProps) {
                             </div>
                         </div>
                         <div className="flex-1 divide-y-[1px] divide-gray-200 h-full overflow-y-auto pb-20">
-                            <SideBar onClick={ onClose } />
+                            <SideBar isMenuFolded={false} onClose={ onClose } />
                         </div>
                     </div>
                 </div>

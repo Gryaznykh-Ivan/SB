@@ -129,7 +129,7 @@ export default function DeliveryZone({ country, id, options, region, onChange, o
                 </button>
             </div>
             <div className="mt-4 px-5 pb-5">
-                <div className="font-medium">Опции</div>
+                <div className="font-medium">Условия и способы доставки</div>
                 <div className="space-y-2 mt-2">
                     {state.values.map(option =>
                         <div key={option.id} className="flex bg-white">

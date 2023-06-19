@@ -15,7 +15,7 @@ export default function Custom404() {
                 <div className="px-8 pt-20 pb-40 space-y-10">
                     <div className="text-center text-md">страница не найдена</div>
                     <div className="text-center leading-[68px] text-[68px]">404</div>
-                    <div className="text-center text-base">К сожалению, страницу или продукт, который вы ищете, не удается найти прямо сейчас, попробуйте воспользоваться поиском.</div>
+                    <div className="text-center text-base">К сожалению, страницу или товар, который вы ищете, не удается найти прямо сейчас, попробуйте воспользоваться поиском.</div>
                 </div>
                 <div className="space-y-8 py-8">
                     <FeaturedProducts />

@@ -80,8 +80,8 @@ export default function OrganizationInfo({ onChange, ...data }: IProps) {
             <h2 className="font-semibold p-5 border-b-[1px]">Организация</h2>
             <div className="space-y-3 p-5">
                 <div className="flex flex-col">
-                    <label htmlFor="type" className="text-sm text-gray-600 mb-1">Тип продукта</label>
-                    <ProductTypesSmartInput id="type" placeholder="Тип продукта" name="type" value={state.type} onChange={onInputChange} />
+                    <label htmlFor="type" className="text-sm text-gray-600 mb-1">Тип товара</label>
+                    <ProductTypesSmartInput id="type" placeholder="Тип товара" name="type" value={state.type} onChange={onInputChange} />
                 </div>
                 <div className="flex flex-col">
                     <label htmlFor="vendor" className="text-sm text-gray-600 mb-1">Производитель</label>

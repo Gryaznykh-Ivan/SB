@@ -6,11 +6,11 @@ const actions = {
         style: "text-gray-500"
     },
     RECEIVING_PRODUCTS_FROM_SHOP: {
-        text: "Получаем список продуктов магазина",
+        text: "Получаем список товаров магазина",
         style: "text-gray-500"
     },
     RECEIVING_PRODUCTS_FROM_STOCKX: {
-        text: "Получаем цены продуктов Stockx",
+        text: "Получаем цены товаров Stockx",
         style: "text-gray-500"
     },
     UPDATEING_PRODUCTS: {

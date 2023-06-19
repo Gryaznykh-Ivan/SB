@@ -33,7 +33,7 @@ function Index() {
 
     useEffect(() => {
         if (isUpdateProductSuccess) {
-            toast.success("Продукт обновлен")
+            toast.success("Товар обновлен")
         }
 
         if (isUpdateProductError) {
@@ -47,7 +47,7 @@ function Index() {
 
     useEffect(() => {
         if (isDeleteProductSuccess) {
-            setTimeout(() => toast.success("Продукт удален"), 100)
+            setTimeout(() => toast.success("Товар удален"), 100)
         }
 
         if (isDeleteProductError) {

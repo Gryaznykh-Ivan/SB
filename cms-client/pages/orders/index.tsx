@@ -100,7 +100,7 @@ function Index() {
                                             <th className="font-medium text-gray-500 text-start px-3 py-2">Итог</th>
                                             <th className="font-medium text-gray-500 text-start px-3 py-2">Статус оплаты</th>
                                             <th className="font-medium text-gray-500 text-start px-3 py-2">Статус исполнения</th>
-                                            <th className="font-medium text-gray-500 text-start px-3 py-2">Продукты</th>
+                                            <th className="font-medium text-gray-500 text-start px-3 py-2">Товары</th>
                                             <th className="font-medium text-gray-500 text-start px-3 py-2">Услуги</th>
                                             <th className="font-medium text-gray-500 text-start px-3 py-2 w-36">Статус возврата</th>
                                         </tr>
@@ -127,7 +127,7 @@ function Index() {
                                 </table>
                             }
                         </div>
-                        {query.skip !== 0 || data?.data.length === itemPerPage &&
+                        {(query.skip !== 0 || data?.data.length === itemPerPage) &&
                             <div className="flex justify-center mt-4 space-x-1">
                                 <button className={`p-2 font-bold border-[1px] rounded-md ${query.skip === 0 && "bg-gray-100 cursor-not-allowed"}`} onClick={onPrevPage} disabled={query.skip === 0 || isFetching === true}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

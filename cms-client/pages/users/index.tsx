@@ -112,7 +112,7 @@ function Index() {
                                 </table>
                             }
                         </div>
-                        {query.skip !== 0 || data?.data.length === itemPerPage &&
+                        {(query.skip !== 0 || data?.data.length === itemPerPage) &&
                             <div className="flex justify-center mt-4 space-x-1">
                                 <button className={`p-2 font-bold border-[1px] rounded-md ${query.skip === 0 && "bg-gray-100 cursor-not-allowed"}`} onClick={onPrevPage} disabled={query.skip === 0 || isFetching === true}>
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

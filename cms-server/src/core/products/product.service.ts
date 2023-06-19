@@ -97,7 +97,7 @@ export class ProductService {
         })
 
         if (product === null) {
-            throw new HttpException("Продукт не найден", HttpStatus.BAD_REQUEST)
+            throw new HttpException("Товар не найден", HttpStatus.BAD_REQUEST)
         }
 
         return {
@@ -271,7 +271,7 @@ export class ProductService {
         } catch (e) {
             if (e instanceof Prisma.PrismaClientKnownRequestError) {
                 if (e.code === 'P2002') {
-                    throw new HttpException("Продукт с таким handle уже существует", HttpStatus.BAD_REQUEST)
+                    throw new HttpException("Товар с таким handle уже существует", HttpStatus.BAD_REQUEST)
                 }
             }
 
@@ -1033,7 +1033,7 @@ export class ProductService {
                     if (e.meta?.target === "Metafield_productId_key_key") {
                         throw new HttpException("Ключи у метаполей должны быть уникальными", HttpStatus.BAD_REQUEST)
                     } else {
-                        throw new HttpException("Продукт с таким handle уже существует", HttpStatus.BAD_REQUEST)
+                        throw new HttpException("Товар с таким handle уже существует", HttpStatus.BAD_REQUEST)
                     }
                 }
             }
