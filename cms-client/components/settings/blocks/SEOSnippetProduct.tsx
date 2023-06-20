@@ -1,16 +1,16 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify';
 import { productService } from '@/services/productService';
-import { useGetSettingsBySearchQuery, useUpdateSettingMutation } from '@/services/settingService';
+import { useGetVariablesByGroupQuery, useUpdateVariableMutation } from '@/services/variableService';
 import { IErrorResponse, ProductCreateRequest, ProductUpdateRequest } from '@/types/api';
 import Input from '../../inputs/Input'
 import TextArea from '../../inputs/TextArea'
 
 
 export default function SEOSnippetProduct() {
-    const { data, isLoading } = useGetSettingsBySearchQuery({ setting: "SEO-SNIPPET" })
+    const { data, isLoading } = useGetVariablesByGroupQuery({ group: "SEO_SNIPPET_PRODUCT" })
     
-    const [updateSetting, { isSuccess, isError, error }] = useUpdateSettingMutation()
+    const [updateVariable, { isSuccess, isError, error }] = useUpdateVariableMutation()
 
     const [state, setState] = useState({
         title: "",
@@ -19,13 +19,13 @@ export default function SEOSnippetProduct() {
 
     useEffect(() => {
         if (data?.data !== undefined) {
-            const title = data.data.find(c => c.title === "title")?.value
-            const description = data.data.find(c => c.title === "description")?.value
+            const title = getVariableByKey("title")
+            const description = getVariableByKey("description")
 
             setState(prev => ({
                 ...prev,
-                title: title || "",
-                description: description || "",
+                title: title,
+                description: description,
             }))
         }
     }, [data])
@@ -44,22 +44,26 @@ export default function SEOSnippetProduct() {
         }
     }, [isSuccess, isError])
 
+    const getVariableByKey = (key: string) => {
+        return data?.data.find(c => c.key === key)?.value ?? ""
+    }
+
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setState(prev => ({ ...prev, [e.target.name]: e.target.value }))
     }
 
     const onSave = async () => {
-        const updateSettings = Object.entries(state).filter(a => data?.data.find(c => c.title === a[0])?.value !== a[1]).map(setting => ({
-            setting: "SEO-SNIPPET",
-            title: setting[0],
-            value: setting[1]
+        const updateVariables = Object.entries(state).filter(a => getVariableByKey(a[0]) !== a[1]).map(variable => ({
+            group: "SEO_SNIPPET_PRODUCT",
+            key: variable[0],
+            value: variable[1]
         }))
 
-        await updateSetting({ updateSettings }).unwrap()
+        await updateVariable({ updateVariables }).unwrap()
     }
 
     const mustBeSaved = useMemo(() => {
-        return Object.entries(state).some(a => data?.data.find(c => c.title === a[0])?.value !== a[1])
+        return Object.entries(state).some(a => getVariableByKey(a[0]) !== a[1])
     }, [state])
 
     return (

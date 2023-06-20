@@ -4,7 +4,7 @@ import { OfferModule } from './offers/offer.module';
 import { OrderModule } from './orders/order.module';
 import { PageModule } from './pages/page.module';
 import { ProductModule } from './products/product.module';
-import { SettingModule } from './settings/setting.module';
+import { VariableModule } from './variables/variable.module';
 import { ShippingModule } from './shipping/shipping.module';
 import { SuggestionModule } from './suggestions/suggestion.module';
 import { UserModule } from './users/user.module';
@@ -21,7 +21,7 @@ import { VariantModule } from './variants/variant.module';
         SuggestionModule,
         OrderModule,
         PageModule,
-        SettingModule
+        VariableModule
     ],
 })
 export class CoreModule { }

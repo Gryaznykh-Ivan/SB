@@ -2,29 +2,29 @@ import { Body, Controller, DefaultValuePipe, Delete, Get, Param, ParseBoolPipe, 
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { Right, Role } from '@prisma/client';
 import { Auth } from 'src/decorators/auth.decorator';
-import { UpdateSettingDto } from './dto/updateSetting.dto';
-import { SettingService } from './setting.service';
+import { UpdateVariablesDto } from './dto/updateVariables.dto';
+import { VariableService } from './variable.service';
 
-@Controller('settings')
-export class SettingController {
+@Controller('variables')
+export class VariableController {
 
     constructor(
-        private readonly settingService: SettingService
+        private readonly variableService: VariableService
     ) { }
 
     @Get('search')
     @Auth([Role.ADMIN])
-    getSettingsBySearch(
-        @Query('setting') setting: string
+    getVariablesByGroup(
+        @Query('group') group: string
     ) {
-        return this.settingService.getSettingsBySearch(setting)
+        return this.variableService.getVariablesByGroup(group)
     }
 
     @Put('update')
     @Auth([Role.ADMIN])
-    updateSetting(
-        @Body() data: UpdateSettingDto
+    updateVariable(
+        @Body() data: UpdateVariablesDto
     ) {
-        return this.settingService.updateSetting(data)
+        return this.variableService.updateVariables(data)
     }
 }

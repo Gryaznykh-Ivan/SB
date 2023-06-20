@@ -93,16 +93,16 @@ enum InvoiceStatus {
     SUCCEEDED
 }
 
-model Setting {
+model Variable {
     id        Int      @id @default(autoincrement()) @db.UnsignedInt
-    setting   String
-    title     String
+    group     String
+    key       String
     value     String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    @@unique([setting, title])
-    @@map("setting")
+    @@unique([group, key])
+    @@map("variable")
 }
 
 model VerificationCode {

@@ -2,14 +2,14 @@ import { Type } from "class-transformer";
 import { ArrayMinSize, IsArray, IsBoolean, IsNotEmpty, IsOptional, IsString, NotEquals, ValidateIf, ValidateNested } from "class-validator";
 
 
-export class SettingDto {
+export class VariableDto {
     @IsNotEmpty()
     @IsString()
-    setting: string;
+    group: string;
 
     @IsNotEmpty()
     @IsString()
-    title: string;
+    key: string;
 
     @IsString()
     @NotEquals(null)
@@ -17,10 +17,10 @@ export class SettingDto {
     value: string;
 }
 
-export class UpdateSettingDto {
+export class UpdateVariablesDto {
     @ArrayMinSize(1)
     @IsArray()
     @ValidateNested({ each: true })
-    @Type(() => SettingDto)
-    updateSettings: SettingDto[];
+    @Type(() => VariableDto)
+    updateVariables: VariableDto[];
 }

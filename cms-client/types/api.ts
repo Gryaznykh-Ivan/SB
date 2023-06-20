@@ -16,10 +16,10 @@ export interface IMetafield {
     value: string;
 }
 
-export interface ISetting {
+export interface IVariable {
     id: number;
-    setting: string;
-    title: string;
+    group: string;
+    key: string;
     value: string;
     createdAt: Date;
     updatedAt: Date;
@@ -1065,15 +1065,15 @@ export type OrderReturnDeleteRequest = {
 
 
 
-// settingService
+// variableService
 
-export type SettingSearchResponse = IResponse<ISetting[]>
-export type SettingSearchRequest = {
-    setting: string;
+export type VariableSearchResponse = IResponse<IVariable[]>
+export type VariableSearchRequest = {
+    group: string;
 }
 
 
-export type SettingUpdateResponse = IResponse<void>
-export type SettingUpdateRequest = {
-    updateSettings: Pick<ISetting, 'setting' | 'title' | 'value'>[]
+export type VariableUpdateResponse = IResponse<void>
+export type VariableUpdateRequest = {
+    updateVariables: Pick<IVariable, 'group' | 'key' | 'value'>[]
 }

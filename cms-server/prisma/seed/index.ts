@@ -5,35 +5,35 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 const seed = async () => {
-    console.log("1) Managers data filling")
-    await managers()
+    // console.log("1) Managers data filling")
+    // await managers()
 
-    console.log("2) Countries data filling")
-    await countries()
+    // console.log("2) Countries data filling")
+    // await countries()
 
 
-    console.log("3) DeliveryProfiles data filling")
-    await deliveryProfiles()
+    // console.log("3) DeliveryProfiles data filling")
+    // await deliveryProfiles()
 
     console.log("4) Settings data filling")
     await settings()
 }
 
 const settings = async () => {
-    // await prisma.setting.createMany({
-    //     data: [
-    //         {
-    //             group: "SEO-SNIPPET",
-    //             key: "title",
-    //             value: "[vendor] [title] | brandname"
-    //         },
-    //         {
-    //             group: "SEO-SNIPPET",
-    //             key: "description",
-    //             value: "Покупай кроссовки [title] в магазине brandname. Большой выбор оригинальной обуви [vendor]. Быстрая доставка по всей России."
-    //         }
-    //     ]
-    // })
+    await prisma.variable.createMany({
+        data: [
+            {
+                group: "SEO-SNIPPET",
+                key: "title",
+                value: "[vendor] [title] | brandname"
+            },
+            {
+                group: "SEO-SNIPPET",
+                key: "description",
+                value: "Покупай кроссовки [title] в магазине brandname. Большой выбор оригинальной обуви [vendor]. Быстрая доставка по всей России."
+            }
+        ]
+    })
 }
 
 const managers = async () => {

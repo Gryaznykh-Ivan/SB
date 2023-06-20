@@ -4,13 +4,13 @@ import { JwtService } from "@nestjs/jwt";
 import { PrismaModule } from "src/prisma/prisma.module";
 import { FilesModule } from "src/utils/files/files.module";
 import { UrlModule } from "src/utils/urls/urls.module";
-import { SettingController } from "./setting.controller";
-import { SettingService } from "./setting.service";
+import { VariableController } from "./variable.controller";
+import { VariableService } from "./variable.service";
 
 @Module({
     imports: [PrismaModule],
-    controllers: [SettingController],
-    providers: [JwtService, SettingService]
+    controllers: [VariableController],
+    providers: [JwtService, VariableService]
 })
 
-export class SettingModule { }
+export class VariableModule { }
