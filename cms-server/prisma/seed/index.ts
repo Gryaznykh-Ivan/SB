@@ -20,20 +20,20 @@ const seed = async () => {
 }
 
 const settings = async () => {
-    await prisma.setting.createMany({
-        data: [
-            {
-                setting: "SEO-SNIPPET",
-                title: "title",
-                value: "[vendor] [title] | brandname"
-            },
-            {
-                setting: "SEO-SNIPPET",
-                title: "description",
-                value: "Покупай кроссовки [title] в магазине brandname. Большой выбор оригинальной обуви [vendor]. Быстрая доставка по всей России."
-            }
-        ]
-    })
+    // await prisma.setting.createMany({
+    //     data: [
+    //         {
+    //             group: "SEO-SNIPPET",
+    //             key: "title",
+    //             value: "[vendor] [title] | brandname"
+    //         },
+    //         {
+    //             group: "SEO-SNIPPET",
+    //             key: "description",
+    //             value: "Покупай кроссовки [title] в магазине brandname. Большой выбор оригинальной обуви [vendor]. Быстрая доставка по всей России."
+    //         }
+    //     ]
+    // })
 }
 
 const managers = async () => {
@@ -55,39 +55,6 @@ const managers = async () => {
             firstName: "Иван",
             lastName: "Грязных",
             fullName: "Иван Грязных",
-            permissions: {
-                createMany: {
-                    data: [
-                        { right: "ORDER_READ" },
-                        { right: "ORDER_UPDATE" },
-                        { right: "PRODUCT_READ" },
-                        { right: "PRODUCT_UPDATE" },
-                        { right: "COLLECTION_READ" },
-                        { right: "COLLECTION_UPDATE" },
-                        { right: "OFFER_READ" },
-                        { right: "OFFER_UPDATE" },
-                        { right: "USER_READ" },
-                        { right: "USER_UPDATE" },
-                        { right: "SHIPPING_READ" },
-                        { right: "SHIPPING_UPDATE" },
-                        { right: "MEDIA_UPLOAD" },
-                        { right: "MEDIA_DELETE" },
-                        { right: "PAGE_READ" },
-                        { right: "PAGE_UPDATE" },
-                    ]
-                }
-            }
-        }
-    })
-
-    await prisma.user.create({
-        data: {
-            id: 3,
-            email: "larosipier@gmail.com",
-            role: "ADMIN",
-            firstName: "Артур",
-            lastName: "Зинган",
-            fullName: "Артур Зинган",
             permissions: {
                 createMany: {
                     data: [

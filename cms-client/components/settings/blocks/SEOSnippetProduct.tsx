@@ -9,6 +9,7 @@ import TextArea from '../../inputs/TextArea'
 
 export default function SEOSnippetProduct() {
     const { data, isLoading } = useGetSettingsBySearchQuery({ setting: "SEO-SNIPPET" })
+    
     const [updateSetting, { isSuccess, isError, error }] = useUpdateSettingMutation()
 
     const [state, setState] = useState({
