@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ProductCreateRequest, ProductUpdateRequest } from '@/types/api';
+import { CollectionCreateRequest, ProductCreateRequest, ProductUpdateRequest } from '@/types/api';
 import Input from '../../inputs/Input'
 import TextArea from '../../inputs/TextArea'
 import url from '@/utils/url';
@@ -8,7 +8,7 @@ interface IProps {
     metaTitle: string | null;
     metaDescription: string | null;
     handle: string | null;
-    onChange: (obj: ProductCreateRequest) => void;
+    onChange: (obj: CollectionCreateRequest) => void;
 }
 
 export default function CreateSeoSearch({ onChange, ...data }: IProps) {

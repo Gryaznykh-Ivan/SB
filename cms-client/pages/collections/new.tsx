@@ -9,9 +9,14 @@ import { CollectionCreateRequest, IErrorResponse } from '@/types/api'
 import { toast } from 'react-toastify'
 import CollectionProducts from '@/components/collections/blocks/CollectionProducts'
 import CreateCollectionProducts from '@/components/collections/blocks/CreateCollectionProducts'
+import { useGetVariablesByGroupQuery } from '@/services/variableService'
+import CreateSeoSearch from '@/components/collections/blocks/CreateSeoSearch'
+import url from '@/utils/url'
 
 export default function New() {
     const router = useRouter()
+
+    const { data: seoSnippetCollectionData, isLoading: isSeoSnippetCollectionLoading } = useGetVariablesByGroupQuery({ group: "SEO_SNIPPET_COLLECTION" })
 
     const [createCollection, { isSuccess: isCreateCollectionSuccess, isError: isCreateCollectionError, error: createCollectionError }] = useCreateCollectionMutation()
 
@@ -34,6 +39,18 @@ export default function New() {
         }
     }, [isCreateCollectionSuccess, isCreateCollectionError])
 
+    const getSnippetVariableByKey = (key: string) => {
+        return seoSnippetCollectionData?.data.find(c => c.key === key)?.value ?? ""
+    }
+
+    const applySnippetFormat = (snippet: string, title: string) => {
+        if (title === "") return ""
+
+        return snippet.replaceAll("[title]", title.replace(/[^a-zA-Zа-яА-Я0-9 ]/gi, ""))
+            .replace(/\s+/g, " ")
+            .trim();
+    }
+
     const onSaveChanges = async () => {
         const createCollectionData = changes
 
@@ -45,7 +62,11 @@ export default function New() {
     }
 
     const mustBeSaved = useMemo(() => {
-        return Object.values(changes).some(c => c !== undefined) && changes.title !== undefined
+        return Object.values(changes).some(c => c !== undefined)
+            // && changes.title !== undefined
+            // && changes.handle !== undefined
+            // && changes.metaTitle !== undefined
+            // && changes.metaDescription !== undefined
     }, [changes])
 
     return (
@@ -76,10 +97,10 @@ export default function New() {
                             connectProducts={changes.connectProducts}
                             onChange={onCollectChanges}
                         />
-                        <SeoSearch
-                            metaTitle={null}
-                            metaDescription={null}
-                            handle={null}
+                        <CreateSeoSearch
+                            metaTitle={applySnippetFormat(getSnippetVariableByKey("title"), changes.title ?? "")}
+                            metaDescription={applySnippetFormat(getSnippetVariableByKey("description"), changes.title ?? "")}
+                            handle={url.getSlug(changes.title)}
                             onChange={onCollectChanges}
                         />
                     </div>

@@ -2,13 +2,13 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { toast } from 'react-toastify';
 import { productService } from '@/services/productService';
 import { useGetVariablesByGroupQuery, useUpdateVariableMutation } from '@/services/variableService';
-import { IErrorResponse, ProductCreateRequest, ProductUpdateRequest } from '@/types/api';
+import { IErrorResponse } from '@/types/api';
 import Input from '../../inputs/Input'
 import TextArea from '../../inputs/TextArea'
 
 
-export default function SEOSnippetProduct() {
-    const { data, isLoading } = useGetVariablesByGroupQuery({ group: "SEO_SNIPPET_PRODUCT" })
+export default function SEOSnippetCollection() {
+    const { data, isLoading } = useGetVariablesByGroupQuery({ group: "SEO_SNIPPET_COLLECTION" })
     
     const [updateVariable, { isSuccess, isError, error }] = useUpdateVariableMutation()
 
@@ -54,7 +54,7 @@ export default function SEOSnippetProduct() {
 
     const onSave = async () => {
         const updateVariables = Object.entries(state).filter(a => getVariableByKey(a[0]) !== a[1]).map(variable => ({
-            group: "SEO_SNIPPET_PRODUCT",
+            group: "SEO_SNIPPET_COLLECTION",
             key: variable[0],
             value: variable[1]
         }))
@@ -68,7 +68,7 @@ export default function SEOSnippetProduct() {
 
     return (
         <div className="rounded-md bg-white shadow-sm">
-            <h2 className="font-semibold p-5 border-b-[1px]">SEO шаблон товара</h2>
+            <h2 className="font-semibold p-5 border-b-[1px]">SEO шаблон коллекции</h2>
             <div className="space-y-4 p-5">
                 <div className="flex flex-col">
                     <div className="flex justify-between mb-1">
@@ -76,7 +76,7 @@ export default function SEOSnippetProduct() {
                         <div className="text-gray-500 text-sm">{state.title.length} символов</div>
                     </div>
                     <Input type="text" id="title" placeholder="Мета название" name="title" value={state.title} onChange={onInputChange} />
-                    <div className="text-gray-400 text-sm mt-1">Пример: [vendor] [title] [SKU] | EXAMPLE</div>
+                    <div className="text-gray-400 text-sm mt-1">Пример: Коллекция [title] | EXAMPLE</div>
                 </div>
                 <div className="flex flex-col">
                     <div className="flex justify-between mb-1">
@@ -85,8 +85,8 @@ export default function SEOSnippetProduct() {
                     </div>
                     <TextArea id="description" placeholder="Mета описание" name="description" value={state.description} onChange={onInputChange} />
                     <div className="mt-1 text-sm text-gray-400">
-                        <div className="">Пример: Покупай [title] [SKU] в магазине EXAMPLE</div>
-                        <div className="">Переменные: [title] [SKU] [vendor]</div>
+                        <div className="">Пример: Новая коллекция [title] в магазине EXAMPLE</div>
+                        <div className="">Переменные: [title]</div>
                     </div>
                 </div>
             </div>

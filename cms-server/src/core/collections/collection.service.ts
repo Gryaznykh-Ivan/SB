@@ -154,8 +154,8 @@ export class CollectionService {
         const createCollectionQuery = {
             title: data.title,
             description: data.description,
-            handle: this.url.getSlug(data.handle) || this.url.getSlug(data.title),
-            metaTitle: data.metaTitle || data.title,
+            handle: this.url.getSlug(data.handle),
+            metaTitle: data.metaTitle,
             metaDescription: data.metaDescription,
             hidden: data.hidden
         }
@@ -189,7 +189,7 @@ export class CollectionService {
     }
 
 
-    async uploadImages(collectionId: number, images: Express.Multer.File[], token: string) {
+    async uploadImages(collectionId: number, images: Express.Multer.File[]) {
         const collection = await this.prisma.collection.findFirst({
             where: { id: collectionId },
             select: {

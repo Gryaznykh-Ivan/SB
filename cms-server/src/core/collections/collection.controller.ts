@@ -60,9 +60,8 @@ export class CollectionController {
     uploadImages(
         @Param('collectionId', ParseIntPipe) collectionId: number,
         @UploadedFiles() images: Express.Multer.File[],
-        @Token() token: string
     ) {
-        return this.collectionService.uploadImages(collectionId, images, token)
+        return this.collectionService.uploadImages(collectionId, images)
     }
 
     @Put(':collectionId/updateImage/:imageId')

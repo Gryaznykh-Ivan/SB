@@ -1,14 +1,18 @@
-import { Type } from "class-transformer";
-import { IsArray, IsBoolean, IsNotEmpty, IsOptional, IsString, NotEquals, ValidateIf, ValidateNested } from "class-validator";
+import { Transform, TransformFnParams, Type } from "class-transformer";
+import { IsArray, IsBoolean, IsNotEmpty, IsOptional, IsString, MaxLength, NotEquals, ValidateIf, ValidateNested } from "class-validator";
 import { ConnectProductDto } from "./products.dto";
 
 export class CreateCollectionDto {
     @IsNotEmpty()
     @IsString()
+    @Transform(({ value }: TransformFnParams) => value?.trim())
+    @MaxLength(255, { message: "Название слишком длинное"})
     title: string;
 
-    @IsOptional()
+    @IsNotEmpty()
     @IsString()
+    @Transform(({ value }: TransformFnParams) => value?.trim())
+    @MaxLength(255, { message: "Ручка слишком длинная"})
     handle: string;
 
     @IsBoolean()
@@ -21,12 +25,15 @@ export class CreateCollectionDto {
     @IsString()
     description: string;
 
-    @IsOptional()
+    @IsNotEmpty()
     @IsString()
+    @Transform(({ value }: TransformFnParams) => value?.trim())
+    @MaxLength(255, { message: "Название слишком длинное"})
     metaTitle: string;
 
-    @IsOptional()
+    @IsNotEmpty()
     @IsString()
+    @Transform(({ value }: TransformFnParams) => value?.trim())
     metaDescription: string;
 
     @IsOptional()

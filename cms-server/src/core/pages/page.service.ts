@@ -80,8 +80,8 @@ export class PageService {
         const createPageQuery = {
             title: data.title,
             content: data.content,
-            handle: this.url.getSlug(data.handle) || this.url.getSlug(data.title),
-            metaTitle: data.metaTitle || data.title,
+            handle: this.url.getSlug(data.handle),
+            metaTitle: data.metaTitle,
             metaDescription: data.metaDescription
         }
 
