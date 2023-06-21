@@ -1,5 +1,5 @@
 import { Transform, TransformFnParams, Type } from "class-transformer";
-import { IsArray, IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString, NotEquals, ValidateIf, ValidateNested } from "class-validator";
+import { IsArray, IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength, NotEquals, ValidateIf, ValidateNested } from "class-validator";
 import { ConnectCollectionDto, DisconnectCollectionDto } from "./collections.dto";
 import { CreateMetafieldDto, DeleteMetafieldDto, UpdateMetafieldDto } from "./metafields.dto";
 import { CreateTagDto, DeleteTagDto } from "./tag.dto";
@@ -9,12 +9,14 @@ export class UpdateProductDto {
     @IsString()
     @NotEquals(null)
     @ValidateIf((object, value) => value !== undefined)
+    @MaxLength(255, { message: "Название слишком длинное"})
     title: string;
 
     @IsNotEmpty()
     @IsString()
     @NotEquals(null)
     @ValidateIf((object, value) => value !== undefined)
+    @MaxLength(255, { message: "Ручка слишком длинная"})
     handle: string;
 
     @IsOptional()
@@ -25,6 +27,7 @@ export class UpdateProductDto {
     @IsString()
     @NotEquals(null)
     @ValidateIf((object, value) => value !== undefined)
+    @MaxLength(255, { message: "Название слишком длинное"})
     metaTitle: string;
 
     @IsNotEmpty()

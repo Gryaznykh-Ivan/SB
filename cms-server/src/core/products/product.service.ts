@@ -195,10 +195,6 @@ export class ProductService {
     }
 
     async createProduct(data: CreateProductDto) {
-        if (data.title.length > 255) {
-            throw new HttpException("Максимальная длина названия 255 символов", HttpStatus.BAD_REQUEST)
-        }
-
         const createProductQuery = {
             title: data.title,
             description: data.description,
@@ -210,10 +206,6 @@ export class ProductService {
             metaDescription: data.metaDescription,
             SKU: data.SKU,
             barcode: data.barcode
-        }
-
-        if (createProductQuery.handle === undefined || createProductQuery.metaTitle === undefined || createProductQuery.metaDescription === undefined) {
-            throw new HttpException("Поиск и SEO не заполнено", HttpStatus.BAD_REQUEST)
         }
 
         if (data.connectCollections !== undefined) {
@@ -903,14 +895,6 @@ export class ProductService {
 
 
     async updateProduct(productId: number, data: UpdateProductDto) {
-        if (data.title !== undefined && data.title.length > 255) {
-            throw new HttpException("Максимальная длина названия 255 символов", HttpStatus.BAD_REQUEST)
-        }
-
-        if (data.metaTitle !== undefined && data.metaTitle.length > 255) {
-            throw new HttpException("Максимальная длина мета названия 255 символов", HttpStatus.BAD_REQUEST)
-        }
-
         const updateProductQuery = {
             title: data.title,
             description: data.description,

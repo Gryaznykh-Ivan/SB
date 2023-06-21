@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { ProductCreateRequest, ProductUpdateRequest } from '@/types/api';
 import Input from '../../inputs/Input'
 import TextArea from '../../inputs/TextArea'
+import url from '@/utils/url';
 
 interface IProps {
     metaTitle: string | null;
@@ -77,7 +78,7 @@ export default function CreateSeoSearch({ onChange, ...data }: IProps) {
                 </div>
                 <div className="flex flex-col">
                     <label htmlFor="handle" className="text-sm text-gray-600 mb-1">URL ручка</label>
-                    <Input type="text" id="handle" placeholder="URL ручка" name="handle" value={state.handle} onChange={onInputChange} />
+                    <Input type="text" id="handle" placeholder="URL ручка" name="handle" value={url.getSlug(state.handle)} onChange={onInputChange} />
                 </div>
             </div>
         </div>
