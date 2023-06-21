@@ -212,31 +212,6 @@ export class ProductService {
             barcode: data.barcode
         }
 
-
-        // todo: вынести эту логику на клиент
-        if (data.defaultSnippet === true) {
-            // if (data.metaTitle !== undefined && data.metaTitle.length > 255) {
-            //     throw new HttpException("Максимальная длина мета названия 255 символов", HttpStatus.BAD_REQUEST)
-            // }
-
-            // const snippets = await this.prisma.setting.findMany({ where: { setting: "SEO-SNIPPET" } })
-            // const sMetaTitle = snippets.find(snippet => snippet.title === "title")?.value
-            // const sMetaDescription = snippets.find(snippet => snippet.title === "description")?.value
-
-            // createProductQuery.handle = this.url.getSlug(data.title)
-            // createProductQuery.metaTitle = sMetaTitle.replaceAll("[title]", createProductQuery.title.replace(/[^a-zA-Z0-9 ]/gi, "") || "")
-            //     .replaceAll("[vendor]", createProductQuery.vendor || "")
-            //     .replaceAll("[SKU]", createProductQuery.SKU || "")
-            //     .replace(/\s+/g, " ")
-            //     .trim();
-            // createProductQuery.metaDescription = sMetaDescription
-            //     .replaceAll("[title]", createProductQuery.title.replace(/[^a-zA-Z0-9 ]/gi, "") || "")
-            //     .replaceAll("[vendor]", createProductQuery.vendor || "")
-            //     .replaceAll("[SKU]", createProductQuery.SKU || "")
-            //     .replace(/\s+/g, " ")
-            //     .trim();
-        }
-
         if (createProductQuery.handle === undefined || createProductQuery.metaTitle === undefined || createProductQuery.metaDescription === undefined) {
             throw new HttpException("Поиск и SEO не заполнено", HttpStatus.BAD_REQUEST)
         }

@@ -33,9 +33,6 @@ export class CreateProductDto {
     @IsBoolean()
     available: boolean;
 
-    @IsBoolean()
-    defaultSnippet: boolean;
-
     @IsOptional()
     @IsString()
     vendor: string;

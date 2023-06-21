@@ -563,7 +563,6 @@ export type ProductCreateRequest = {
     title?: string;
     handle?: string;
     available?: boolean;
-    defaultSnippet?: boolean;
     SKU?: string;
     barcode?: string;
     description?: string | null;

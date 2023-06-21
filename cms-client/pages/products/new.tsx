@@ -11,16 +11,19 @@ import { useCreateProductMutation } from '@/services/productService'
 import { toast } from 'react-toastify'
 import { IErrorResponse, ProductCreateRequest, ProductUpdateRequest } from '@/types/api'
 import Inventory from '@/components/products/blocks/Inventory'
+import { useGetVariablesByGroupQuery } from '@/services/variableService'
+import url from '@/utils/url'
 
 function New() {
     const router = useRouter()
+
+    const { data: seoSnippetProductData, isLoading: isSeoSnippetProductLoading } = useGetVariablesByGroupQuery({ group: "SEO_SNIPPET_PRODUCT" })
 
     const [createProduct, { isSuccess: isCreateProductSuccess, isError: isCreateProductError, error: createProductError, data }] = useCreateProductMutation()
 
     const [changes, setChanges] = useState<ProductCreateRequest>({})
     const onCollectChanges = (obj: ProductCreateRequest) => {
         setChanges(prev => ({ ...prev, ...obj }))
-
     }
 
     useEffect(() => {
@@ -36,6 +39,20 @@ function New() {
             }
         }
     }, [isCreateProductSuccess, isCreateProductError])
+
+    const getSnippetVariableByKey = (key: string) => {
+        return seoSnippetProductData?.data.find(c => c.key === key)?.value ?? ""
+    }
+
+    const applySnippetFormat = (snippet: string, title: string, vendor: string, SKU: string) => {
+        if (title === "" && vendor === "" && SKU === "") return ""
+
+        return snippet.replaceAll("[title]", title.replace(/[^a-zA-Zа-яА-Я0-9 ]/gi, ""))
+            .replaceAll("[vendor]", vendor)
+            .replaceAll("[SKU]", SKU)
+            .replace(/\s+/g, " ")
+            .trim();
+    }
 
     const onSaveChanges = async () => {
         const createProductData = changes
@@ -75,10 +92,9 @@ function New() {
                             onChange={onCollectChanges}
                         />
                         <CreateSeoSearch
-                            metaTitle={null}
-                            metaDescription={null}
-                            handle={null}
-                            defaultSnippet={null}
+                            metaTitle={applySnippetFormat(getSnippetVariableByKey("title"), changes.title ?? "", changes.vendor ?? "", changes.SKU ?? "")}
+                            metaDescription={applySnippetFormat(getSnippetVariableByKey("description"), changes.title ?? "", changes.vendor ?? "", changes.SKU ?? "")}
+                            handle={url.getSlug(changes.title)}
                             onChange={onCollectChanges}
                         />
                     </div>
