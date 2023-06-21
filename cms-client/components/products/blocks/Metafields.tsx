@@ -46,10 +46,10 @@ export default function Metafields({ onChange, ...data }: IProps) {
 
     return (
         <div className="rounded-md bg-white overflow-hidden">
-            <div className="p-3 border-b-[1px]">
+            <div className="p-5 border-b-[1px]">
                 <div className="font-semibold ml-2">Мета поля</div>
             </div>
-            <div className="p-3 space-y-3">
+            <div className="p-5 space-y-3">
                 {state.map((metafield, index) =>
                     <div key={metafield.id} className="flex">
                         <div className="flex-1 flex gap-3">

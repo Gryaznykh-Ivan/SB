@@ -43,7 +43,7 @@ export default function CreateSeoSearch({ onChange, ...data }: IProps) {
     }, [state])
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setState(prev => ({ ...prev, [e.target.name]: e.target.value }))
+        setState(prev => ({ ...prev, defaultSnippet: false, [e.target.name]: e.target.value }))
     }
 
     const onCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -66,14 +66,14 @@ export default function CreateSeoSearch({ onChange, ...data }: IProps) {
                         <label htmlFor="metaTitle" className="text-sm text-gray-600">Мета название</label>
                         <div className="text-gray-500 text-sm">{state.metaTitle.length} из 70</div>
                     </div>
-                    <Input className="disabled:bg-gray-50" type="text" id="metaTitle" placeholder="Мета название" name="metaTitle" value={state.metaTitle} onChange={onInputChange} disabled={state.defaultSnippet} />
+                    <Input type="text" id="metaTitle" placeholder="Мета название" name="metaTitle" value={state.metaTitle} onChange={onInputChange} />
                 </div>
                 <div className="flex flex-col">
                     <div className="flex justify-between mb-1">
                         <label htmlFor="metaDescription" className="text-sm text-gray-600">Мета описание</label>
                         <div className="text-gray-500 text-sm">{state.metaDescription.length} из 320</div>
                     </div>
-                    <TextArea className="disabled:bg-gray-50" id="metaDescription" placeholder="Mета описание" name="metaDescription" value={state.metaDescription} onChange={onInputChange} disabled={state.defaultSnippet} />
+                    <TextArea id="metaDescription" placeholder="Mета описание" name="metaDescription" value={state.metaDescription} onChange={onInputChange} />
                 </div>
                 <div className="flex flex-col">
                     <label htmlFor="handle" className="text-sm text-gray-600 mb-1">URL ручка</label>

@@ -9,8 +9,9 @@ export class CreateProductDto {
     @Transform(({ value }: TransformFnParams) => value?.trim())
     title: string;
 
-    @IsOptional()
+    @IsNotEmpty()
     @IsString()
+    @Transform(({ value }: TransformFnParams) => value?.trim())
     handle: string;
 
     @IsOptional()
@@ -19,14 +20,12 @@ export class CreateProductDto {
 
     @IsNotEmpty()
     @IsString()
-    @NotEquals(null)
-    @ValidateIf((object, value) => value !== undefined)
+    @Transform(({ value }: TransformFnParams) => value?.trim())
     metaTitle: string;
 
     @IsNotEmpty()
     @IsString()
-    @NotEquals(null)
-    @ValidateIf((object, value) => value !== undefined)
+    @Transform(({ value }: TransformFnParams) => value?.trim())
     metaDescription: string;
 
     @IsOptional()

@@ -65,7 +65,11 @@ function New() {
     }
 
     const mustBeSaved = useMemo(() => {
-        return Object.values(changes).some(c => c !== undefined) && changes.title !== undefined
+        return Object.values(changes).some(c => c !== undefined)
+            && changes.title !== undefined
+            && changes.handle !== undefined
+            && changes.metaTitle !== undefined
+            && changes.metaDescription !== undefined
     }, [changes])
 
     return (

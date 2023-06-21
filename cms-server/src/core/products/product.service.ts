@@ -42,7 +42,7 @@ export class ProductService {
                         value: true
                     },
                     orderBy: {
-                        createdAt: 'desc'
+                        id: 'asc'
                     }
                 },
                 tags: {
