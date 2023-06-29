@@ -9,7 +9,7 @@ import Status from '@/components/products/blocks/Status'
 import OrganizationInfo from '@/components/products/blocks/OrganizationInfo'
 import Inventory from '@/components/products/blocks/Inventory'
 import VariantList from '@/components/variants/blocks/VariantList'
-import OptionList from '@/components/products/blocks/OptionList'
+import FeatureList from '@/components/products/blocks/FeatureList'
 import { useDeleteProductMutation, useGetProductByIdQuery, useUpdateProductMutation } from '@/services/productService'
 import { IErrorResponse, ProductUpdateRequest } from '@/types/api'
 import { toast } from 'react-toastify'
@@ -132,9 +132,9 @@ function Index() {
                                     productId={data.data.id}
                                     images={data.data.images}
                                 />
-                                <OptionList
+                                <FeatureList
                                     productId={data.data.id}
-                                    options={data.data.options}
+                                    options={data.data.features}
                                 />
                                 <Inventory
                                     SKU={data.data.SKU}
@@ -166,7 +166,6 @@ function Index() {
                                 />
                                 <VariantList
                                     productId={data.data.id}
-                                    isOptionsExist={data.data.options.length !== 0}
                                 />
                             </div>
                         </div>

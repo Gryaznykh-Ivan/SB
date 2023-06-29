@@ -144,24 +144,25 @@ export interface IImage {
     position: number;
 }
 
-export interface IProductOption {
+export interface IProductFeature {
     id: number;
     title: string;
     position: number;
-    values: IProductOptionValue[]
+    values: IProductFeatureValue[]
 }
 
-export interface IProductOptionValue {
+export interface IProductFeatureValue {
     id: number;
-    title: string;
+    key: string;
+    value: string;
     position: number;
 }
 
-export interface IOption {
+export interface IFeature {
     id: number;
-    title: string;
+    key: string;
+    value: string;
     position: number;
-    option: number;
 }
 
 export interface ICollection {
@@ -229,7 +230,6 @@ export interface IVariant {
     option2: string;
     barcode: string;
     SKU: string;
-    options: IOption[];
     images: IImage[];
 }
 
@@ -269,7 +269,7 @@ export interface IProduct {
     barcode: string | null;
     images: IImage[];
     collections: Pick<ICollection, "id" | "title">[];
-    options: IProductOption[];
+    features: IProductFeature[];
     metafields: IMetafield[];
     tags: ITag[];
 }
@@ -618,29 +618,29 @@ export type ProductRemoveImageRequest = {
     imageId: number;
 }
 
-export type ProductCreateOptionResponse = IResponse<void>
-export type ProductCreateOptionRequest = {
+export type ProductCreateFeatureResponse = IResponse<void>
+export type ProductCreateFeatureRequest = {
     productId: number;
     title: string;
-    createOptionValues: string[];
+    createFeatureValues: Pick<IProductFeatureValue, "key" | "value">[];
 }
 
-export type ProductUpdateOptionResponse = IResponse<void>
-export type ProductUpdateOptionRequest = {
+export type ProductUpdateFeatureResponse = IResponse<void>
+export type ProductUpdateFeatureRequest = {
     productId: number;
-    optionId: number;
+    featureId: number;
     title?: string;
     position?: number;
-    reorderOptionValue?: IReorderOptionValue;
-    createOptionValues?: Pick<IProductOption, "title">[];
-    updateOptionValues?: Pick<IProductOption, "title" | "id">[];
-    deleteOptionValues?: number[];
+    reorderFeatureValue?: IReorderOptionValue;
+    createFeatureValues?: Pick<IProductFeatureValue, "key" | "value">[];
+    updateFeatureValues?: Pick<IProductFeatureValue, "key" | "value" | "id">[];
+    deleteFeatureValues?: Pick<IProductFeatureValue, "id">[];
 }
 
-export type ProductRemoveOptionResponse = IResponse<void>
-export type ProductRemoveOptionRequest = {
+export type ProductRemoveFeatureResponse = IResponse<void>
+export type ProductRemoveFeatureRequest = {
     productId: number;
-    optionId: number;
+    featureId: number;
 }
 
 
@@ -662,11 +662,6 @@ export type VariantGetAllRequest = {
 export type VariantGetPreviewResponse = IResponse<IOfferVariantPreview>
 export type VariantGetPreviewRequest = {
     variantId: number
-}
-
-export type VariantGetOptionsResponse = IResponse<IOption[]>
-export type VariantGetOptionsRequest = {
-    productId: number
 }
 
 export type VariantGetByIdResponse = IResponse<IVariant>

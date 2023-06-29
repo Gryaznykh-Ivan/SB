@@ -9,15 +9,12 @@ import ImageLoader from '../../image/ImageLoader';
 interface IProps {
     productId: number;
     createNewVariant?: boolean;
-    isOptionsExist?: boolean;
 }
 
-export default function VariantList({ productId, createNewVariant = true, isOptionsExist = true }: IProps) {
+export default function VariantList({ productId, createNewVariant = true }: IProps) {
     const router = useRouter()
 
     const { isError, error, isLoading, data } = useGetVariantsQuery({ productId })
-
-    if (isOptionsExist === false) return <></>
 
     return (
         <div className="rounded-md bg-white shadow-sm overflow-hidden">
@@ -52,6 +49,7 @@ export default function VariantList({ productId, createNewVariant = true, isOpti
                                 <Link key={variant.id} href={`/products/${productId}/variants/${variant.id}`} className="flex justify-between pl-2 pr-4 py-3 hover:bg-gray-200">
                                     <div className="flex">
                                         <div className="relative w-10 aspect-5/3 rounded-sm overflow-hidden mr-3">
+                                            
                                             {variant.image !== null ?
                                                 <Image
                                                     className="object-contain"

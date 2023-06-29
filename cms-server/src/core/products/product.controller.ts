@@ -5,7 +5,7 @@ import { Auth } from 'src/decorators/auth.decorator';
 import { Token } from 'src/decorators/token.decorator';
 import { ParseBooleanPipe } from 'src/pipes/parse-boolean.pipe';
 import { CreateProductDto } from './dto/createProduct.dto';
-import { CreateOptionDto, ReorderOptionValueDto, UpdateOptionDto } from './dto/options.dto';
+import { CreateFeatureDto, ReorderFeatureValueDto, UpdateFeatureDto } from './dto/features.dto';
 import { SearchProductDto } from './dto/searchProduct.dto';
 import { UpdateImageDto } from './dto/updateImage.dto';
 import { UpdateProductDto } from './dto/updateProduct.dto';
@@ -72,32 +72,33 @@ export class ProductController {
         return this.productService.removeImage(productId, imageId)
     }
 
-    @Post(':productId/createOption')
+    @Post(':productId/createFeature')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.PRODUCT_UPDATE])
-    createOption(
+    createFeature(
         @Param('productId', ParseIntPipe) productId: number,
-        @Body() data: CreateOptionDto
+        @Body() data: CreateFeatureDto
     ) {
-        return this.productService.createOption(productId, data)
+        return this.productService.createFeature(productId, data)
     }
 
-    @Put(':productId/updateOption/:optionId')
+    @Put(':productId/updateFeature/:featureId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.PRODUCT_UPDATE])
-    updateOption(
+    updateFeature(
         @Param('productId', ParseIntPipe) productId: number,
-        @Param('optionId', ParseIntPipe) optionId: number,
-        @Body() data: UpdateOptionDto
+        @Param('featureId', ParseIntPipe) featureId: number,
+        @Body() data: UpdateFeatureDto
     ) {
-        return this.productService.updateOption(productId, optionId, data)
+        return this.productService.updateFeature(productId, featureId, data)
     }
 
 
-    @Delete(':productId/removeOption/:optionId')
+    @Delete(':productId/removeFeature/:featureId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.PRODUCT_UPDATE])
-    removeOption(
-        @Param('optionId', ParseIntPipe) optionId: number,
+    removeFeature(
+        @Param('productId', ParseIntPipe) productId: number,
+        @Param('featureId', ParseIntPipe) featureId: number,
     ) {
-        return this.productService.removeOption(optionId)
+        return this.productService.removeFeature(productId, featureId)
     }
 
     @Put(':productId')

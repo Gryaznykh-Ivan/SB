@@ -1,5 +1,5 @@
 import { api } from "@/store/api";
-import { VariantCreateRequest, VariantCreateResponse, VariantDeleteRequest, VariantDeleteResponse, VariantGetAllRequest, VariantGetAllResponse, VariantGetByIdRequest, VariantGetByIdResponse, VariantGetOptionsRequest, VariantGetOptionsResponse, VariantGetPreviewRequest, VariantGetPreviewResponse, VariantRemoveImageRequest, VariantRemoveImageResponse, VariantSearchRequest, VariantSearchResponse, VariantUpdateImageRequest, VariantUpdateImageResponse, VariantUpdateRequest, VariantUpdateResponse, VariantUploadImagesRequest, VariantUploadImagesResponse } from "@/types/api";
+import { VariantCreateRequest, VariantCreateResponse, VariantDeleteRequest, VariantDeleteResponse, VariantGetAllRequest, VariantGetAllResponse, VariantGetByIdRequest, VariantGetByIdResponse, VariantGetPreviewRequest, VariantGetPreviewResponse, VariantRemoveImageRequest, VariantRemoveImageResponse, VariantSearchRequest, VariantSearchResponse, VariantUpdateImageRequest, VariantUpdateImageResponse, VariantUpdateRequest, VariantUpdateResponse, VariantUploadImagesRequest, VariantUploadImagesResponse } from "@/types/api";
 
 export const variantService = api.injectEndpoints({
     endpoints: builder => ({
@@ -23,13 +23,6 @@ export const variantService = api.injectEndpoints({
                 url: `variants/getPreview/${variantId}`,
                 method: "GET",
             })
-        }),
-        getVariantOptions: builder.query<VariantGetOptionsResponse, VariantGetOptionsRequest>({
-            query: ({ productId }) => ({
-                url: `variants/getOptions/${productId}`,
-                method: "GET",
-            }),
-            providesTags: ["OPTIONS"]
         }),
         getVariantById: builder.query<VariantGetByIdResponse, VariantGetByIdRequest>({
             query: ({ variantId }) => ({
@@ -91,7 +84,6 @@ export const {
     useGetVariantsQuery,
     useLazyGetVariantsBySearchQuery,
     useLazyGetVariantPreviewQuery,
-    useGetVariantOptionsQuery,
     useGetVariantByIdQuery,
     useCreateVariantMutation,
     useUpdateVariantMutation,

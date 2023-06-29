@@ -404,7 +404,7 @@ model Product {
     collections      Collection[]      @relation(name: "collectiontoproduct")
     variants         Variant[]
     productIsFavored FavoriteProduct[]
-    options          Option[]
+    features         Feature[]
     offers           Offer[]
     metafields       Metafield[]
     tags             Tag[]
@@ -443,32 +443,32 @@ model Metafield {
     @@map("metafield")
 }
 
-model Option {
-    id        Int           @id @default(autoincrement()) @db.UnsignedInt
+model Feature {
+    id        Int            @id @default(autoincrement()) @db.UnsignedInt
     title     String
-    option    Int
     position  Int
-    values    OptionValue[]
-    product   Product       @relation(fields: [productId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    productId Int           @db.UnsignedInt
-    createdAt DateTime      @default(now())
-    updatedAt DateTime      @updatedAt
+    values    FeatureValue[]
+    product   Product        @relation(fields: [productId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    productId Int            @db.UnsignedInt
+    createdAt DateTime       @default(now())
+    updatedAt DateTime       @updatedAt
 
     @@unique([productId, title])
-    @@map("option")
+    @@map("feature")
 }
 
-model OptionValue {
+model FeatureValue {
     id        Int      @id @default(autoincrement()) @db.UnsignedInt
-    title     String
+    key       String
+    value     String
     position  Int
-    option    Option   @relation(fields: [optionId], references: [id], onUpdate: Cascade, onDelete: Cascade)
-    optionId  Int      @db.UnsignedInt
+    feature   Feature  @relation(fields: [featureId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+    featureId Int      @db.UnsignedInt
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    @@unique([optionId, title])
-    @@map("optionvalue")
+    @@unique([featureId, key])
+    @@map("featurevalue")
 }
 
 model Image {

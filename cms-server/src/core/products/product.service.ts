@@ -1,16 +1,13 @@
-import * as FormData from 'form-data';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { OfferStatus, Prisma } from '@prisma/client';
 import { PrismaService } from '@prisma-module/prisma.service';
 import { CreateProductDto } from './dto/createProduct.dto';
 import { UpdateImageDto } from './dto/updateImage.dto';
 import { UpdateProductDto } from './dto/updateProduct.dto';
-import { firstValueFrom } from 'rxjs';
-import { CreateOptionDto, UpdateOptionDto } from './dto/options.dto';
+import { CreateFeatureDto, UpdateFeatureDto } from './dto/features.dto';
 import { UrlService } from 'src/utils/urls/urls.service';
 import { SearchProductDto } from './dto/searchProduct.dto';
 import { FilesService } from 'src/utils/files/files.service';
-import { Console } from 'console';
 
 @Injectable()
 export class ProductService {
@@ -73,7 +70,7 @@ export class ProductService {
                         }
                     }
                 },
-                options: {
+                features: {
                     select: {
                         id: true,
                         title: true,
@@ -82,7 +79,8 @@ export class ProductService {
                             select: {
                                 id: true,
                                 position: true,
-                                title: true,
+                                key: true,
+                                value: true
                             },
                             orderBy: {
                                 position: 'asc'
@@ -291,7 +289,7 @@ export class ProductService {
                 success: true
             }
         } catch (e) {
-            
+
             throw new HttpException("Произошла ошибка на стороне сервера", HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
@@ -382,109 +380,29 @@ export class ProductService {
                 success: true,
             }
         } catch (e) {
-            
+
             throw new HttpException("Произошла ошибка на стороне сервера", HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
 
 
-    async createOption(productId: number, data: CreateOptionDto) {
-        const cOptions = await this.prisma.option.findMany({
-            where: { productId },
-            select: { option: true },
-            orderBy: [{ option: 'asc' }]
-        })
-
-        if (cOptions.length >= 3) {
-            throw new HttpException("Более 3 опций создать невозможно", HttpStatus.BAD_REQUEST)
-        }
-
-        let optionNumber = 0
-        for (let i = 0; i < 3; i++) {
-            if (cOptions[i] !== undefined && cOptions[i].option === i) continue
-
-            optionNumber = i
-            break
-        }
-
+    async createFeature(productId: number, data: CreateFeatureDto) {
         try {
-            await this.prisma.$transaction(async tx => {
-                const option = await tx.option.create({
-                    data: {
-                        title: data.title,
-                        option: optionNumber,
-                        position: cOptions.length,
-                        productId: productId,
-                        values: {
-                            createMany: {
-                                data: data.createOptionValues.map((option, i) => ({ title: option, position: i }))
-                            }
-                        }
-                    },
-                    select: {
-                        productId: true,
-                        product: {
-                            select: {
-                                SKU: true
-                            }
+            const featureNumber = await this.prisma.feature.count({
+                where: { productId }
+            })
+
+            await this.prisma.feature.create({
+                data: {
+                    title: data.title,
+                    position: featureNumber,
+                    productId: productId,
+                    values: {
+                        createMany: {
+                            data: data.createFeatureValues.map((feature, i) => ({ key: feature.key, value: feature.value, position: i }))
                         }
                     }
-                })
-
-
-                // Получаем список оставшихся опций
-                const options = await tx.option.findMany({
-                    where: { productId: option.productId },
-                    select: {
-                        id: true,
-                        option: true,
-                        values: {
-                            select: {
-                                id: true,
-                                title: true
-                            },
-                            orderBy: {
-                                position: 'asc'
-                            }
-                        }
-                    },
-                    orderBy: { position: 'asc' }
-                })
-
-
-                // Удаляем все варианты, так как старых вариантов больше нет
-                await tx.variant.deleteMany({
-                    where: { productId: option.productId },
-                })
-
-                // Если остались какие то опции - создаем варианты на основе оставшихся опций
-                if (options.length !== 0) {
-                    const values = options.map(option => option.values.map(value => ({ ...value, option: option.option })))
-                    const combinations = this.getCombinations(values)
-
-                    await tx.variant.createMany({
-                        data: combinations.map(combination => ({
-                            productId: option.productId,
-                            option0: combination.find(c => c.option === 0)?.title ?? null,
-                            option1: combination.find(c => c.option === 1)?.title ?? null,
-                            option2: combination.find(c => c.option === 2)?.title ?? null,
-                            SKU: option.product.SKU
-                        }))
-                    })
                 }
-
-                await tx.offer.updateMany({
-                    where: {
-                        status: {
-                            notIn: [OfferStatus.SOLD, OfferStatus.NO_MATCH, OfferStatus.RETURNING]
-                        },
-                        variantId: null
-                    },
-                    data: {
-                        status: OfferStatus.NO_MATCH
-                    }
-                })
-
             })
 
             return {
@@ -494,7 +412,7 @@ export class ProductService {
 
             if (e instanceof Prisma.PrismaClientKnownRequestError) {
                 if (e.code === 'P2002') {
-                    throw new HttpException("Опции и знначения опций должны быть унимальными", HttpStatus.BAD_REQUEST)
+                    throw new HttpException("Характеристики должны быть уникальны", HttpStatus.BAD_REQUEST)
                 }
             }
 
@@ -502,116 +420,53 @@ export class ProductService {
         }
     }
 
-    async updateOption(productId: number, optionId: number, data: UpdateOptionDto) {
-        const OptionUpdateQuery = {
+    async updateFeature(productId: number, featureId: number, data: UpdateFeatureDto) {
+        const FeatureUpdateQuery = {
             title: data.title
         }
 
         try {
             await this.prisma.$transaction(async tx => {
-                if (data.createOptionValues !== undefined) {
-                    const lastOptionValue = await tx.optionValue.findFirst({
-                        where: { optionId },
+                if (data.createFeatureValues !== undefined) {
+                    const lastFeatureValue = await tx.featureValue.findFirst({
+                        where: { featureId },
                         select: { position: true },
                         orderBy: [{ position: 'desc' }]
                     })
 
-                    const startPosition = lastOptionValue !== null ? lastOptionValue.position + 1 : 0
+                    const startPosition = lastFeatureValue !== null ? lastFeatureValue.position + 1 : 0
 
-                    Object.assign(OptionUpdateQuery, {
+                    Object.assign(FeatureUpdateQuery, {
                         values: {
                             createMany: {
-                                data: data.createOptionValues.map((value, index) => ({ title: value.title, position: startPosition + index }))
+                                data: data.createFeatureValues.map((feature, index) => ({ key: feature.key, value: feature.value, position: startPosition + index }))
                             }
                         }
                     })
                 }
 
-                // Обновляем опцию и сразу создаем значения у опции
-                await tx.option.update({
-                    where: { id: optionId },
-                    data: OptionUpdateQuery
+                // Обновляем название группы и сразу создаем новые характеристики
+                await tx.feature.update({
+                    where: { id: featureId },
+                    data: FeatureUpdateQuery
                 })
 
-                // обновление названий значений опций
-                for (const { id, title } of data.updateOptionValues ?? []) {
-                    const optionValue = await tx.optionValue.findFirst({
-                        where: { id },
-                        select: {
-                            title: true,
-                            option: {
-                                select: {
-                                    option: true
-                                }
-                            }
-                        }
-                    })
-
-                    await tx.optionValue.update({
+                // обновление характеристик
+                for (const { id, key, value } of data.updateFeatureValues ?? []) {
+                    await tx.featureValue.update({
                         where: { id },
                         data: {
-                            title
+                            key,
+                            value
                         }
                     })
 
-                    await tx.variant.updateMany({
-                        where: { [`option${optionValue.option.option}`]: optionValue.title, productId },
-                        data: {
-                            [`option${optionValue.option.option}`]: title,
-                        }
-                    })
-
-                    // Меняем название варианта у офферов
-                    const offers = await tx.offer.findMany({
-                        where: {
-                            status: {
-                                notIn: [OfferStatus.SOLD, OfferStatus.NO_MATCH, OfferStatus.RETURNING]
-                            },
-                            variant: {
-                                productId: productId,
-                            },
-                            variantTitle: {
-                                contains: optionValue.title,
-                            }
-                        },
-                        select: {
-                            id: true,
-                            variantTitle: true,
-                            variant: {
-                                select: {
-                                    option0: true,
-                                    option1: true,
-                                    option2: true,
-                                    product: {
-                                        select: {
-                                            options: {
-                                                select: {
-                                                    title: true,
-                                                    option: true,
-                                                },
-                                                orderBy: [{ position: 'asc' }]
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    })
-
-                    for (const offer of offers) {
-                        await tx.offer.update({
-                            where: { id: offer.id },
-                            data: {
-                                variantTitle: offer.variant.product.options.map((option) => offer.variant[`option${option.option}`]).join(' | ')
-                            }
-                        })
-                    }
                 }
 
-                if (data.reorderOptionValue !== undefined) {
-                    const current = await tx.optionValue.findFirst({
+                if (data.reorderFeatureValue !== undefined) {
+                    const current = await tx.featureValue.findFirst({
                         where: {
-                            id: data.reorderOptionValue.id
+                            id: data.reorderFeatureValue.id
                         },
                         select: {
                             id: true,
@@ -619,55 +474,43 @@ export class ProductService {
                         }
                     })
 
-                    await tx.optionValue.updateMany({
+                    await tx.featureValue.updateMany({
                         where: {
-                            optionId,
-                            position: data.reorderOptionValue.position
+                            featureId,
+                            position: data.reorderFeatureValue.position
                         },
                         data: {
                             position: current.position
                         }
                     })
 
-                    await tx.optionValue.update({
+                    await tx.featureValue.update({
                         where: {
-                            id: data.reorderOptionValue.id
+                            id: data.reorderFeatureValue.id
                         },
                         data: {
-                            position: data.reorderOptionValue.position
+                            position: data.reorderFeatureValue.position
                         }
                     })
                 }
 
                 // удаление значений опций
-                if (data.deleteOptionValues !== undefined) {
-                    for (const id of data.deleteOptionValues ?? []) {
-                        const deletedOptionValue = await tx.optionValue.delete({
-                            where: { id },
-                            select: {
-                                title: true,
-                                option: {
-                                    select: {
-                                        option: true
-                                    }
-                                }
-                            }
-                        })
-
-                        await tx.variant.deleteMany({
-                            where: { [`option${deletedOptionValue.option.option}`]: deletedOptionValue.title, productId },
+                if (data.deleteFeatureValues !== undefined) {
+                    for (const featureValue of data.deleteFeatureValues ?? []) {
+                        await tx.featureValue.delete({
+                            where: { id: featureValue.id },
                         })
                     }
 
-                    // Убираем пустоту между positon, если она образовалась
-                    const optionValues = await tx.optionValue.findMany({
-                        where: { optionId },
+                    // Убираем пустоту между positon
+                    const featureValues = await tx.featureValue.findMany({
+                        where: { featureId },
                         select: { id: true },
                         orderBy: [{ position: 'asc' }]
                     })
 
-                    for (const [index, value] of Object.entries(optionValues)) {
-                        await tx.optionValue.update({
+                    for (const [index, value] of Object.entries(featureValues)) {
+                        await tx.featureValue.update({
                             where: {
                                 id: value.id
                             },
@@ -678,11 +521,11 @@ export class ProductService {
                     }
                 }
 
-                // swap позиции у опций
+                // swap позиции у групп характеристик
                 if (data.position !== undefined) {
-                    const current = await tx.option.findFirst({
+                    const current = await tx.feature.findFirst({
                         where: {
-                            id: optionId
+                            id: featureId
                         },
                         select: {
                             id: true,
@@ -690,7 +533,7 @@ export class ProductService {
                         }
                     })
 
-                    await tx.option.updateMany({
+                    await tx.feature.updateMany({
                         where: {
                             productId,
                             position: data.position
@@ -700,87 +543,15 @@ export class ProductService {
                         }
                     })
 
-                    await tx.option.update({
+                    await tx.feature.update({
                         where: {
-                            id: optionId
+                            id: featureId
                         },
                         data: {
                             position: data.position
                         }
                     })
                 }
-
-
-                // Далее синхронизация опций и вариантов. Создаем варианты в соответствии с опциями
-                const product = await tx.product.findUnique({
-                    where: { id: productId },
-                    select: {
-                        SKU: true,
-                        options: {
-                            select: {
-                                option: true,
-                                values: {
-                                    select: {
-                                        id: true,
-                                        title: true
-                                    },
-                                    orderBy: {
-                                        position: 'asc'
-                                    }
-                                }
-                            },
-                            orderBy: { position: 'asc' }
-                        }
-                    }
-                })
-
-                const variantToCreate = []
-                const values = product.options.map(option => option.values.map(value => ({ ...value, option: option.option })))
-                const combinations = this.getCombinations(values)
-                const allProductVariants = await tx.variant.findMany({
-                    where: {
-                        productId: productId
-                    },
-                    select: {
-                        option0: true,
-                        option1: true,
-                        option2: true
-                    }
-                })
-
-                for (const combination of combinations) {
-                    const variant = allProductVariants.find(variant =>
-                        variant.option0 === (combination.find(c => c.option === 0)?.title ?? null) &&
-                        variant.option1 === (combination.find(c => c.option === 1)?.title ?? null) &&
-                        variant.option2 === (combination.find(c => c.option === 2)?.title ?? null)
-                    )
-
-                    if (variant !== undefined) continue
-
-                    variantToCreate.push({
-                        productId: productId,
-                        option0: combination.find(c => c.option === 0)?.title ?? null,
-                        option1: combination.find(c => c.option === 1)?.title ?? null,
-                        option2: combination.find(c => c.option === 2)?.title ?? null,
-                        SKU: product.SKU
-                    })
-                }
-
-                await tx.variant.createMany({
-                    data: variantToCreate
-                })
-
-                await tx.offer.updateMany({
-                    where: {
-                        status: {
-                            notIn: [OfferStatus.SOLD, OfferStatus.NO_MATCH, OfferStatus.RETURNING]
-                        },
-                        variantId: null
-                    },
-                    data: {
-                        status: OfferStatus.NO_MATCH
-                    }
-                })
             })
 
             return {
@@ -789,7 +560,7 @@ export class ProductService {
         } catch (e) {
             if (e instanceof Prisma.PrismaClientKnownRequestError) {
                 if (e.code === 'P2002') {
-                    throw new HttpException("Опции и знначения опций должны быть унимальными", HttpStatus.BAD_REQUEST)
+                    throw new HttpException("Характеристики должны быть уникальны", HttpStatus.BAD_REQUEST)
                 }
             }
 
@@ -797,92 +568,32 @@ export class ProductService {
         }
     }
 
-    async removeOption(optionId: number) {
+    async removeFeature(productId: number, featureId: number) {
         try {
             await this.prisma.$transaction(async tx => {
                 // Удаление опции
-                const option = await tx.option.delete({
-                    where: { id: optionId },
-                    select: {
-                        productId: true,
-                        option: true,
-                        values: {
-                            select: {
-                                id: true,
-                                title: true
-                            }
-                        },
-                        product: {
-                            select: {
-                                SKU: true
-                            }
-                        }
-                    }
+                await tx.feature.delete({
+                    where: { id: featureId }
                 })
 
                 // Получаем список оставшихся опций
-                const options = await tx.option.findMany({
-                    where: { productId: option.productId },
-                    select: {
-                        id: true,
-                        option: true,
-                        values: {
-                            select: {
-                                id: true,
-                                title: true
-                            },
-                            orderBy: {
-                                position: 'asc'
-                            }
-                        }
-                    },
+                const features = await tx.feature.findMany({
+                    where: { productId: productId },
+                    select: { id: true },
                     orderBy: { position: 'asc' }
                 })
 
                 // Меняем позиции. Tеперь они начинаются с 0
-                for (const [index, option] of Object.entries(options)) {
-                    await tx.option.update({
+                for (const [index, feature] of Object.entries(features)) {
+                    await tx.feature.update({
                         where: {
-                            id: option.id
+                            id: feature.id
                         },
                         data: {
                             position: +index
                         }
                     })
                 }
-
-                // Удаляем все варианты, так как старых вариантов больше нет
-                await tx.variant.deleteMany({
-                    where: { productId: option.productId },
-                })
-
-                // Если остались какие то опции - создаем варианты на основе оставшихся опций
-                if (options.length !== 0) {
-                    const values = options.map(option => option.values.map(value => ({ ...value, option: option.option })))
-                    const combinations = this.getCombinations(values)
-
-                    await tx.variant.createMany({
-                        data: combinations.map(combination => ({
-                            productId: option.productId,
-                            option0: combination.find(c => c.option === 0)?.title ?? null,
-                            option1: combination.find(c => c.option === 1)?.title ?? null,
-                            option2: combination.find(c => c.option === 2)?.title ?? null,
-                            SKU: option.product.SKU
-                        }))
-                    })
-                }
-
-                await tx.offer.updateMany({
-                    where: {
-                        status: {
-                            notIn: [OfferStatus.SOLD, OfferStatus.NO_MATCH, OfferStatus.RETURNING]
-                        },
-                        variantId: null
-                    },
-                    data: {
-                        status: OfferStatus.NO_MATCH
-                    }
-                })
             })
 
             return {
@@ -985,7 +696,7 @@ export class ProductService {
                 success: true
             }
         } catch (e) {
-            
+
 
             if (e instanceof Prisma.PrismaClientKnownRequestError) {
                 if (e.code === 'P2002') {
@@ -1030,10 +741,10 @@ export class ProductService {
         }
     }
 
-    private getCombinations = (arrays: { option: number; id: number; title: string; }[][]) => {
-        return arrays.reduce((result: { option: number; id: number; title: string; }[][], array: { option: number; id: number; title: string; }[]) => {
-            return result.reduce((newResult: { option: number; id: number; title: string; }[][], combination: { option: number; id: number; title: string; }[]) => {
-                return newResult.concat(array.map((num: { option: number; id: number; title: string; }) => [...combination, num]));
+    private getCombinations = (arrays: { feature: number; id: number; title: string; }[][]) => {
+        return arrays.reduce((result: { feature: number; id: number; title: string; }[][], array: { feature: number; id: number; title: string; }[]) => {
+            return result.reduce((newResult: { feature: number; id: number; title: string; }[][], combination: { feature: number; id: number; title: string; }[]) => {
+                return newResult.concat(array.map((num: { feature: number; id: number; title: string; }) => [...combination, num]));
             }, []);
         }, [[]]);
     }

@@ -60,7 +60,6 @@ export const api = createApi({
         "PRODUCTS",
         "VARIANTS",
         "VARIANT",
-        "OPTIONS",
         "COLLECTIONS",
         "COLLECTION",
         "COLLECTION_PRODUCTS",

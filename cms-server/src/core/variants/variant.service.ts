@@ -56,13 +56,6 @@ export class VariantService {
                         option2: true,
                     }
                 },
-                options: {
-                    select: {
-                        title: true,
-                        option: true,
-                    },
-                    orderBy: [{ position: 'asc' }]
-                },
             },
             skip: data.skip,
             take: data.limit,
@@ -77,7 +70,7 @@ export class VariantService {
             title: product.title,
             variants: product.variants.map(variant => ({
                 id: variant.id,
-                title: product.options.map((option) => variant[`option${option.option}`]).join(' | ')
+                title: "TODO"
             }))
         }))
 
@@ -88,26 +81,6 @@ export class VariantService {
     }
 
     async getVariants(productId: number) {
-        const options = await this.prisma.option.findMany({
-            where: { productId },
-            select: {
-                id: true,
-                option: true,
-                values: {
-                    select: {
-                        title: true,
-                        position: true,
-                    },
-                    orderBy: {
-                        position: 'asc'
-                    }
-                }
-            },
-            orderBy: {
-                position: 'asc'
-            }
-        })
-
         const variants = await this.prisma.variant.findMany({
             where: {
                 productId: productId
@@ -142,27 +115,9 @@ export class VariantService {
             }
         })
 
-        // Сортировка вариантов по позиции опции
-        const sortedVariants = variants.sort((a, b) => {
-            for (const option of options) {
-                const optionName = `option${option.option}`
-                const valueA = a[optionName]
-                const valueB = b[optionName]
-                if (valueA && valueB) {
-                    const optionValues = option.values.map(v => v.title)
-                    const indexA = optionValues.indexOf(valueA)
-                    const indexB = optionValues.indexOf(valueB)
-                    if (indexA !== indexB) {
-                        return indexA - indexB
-                    }
-                }
-            }
-            return 0
-        })
-
-        const result = sortedVariants.map(variant => ({
+        const result = variants.map(variant => ({
             id: variant.id,
-            title: options.map(option => variant[`option${option.option}`]).join(' | '),
+            title: "TODO",
             price: variant.offers[0]?.price ?? 0,
             image: variant.images[0] ?? null
         }))
@@ -170,24 +125,6 @@ export class VariantService {
         return {
             success: true,
             data: result
-        }
-    }
-
-    async getOptions(productId: number) {
-        const options = await this.prisma.option.findMany({
-            where: { productId },
-            select: {
-                id: true,
-                title: true,
-                option: true,
-                position: true
-            },
-            orderBy: [{ position: 'asc' }]
-        })
-
-        return {
-            success: true,
-            data: options
         }
     }
 
@@ -227,15 +164,6 @@ export class VariantService {
                             take: 1
                         },
                         title: true,
-                        options: {
-                            select: {
-                                id: true,
-                                title: true,
-                                option: true,
-                                position: true
-                            },
-                            orderBy: [{ position: 'asc' }]
-                        }
                     }
                 }
             }
@@ -250,7 +178,7 @@ export class VariantService {
             product: variant.product.title,
             productId: variant.product.id,
             image: variant.images[0] ?? variant.product.images[0] ?? null,
-            variant: variant.product.options.map((option) => variant[`option${option.option}`]).join(' | '),
+            variant: "TODO",
         }
 
         return {
@@ -279,19 +207,6 @@ export class VariantService {
                     orderBy: {
                         position: 'asc'
                     }
-                },
-                product: {
-                    select: {
-                        options: {
-                            select: {
-                                id: true,
-                                title: true,
-                                option: true,
-                                position: true
-                            },
-                            orderBy: [{ position: 'asc' }]
-                        }
-                    }
                 }
             }
         })
@@ -308,7 +223,7 @@ export class VariantService {
             barcode: variant.barcode,
             SKU: variant.SKU,
             images: variant.images,
-            options: variant.product.options
+            options: [] //variant.product.options
         }
 
         return {
@@ -332,20 +247,6 @@ export class VariantService {
                         option2: data.option2
                     },
                     take: 1
-                },
-                options: {
-                    select: {
-                        title: true,
-                        option: true,
-                        values: {
-                            select: {
-                                title: true
-                            },
-                            orderBy: {
-                                position: 'asc'
-                            }
-                        }
-                    }
                 }
             }
         })
@@ -356,16 +257,6 @@ export class VariantService {
 
         if (product.variants.length !== 0) {
             throw new HttpException("Вариант должен быть уникальным", HttpStatus.BAD_REQUEST)
-        }
-
-        for (let i = 0; i < 3; i++) {
-            if (data[`option${i}`] !== undefined) {
-                const option = product.options.find(c => c.option === i)
-
-                if (option === undefined || option.values.some(c => c.title === data[`option${i}`]) === false) {
-                    throw new HttpException(`${option.title} не соответствует опциям`, HttpStatus.INTERNAL_SERVER_ERROR)
-                }
-            }
         }
 
         const createVariantQuery = {
@@ -534,40 +425,6 @@ export class VariantService {
 
 
     async updateVariant(variantId: number, data: UpdateVariantDto) {
-        const options = await this.prisma.option.findMany({
-            where: {
-                product: {
-                    variants: {
-                        some: {
-                            id: variantId
-                        }
-                    }
-                }
-            },
-            select: {
-                title: true,
-                option: true,
-                values: {
-                    select: {
-                        title: true
-                    },
-                    orderBy: {
-                        position: 'asc'
-                    }
-                }
-            }
-        })
-
-        for (let i = 0; i < 3; i++) {
-            if (data[`option${i}`] !== undefined) {
-                const option = options.find(c => c.option === i)
-
-                if (option === undefined || option.values.some(c => c.title === data[`option${i}`]) === false) {
-                    throw new HttpException(`${option.title} не соответствует опциям`, HttpStatus.INTERNAL_SERVER_ERROR)
-                }
-            }
-        }
-
         const updateVariantQuery = {
             option0: data.option0,
             option1: data.option1,
@@ -587,18 +444,6 @@ export class VariantService {
                         option0: true,
                         option1: true,
                         option2: true,
-                        product: {
-                            select: {
-                                options: {
-                                    select: {
-                                        title: true,
-                                        option: true,
-
-                                    },
-                                    orderBy: [{ position: 'asc' }]
-                                }
-                            }
-                        }
                     }
                 })
 
@@ -623,7 +468,7 @@ export class VariantService {
                         variantId: variantId
                     },
                     data: {
-                        variantTitle: variant.product.options.map((option) => variant[`option${option.option}`]).join(' | ')
+                        variantTitle: "TODO"
                     }
                 })
 

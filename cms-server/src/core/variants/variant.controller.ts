@@ -43,14 +43,6 @@ export class VariantController {
         return this.variantService.getVariants(productId)
     }
 
-    @Get('getOptions/:productId')
-    @Auth([Role.ADMIN, Role.MANAGER], [Right.PRODUCT_READ])
-    getOptions(
-        @Param('productId', ParseIntPipe) productId: number
-    ) {
-        return this.variantService.getOptions(productId)
-    }
-
     @Get(':variantId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.PRODUCT_READ])
     getVariantById(

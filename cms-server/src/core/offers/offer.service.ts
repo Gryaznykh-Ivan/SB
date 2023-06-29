@@ -186,15 +186,6 @@ export class OfferService {
                     select: {
                         id: true,
                         title: true,
-                        options: {
-                            select: {
-                                title: true,
-                                option: true,
-                            },
-                            orderBy: {
-                                position: 'asc'
-                            }
-                        },
                     }
                 }
             }
@@ -209,7 +200,7 @@ export class OfferService {
                 const createOfferQuery = {
                     productId: variant.product.id,
                     productTitle: variant.product.title,
-                    variantTitle: variant.product.options.map((option) => variant[`option${option.option}`]).join(' | '),
+                    variantTitle: "TODO",
                     variantId: data.variantId,
                     userId: data.userId,
                     status: data.status,
@@ -303,13 +294,6 @@ export class OfferService {
                         select: {
                             id: true,
                             title: true,
-                            options: {
-                                select: {
-                                    title: true,
-                                    option: true,
-                                },
-                                orderBy: [{ position: 'asc' }]
-                            }
                         }
                     }
                 }
@@ -323,7 +307,7 @@ export class OfferService {
                 status: (offer.status === OfferStatus.NO_MATCH && data.status === undefined) ? OfferStatus.ACTIVE : data.status,
                 productId: variant.product.id,
                 productTitle: variant.product.title,
-                variantTitle: variant.product.options.map((option) => variant[`option${option.option}`]).join(' | '),
+                variantTitle: "TODO",
                 variantId: data.variantId
             })
         }

@@ -1,5 +1,5 @@
 import { api } from "@/store/api";
-import { ProductCreateOptionRequest, ProductCreateOptionResponse, ProductCreateRequest, ProductCreateResponse, ProductDeleteRequest, ProductDeleteResponse, ProductGetByIdRequest, ProductGetByIdResponse, ProductRemoveImageRequest, ProductRemoveImageResponse, ProductRemoveOptionRequest, ProductRemoveOptionResponse, ProductSearchRequest, ProductSearchResponse, ProductUpdateImageRequest, ProductUpdateImageResponse, ProductUpdateOptionRequest, ProductUpdateOptionResponse, ProductUpdateRequest, ProductUpdateResponse, ProductUploadImagesRequest, ProductUploadImagesResponse } from "@/types/api";
+import { ProductCreateFeatureRequest, ProductCreateFeatureResponse, ProductCreateRequest, ProductCreateResponse, ProductDeleteRequest, ProductDeleteResponse, ProductGetByIdRequest, ProductGetByIdResponse, ProductRemoveImageRequest, ProductRemoveImageResponse, ProductRemoveFeatureRequest, ProductRemoveFeatureResponse, ProductSearchRequest, ProductSearchResponse, ProductUpdateImageRequest, ProductUpdateImageResponse, ProductUpdateFeatureRequest, ProductUpdateFeatureResponse, ProductUpdateRequest, ProductUpdateResponse, ProductUploadImagesRequest, ProductUploadImagesResponse } from "@/types/api";
 
 export const productService = api.injectEndpoints({
     endpoints: builder => ({
@@ -64,28 +64,28 @@ export const productService = api.injectEndpoints({
             }),
             invalidatesTags: ["PRODUCT", "OFFER", "OFFERS"]
         }),
-        createOption: builder.mutation<ProductCreateOptionResponse, ProductCreateOptionRequest>({
+        createFeature: builder.mutation<ProductCreateFeatureResponse, ProductCreateFeatureRequest>({
             query: ({ productId, ...rest }) => ({
-                url: `products/${productId}/createOption`,
+                url: `products/${productId}/createFeature`,
                 method: "POST",
                 body: rest
             }),
-            invalidatesTags: ["PRODUCT", "VARIANTS", "VARIANT", "OPTIONS", "OFFER", "OFFERS"]
+            invalidatesTags: ["PRODUCT"]
         }),
-        updateOption: builder.mutation<ProductUpdateOptionResponse, ProductUpdateOptionRequest>({
-            query: ({ productId, optionId, ...rest }) => ({
-                url: `products/${productId}/updateOption/${optionId}`,
+        updateFeature: builder.mutation<ProductUpdateFeatureResponse, ProductUpdateFeatureRequest>({
+            query: ({ productId, featureId, ...rest }) => ({
+                url: `products/${productId}/updateFeature/${featureId}`,
                 method: "PUT",
                 body: rest
             }),
-            invalidatesTags: ["PRODUCT", "VARIANTS", "VARIANT", "OPTIONS", "OFFER", "OFFERS"]
+            invalidatesTags: ["PRODUCT"]
         }),
-        removeOption: builder.mutation<ProductRemoveOptionResponse, ProductRemoveOptionRequest>({
-            query: ({ productId, optionId }) => ({
-                url: `products/${productId}/removeOption/${optionId}`,
+        removeFeature: builder.mutation<ProductRemoveFeatureResponse, ProductRemoveFeatureRequest>({
+            query: ({ productId, featureId }) => ({
+                url: `products/${productId}/removeFeature/${featureId}`,
                 method: "DELETE"
             }),
-            invalidatesTags: ["PRODUCT", "VARIANTS", "VARIANT", "OPTIONS", "OFFER", "OFFERS"]
+            invalidatesTags: ["PRODUCT"]
         })
     })
 })
@@ -93,13 +93,13 @@ export const productService = api.injectEndpoints({
 export const {
     useLazyGetProductsBySearchQuery,
     useGetProductByIdQuery,
-    useCreateOptionMutation,
+    useCreateFeatureMutation,
     useCreateProductMutation,
     useDeleteProductMutation,
     useRemoveProductImageMutation,
     useUploadProductImagesMutation,
     useUpdateProductImageMutation,
-    useUpdateOptionMutation,
-    useRemoveOptionMutation,
+    useUpdateFeatureMutation,
+    useRemoveFeatureMutation,
     useUpdateProductMutation
 } = productService
