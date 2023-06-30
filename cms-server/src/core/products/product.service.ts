@@ -399,7 +399,7 @@ export class ProductService {
                     productId: productId,
                     values: {
                         createMany: {
-                            data: data.createFeatureValues.map((feature, i) => ({ key: feature.key, value: feature.value, position: i }))
+                            data: data.createFeatureValues.map((feature, i) => ({ key: feature.key, value: feature.value, position: i, productId }))
                         }
                     }
                 }
@@ -439,7 +439,7 @@ export class ProductService {
                     Object.assign(FeatureUpdateQuery, {
                         values: {
                             createMany: {
-                                data: data.createFeatureValues.map((feature, index) => ({ key: feature.key, value: feature.value, position: startPosition + index }))
+                                data: data.createFeatureValues.map((feature, index) => ({ key: feature.key, value: feature.value, position: startPosition + index, productId }))
                             }
                         }
                     })
