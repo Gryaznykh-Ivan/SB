@@ -229,7 +229,7 @@ export interface IVariant {
     option1: string;
     option2: string;
     barcode: string;
-    SKU: string;
+    sku: string;
     images: IImage[];
 }
 
@@ -265,7 +265,7 @@ export interface IProduct {
     metaDescription: string | null;
     vendor: string | null;
     type: string | null;
-    SKU: string | null;
+    sku: string | null;
     barcode: string | null;
     images: IImage[];
     collections: Pick<ICollection, "id" | "title">[];
@@ -563,7 +563,7 @@ export type ProductCreateRequest = {
     title?: string;
     handle?: string;
     available?: boolean;
-    SKU?: string;
+    sku?: string;
     barcode?: string;
     description?: string | null;
     metaTitle?: string | null;
@@ -676,7 +676,7 @@ export type VariantCreateRequest = {
     option1?: string | null;
     option2?: string | null;
     barcode?: string | null;
-    SKU?: string | null;
+    sku?: string | null;
 }
 
 export type VariantUpdateResponse = IResponse<void>
@@ -686,7 +686,7 @@ export type VariantUpdateRequest = {
     option1?: string | null;
     option2?: string | null;
     barcode?: string | null;
-    SKU?: string | null;
+    sku?: string | null;
 }
 
 export type VariantDeleteResponse = IResponse<void>

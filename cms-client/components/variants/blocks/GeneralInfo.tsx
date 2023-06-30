@@ -9,7 +9,7 @@ interface IProps {
     option1: string | null;
     option2: string | null;
     barcode: string | null;
-    SKU: string | null;
+    sku: string | null;
     onChange: (obj: VariantCreateRequest | VariantUpdateRequest) => void;
 }
 
@@ -19,7 +19,7 @@ export default function GeneralInfo({ onChange, options, ...data }: IProps) {
         option1: data.option1 ?? "",
         option2: data.option2 ?? "",
         barcode: data.barcode ?? "",
-        SKU: data.SKU ?? "",
+        sku: data.sku ?? "",
     })
 
     useEffect(() => {
@@ -28,9 +28,9 @@ export default function GeneralInfo({ onChange, options, ...data }: IProps) {
             option1: data.option1 ?? "",
             option2: data.option2 ?? "",
             barcode: data.barcode ?? "",
-            SKU: data.SKU ?? "",
+            sku: data.sku ?? "",
         })
-    }, [data.SKU, data.barcode, data.option0, data.option1, data.option2])
+    }, [data.sku, data.barcode, data.option0, data.option1, data.option2])
 
     useEffect(() => {
         const localState = Object.entries(state)
@@ -83,8 +83,8 @@ export default function GeneralInfo({ onChange, options, ...data }: IProps) {
                     ))}
                     <div className="grid grid-cols-2 gap-4">
                         <div className="flex flex-col">
-                            <label htmlFor="SKU" className="text-sm text-gray-600 mb-1">SKU</label>
-                            <Input type="text" id="SKU" placeholder="SKU" name="SKU" value={state.SKU} onChange={onInputChange} />
+                            <label htmlFor="sku" className="text-sm text-gray-600 mb-1">sku</label>
+                            <Input type="text" id="sku" placeholder="sku" name="sku" value={state.sku} onChange={onInputChange} />
                         </div>
                         <div className="flex flex-col">
                             <label htmlFor="barcode" className="text-sm text-gray-600 mb-1">Штрих-код</label>

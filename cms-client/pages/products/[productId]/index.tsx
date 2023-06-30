@@ -137,7 +137,7 @@ function Index() {
                                     options={data.data.features}
                                 />
                                 <Inventory
-                                    SKU={data.data.SKU}
+                                    sku={data.data.sku}
                                     barcode={data.data.barcode}
                                     onChange={onCollectChanges}
                                 />

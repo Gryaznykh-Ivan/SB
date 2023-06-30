@@ -30,7 +30,7 @@ export class ProductService {
                 metaDescription: true,
                 vendor: true,
                 type: true,
-                SKU: true,
+                sku: true,
                 barcode: true,
                 metafields: {
                     select: {
@@ -202,7 +202,7 @@ export class ProductService {
             handle: this.url.getSlug(data.handle),
             metaTitle: data.metaTitle,
             metaDescription: data.metaDescription,
-            SKU: data.SKU,
+            sku: data.sku,
             barcode: data.barcode
         }
 
@@ -615,7 +615,7 @@ export class ProductService {
             handle: this.url.getSlug(data.handle),
             metaTitle: data.metaTitle,
             metaDescription: data.metaDescription,
-            SKU: data.SKU,
+            sku: data.sku,
             barcode: data.barcode
         }
 

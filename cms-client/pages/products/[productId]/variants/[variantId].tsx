@@ -128,7 +128,7 @@ function Variant() {
                                     option1={data.data.option1}
                                     option2={data.data.option2}
                                     barcode={data.data.barcode}
-                                    SKU={data.data.SKU}
+                                    sku={data.data.sku}
                                     onChange={onCollectChanges}
                                 />
                                 <Media

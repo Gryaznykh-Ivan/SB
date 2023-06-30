@@ -376,7 +376,7 @@ model Product {
     metaDescription  String            @db.Text
     minPrice         Decimal?          @db.Decimal(10, 2)
     maxPrice         Decimal?          @db.Decimal(10, 2)
-    SKU              String?
+    sku              String?
     barcode          String?
     vendor           String?
     type             String?
@@ -473,7 +473,7 @@ model Image {
 
 model Variant {
     id        Int      @id @default(autoincrement()) @db.UnsignedInt
-    SKU       String?
+    sku       String?
     barcode   String?
     option0   String?
     option1   String?

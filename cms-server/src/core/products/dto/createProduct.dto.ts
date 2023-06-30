@@ -49,7 +49,7 @@ export class CreateProductDto {
 
     @IsOptional()
     @IsString()
-    SKU: string;
+    sku: string;
 
     @IsOptional()
     @IsArray()

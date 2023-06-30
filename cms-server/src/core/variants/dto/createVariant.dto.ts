@@ -25,7 +25,7 @@ export class CreateVariantDto {
 
     @IsOptional()
     @IsString()
-    SKU: string;
+    sku: string;
 
     @IsOptional()
     @IsString()

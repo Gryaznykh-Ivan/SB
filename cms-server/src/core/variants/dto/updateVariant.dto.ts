@@ -22,7 +22,7 @@ export class UpdateVariantDto {
 
     @IsOptional()
     @IsString()
-    SKU: string;
+    sku: string;
 
     @IsOptional()
     @IsString()

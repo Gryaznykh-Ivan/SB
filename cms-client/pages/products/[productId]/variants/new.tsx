@@ -89,7 +89,7 @@ function New() {
                                     option1={null}
                                     option2={null}
                                     barcode={null}
-                                    SKU={null}
+                                    sku={null}
                                     onChange={onCollectChanges}
                                 />
                             </div>

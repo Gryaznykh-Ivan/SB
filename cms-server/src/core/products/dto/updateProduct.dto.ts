@@ -54,7 +54,7 @@ export class UpdateProductDto {
 
     @IsOptional()
     @IsString()
-    SKU: string;
+    sku: string;
 
     @IsOptional()
     @IsArray()

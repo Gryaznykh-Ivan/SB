@@ -76,7 +76,7 @@ export default function SEOSnippetProduct() {
                         <div className="text-gray-500 text-sm">{state.title.length} символов</div>
                     </div>
                     <Input type="text" id="title" placeholder="Мета название" name="title" value={state.title} onChange={onInputChange} />
-                    <div className="text-gray-400 text-sm mt-1">Пример: [vendor] [title] [SKU] | EXAMPLE</div>
+                    <div className="text-gray-400 text-sm mt-1">Пример: [vendor] [title] [sku] | EXAMPLE</div>
                 </div>
                 <div className="flex flex-col">
                     <div className="flex justify-between mb-1">
@@ -85,8 +85,8 @@ export default function SEOSnippetProduct() {
                     </div>
                     <TextArea id="description" placeholder="Mета описание" name="description" value={state.description} onChange={onInputChange} />
                     <div className="mt-1 text-sm text-gray-400">
-                        <div className="">Пример: Покупай [title] [SKU] в магазине EXAMPLE</div>
-                        <div className="">Переменные: [title] [SKU] [vendor]</div>
+                        <div className="">Пример: Покупай [title] [sku] в магазине EXAMPLE</div>
+                        <div className="">Переменные: [title] [sku] [vendor]</div>
                     </div>
                 </div>
             </div>

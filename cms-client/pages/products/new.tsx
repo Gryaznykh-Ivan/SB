@@ -44,12 +44,12 @@ function New() {
         return seoSnippetProductData?.data.find(c => c.key === key)?.value ?? ""
     }
 
-    const applySnippetFormat = (snippet: string, title: string, vendor: string, SKU: string) => {
-        if (title === "" && vendor === "" && SKU === "") return ""
+    const applySnippetFormat = (snippet: string, title: string, vendor: string, sku: string) => {
+        if (title === "" && vendor === "" && sku === "") return ""
 
         return snippet.replaceAll("[title]", title.replace(/[^a-zA-Zа-яА-Я0-9 ]/gi, ""))
             .replaceAll("[vendor]", vendor)
-            .replaceAll("[SKU]", SKU)
+            .replaceAll("[sku]", sku)
             .replace(/\s+/g, " ")
             .trim();
     }
@@ -91,13 +91,13 @@ function New() {
                             onChange={onCollectChanges}
                         />
                         <Inventory
-                            SKU={null}
+                            sku={null}
                             barcode={null}
                             onChange={onCollectChanges}
                         />
                         <CreateSeoSearch
-                            metaTitle={applySnippetFormat(getSnippetVariableByKey("title"), changes.title ?? "", changes.vendor ?? "", changes.SKU ?? "")}
-                            metaDescription={applySnippetFormat(getSnippetVariableByKey("description"), changes.title ?? "", changes.vendor ?? "", changes.SKU ?? "")}
+                            metaTitle={applySnippetFormat(getSnippetVariableByKey("title"), changes.title ?? "", changes.vendor ?? "", changes.sku ?? "")}
+                            metaDescription={applySnippetFormat(getSnippetVariableByKey("description"), changes.title ?? "", changes.vendor ?? "", changes.sku ?? "")}
                             handle={url.getSlug(changes.title)}
                             onChange={onCollectChanges}
                         />

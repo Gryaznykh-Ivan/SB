@@ -4,14 +4,14 @@ import Input from '../../inputs/Input'
 import TextArea from '../../inputs/TextArea'
 
 interface IProps {
-    SKU: string | null;
+    sku: string | null;
     barcode: string | null;
     onChange: (obj: ProductCreateRequest | ProductUpdateRequest) => void;
 }
 
 export default function Inventory({ onChange, ...data }: IProps) {
     const [state, setState] = useState({
-        SKU: data.SKU ?? "",
+        sku: data.sku ?? "",
         barcode: data.barcode ?? "",
     })
 
@@ -45,8 +45,8 @@ export default function Inventory({ onChange, ...data }: IProps) {
             <h2 className="font-semibold p-5 border-b-[1px]">Инвентаризация</h2>
             <div className="p-5 grid grid-cols-2 gap-5">
                 <div className="flex flex-col">
-                    <label htmlFor="SKU" className="text-sm text-gray-600 mb-1">SKU</label>
-                    <Input type="text" id="SKU" placeholder="SKU" name="SKU" value={state.SKU} onChange={onInputChange} />
+                    <label htmlFor="sku" className="text-sm text-gray-600 mb-1">sku</label>
+                    <Input type="text" id="sku" placeholder="sku" name="sku" value={state.sku} onChange={onInputChange} />
                 </div>
                 <div className="flex flex-col">
                     <label htmlFor="barcode" className="text-sm text-gray-600 mb-1">Штрих-код</label>

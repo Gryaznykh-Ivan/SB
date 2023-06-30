@@ -196,7 +196,7 @@ export class VariantService {
                 option1: true,
                 option2: true,
                 barcode: true,
-                SKU: true,
+                sku: true,
                 images: {
                     select: {
                         id: true,
@@ -221,7 +221,7 @@ export class VariantService {
             option1: variant.option1,
             option2: variant.option2,
             barcode: variant.barcode,
-            SKU: variant.SKU,
+            sku: variant.sku,
             images: variant.images,
             options: [] //variant.product.options
         }
@@ -238,7 +238,7 @@ export class VariantService {
                 id: data.productId,
             },
             select: {
-                SKU: true,
+                sku: true,
                 barcode: true,
                 variants: {
                     where: {
@@ -263,7 +263,7 @@ export class VariantService {
             option0: data.option0,
             option1: data.option1,
             option2: data.option2,
-            SKU: data.SKU || product.SKU,
+            sku: data.sku || product.sku,
             barcode: data.barcode || product.barcode,
             productId: data.productId
         }
@@ -429,7 +429,7 @@ export class VariantService {
             option0: data.option0,
             option1: data.option1,
             option2: data.option2,
-            SKU: data.SKU,
+            sku: data.sku,
             barcode: data.barcode,
         }
 

@@ -114,9 +114,9 @@ export default function Feature({ className, item, index, onItemsInputChange, on
 
         setState(prev => ({ ...prev, edit: false }))
 
-        const createFeatureValues = state.values.filter(c => item.values.find(a => a.id === c.id) === undefined).map(c => ({ key: c.key, value: c.value }))
-        const deleteFeatureValues = item.values.filter(c => state.values.find(a => a.id === c.id) === undefined).map(c => ({ id: c.id }))
-        const updateFeatureValues = state.values.filter(c => item.values.find(a => a.id === c.id && a.key !== c.key && a.value !== c.value))
+        const createFeatureValues = state.values.filter(c => item.values.some(a => a.id === c.id) === false).map(c => ({ key: c.key, value: c.value }))
+        const deleteFeatureValues = item.values.filter(c => state.values.every(a => a.id !== c.id)).map(c => ({ id: c.id }))
+        const updateFeatureValues = state.values.filter(c => item.values.some(a => a.id === c.id && (a.key !== c.key || a.value !== c.value)))
 
         const result = await onFeatureValuesUpdate(item.id, {
             createFeatureValues: createFeatureValues.length !== 0 ? createFeatureValues : undefined,
