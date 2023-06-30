@@ -10,7 +10,6 @@ import { useRouter } from 'next/router'
 import { useCreateProductMutation } from '@/services/productService'
 import { toast } from 'react-toastify'
 import { IErrorResponse, ProductCreateRequest, ProductUpdateRequest } from '@/types/api'
-import Inventory from '@/components/products/blocks/Inventory'
 import { useGetVariablesByGroupQuery } from '@/services/variableService'
 import url from '@/utils/url'
 
@@ -90,11 +89,6 @@ function New() {
                             description={null}
                             onChange={onCollectChanges}
                         />
-                        <Inventory
-                            sku={null}
-                            barcode={null}
-                            onChange={onCollectChanges}
-                        />
                         <CreateSeoSearch
                             metaTitle={applySnippetFormat(getSnippetVariableByKey("title"), changes.title ?? "", changes.vendor ?? "", changes.sku ?? "")}
                             metaDescription={applySnippetFormat(getSnippetVariableByKey("description"), changes.title ?? "", changes.vendor ?? "", changes.sku ?? "")}
@@ -108,6 +102,7 @@ function New() {
                             onChange={onCollectChanges}
                         />
                         <OrganizationInfo
+                            sku={null}
                             type={null}
                             vendor={null}
                             collections={[]}

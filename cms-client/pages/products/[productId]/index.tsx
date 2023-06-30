@@ -7,7 +7,6 @@ import GeneralInfo from '@/components/products/blocks/GeneralInfo'
 import SeoSearch from '@/components/products/blocks/SeoSearch'
 import Status from '@/components/products/blocks/Status'
 import OrganizationInfo from '@/components/products/blocks/OrganizationInfo'
-import Inventory from '@/components/products/blocks/Inventory'
 import VariantList from '@/components/variants/blocks/VariantList'
 import FeatureList from '@/components/products/blocks/FeatureList'
 import { useDeleteProductMutation, useGetProductByIdQuery, useUpdateProductMutation } from '@/services/productService'
@@ -136,11 +135,6 @@ function Index() {
                                     productId={data.data.id}
                                     options={data.data.features}
                                 />
-                                <Inventory
-                                    sku={data.data.sku}
-                                    barcode={data.data.barcode}
-                                    onChange={onCollectChanges}
-                                />
                                 <SeoSearch
                                     metaTitle={data.data.metaTitle}
                                     metaDescription={data.data.metaDescription}
@@ -158,6 +152,7 @@ function Index() {
                                     onChange={onCollectChanges}
                                 />
                                 <OrganizationInfo
+                                    sku={data.data.sku}
                                     type={data.data.type}
                                     vendor={data.data.vendor}
                                     collections={data.data.collections}

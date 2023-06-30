@@ -9,6 +9,7 @@ import VendorsSmartInput from '../../inputs/VendorsSmartInput';
 interface IProps {
     type: string | null;
     vendor: string | null;
+    sku: string | null;
     tags: ITag[];
     collections: Pick<ICollection, "id" | "title">[];
     onChange: (obj: ProductCreateRequest | ProductUpdateRequest) => void;
@@ -18,6 +19,7 @@ export default function OrganizationInfo({ onChange, ...data }: IProps) {
     const [collections, setCollections] = useState(data.collections)
     const [tags, setTags] = useState(data.tags)
     const [state, setState] = useState({
+        sku: data.sku ?? "",
         type: data.type ?? "",
         vendor: data.vendor ?? "",
     })
@@ -79,6 +81,10 @@ export default function OrganizationInfo({ onChange, ...data }: IProps) {
         <div className="rounded-md bg-white shadow-sm">
             <h2 className="font-semibold p-5 border-b-[1px]">Организация</h2>
             <div className="space-y-3 p-5">
+                <div className="flex flex-col">
+                    <label htmlFor="sku" className="text-sm text-gray-600 mb-1">Артикул</label>
+                    <Input id="sku" type="text" placeholder="Артикул" name="sku" value={state.sku} onChange={onInputChange} />
+                </div>
                 <div className="flex flex-col">
                     <label htmlFor="type" className="text-sm text-gray-600 mb-1">Тип товара</label>
                     <ProductTypesSmartInput id="type" placeholder="Тип товара" name="type" value={state.type} onChange={onInputChange} />
