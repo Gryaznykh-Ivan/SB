@@ -1,14 +1,16 @@
-import { Type } from "class-transformer";
+import { Transform, TransformFnParams, Type } from "class-transformer";
 import { ArrayMinSize, IsArray, IsInt, IsNotEmpty, IsOptional, IsString, NotEquals, ValidateIf, ValidateNested } from "class-validator";
 
 
 export class CreateFeatureValueDto {
-    @IsNotEmpty()
     @IsString()
+    @Transform(({ value }: TransformFnParams) => value?.trim())
+    @IsNotEmpty()
     key: string;
 
-    @IsNotEmpty()
     @IsString()
+    @Transform(({ value }: TransformFnParams) => value?.trim())
+    @IsNotEmpty()
     value: string;
 }
 

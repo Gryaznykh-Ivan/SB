@@ -9,12 +9,14 @@ export class GlobalValidationPipe implements PipeTransform<any> {
         if (!metatype || !this.toValidate(metatype)) {
             return value;
         }
-
+        
         const object = plainToInstance(metatype, value);
         const errors = await validate(object);
+        
+        console.log(errors[0])
 
         if (errors.length > 0) {
-            throw new HttpException(`${errors[0].property} - ${Object.values(errors[0].constraints).join(', ')}`, HttpStatus.BAD_REQUEST)
+            throw new HttpException(`${errors[0].property} - ${Object.values(errors[0].children[0].constraints ?? {default: "Ошибка валидации"}).join(', ')}`, HttpStatus.BAD_REQUEST)
         }
 
         return value;
