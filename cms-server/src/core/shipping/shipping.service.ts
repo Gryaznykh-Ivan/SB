@@ -3,6 +3,7 @@ import { OfferStatus, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateProfileDto } from './dto/createProfile.dto';
 import { CreateDeliveryZoneDto, UpdateDeliveryZoneDto } from './dto/delivery.dto';
+import { SearchProfileDto } from './dto/searchProfile.dto';
 import { SearchZoneDto } from './dto/searchZone.dto';
 import { UpdateProfileDto } from './dto/updateProfile.dto';
 
@@ -12,8 +13,18 @@ export class ShippingService {
         private prisma: PrismaService,
     ) { }
 
-    async getAllProfile() {
+    async getProfilesBySearch(data: SearchProfileDto) {
+        const fulltextSearch = data.q ? data.q.replace(/[+\-<>()~*\"@]+/g, " ").replace(/\s+/g, " ").trim().split(" ").filter(word => word.length > 2).map(word => `+${word}*`).join(" ") : undefined
+
         const profiles = await this.prisma.deliveryProfile.findMany({
+            where: {
+                title: {
+                    search: fulltextSearch ? fulltextSearch : undefined
+                },
+                location: {
+                    search: fulltextSearch ? fulltextSearch : undefined
+                }
+            },
             select: {
                 id: true,
                 title: true,
@@ -24,6 +35,8 @@ export class ShippingService {
                     }
                 }
             },
+            skip: data.skip,
+            take: data.limit,
             orderBy: [{
                 createdAt: 'asc'
             }]
@@ -318,10 +331,10 @@ export class ShippingService {
             }
         } catch (e) {
             if (e.name === HttpException.name) {
-                
+
                 throw new HttpException(e.message, e.status)
             }
-            
+
             throw new HttpException("Произошла ошибка на стороне сервера", HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }

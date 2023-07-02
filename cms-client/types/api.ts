@@ -893,8 +893,12 @@ export type OfferDeleteRequest = {
 
 // shippingService
 
-export type DeliveryProfileGetAllResponse = IResponse<IDeliveryProfilePreview[]>
-export type DeliveryProfileGetAllRequest = void
+export type DeliveryProfileSearchResponse = IResponse<IDeliveryProfilePreview[]>
+export type DeliveryProfileSearchRequest = {
+    q?: string;
+    limit?: number;
+    skip?: number;
+}
 
 export type DeliveryProfileGetDeliveryZonesResponse = IResponse<IDeliveryZone[]>
 export type DeliveryProfileGetDeliveryZonesRequest = {

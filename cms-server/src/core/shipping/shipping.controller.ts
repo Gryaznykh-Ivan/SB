@@ -2,7 +2,8 @@ import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, V
 import { Right, Role } from '@prisma/client';
 import { Auth } from 'src/decorators/auth.decorator';
 import { CreateProfileDto } from './dto/createProfile.dto';
-import { CreateDeliveryOptionDto, CreateDeliveryZoneDto, UpdateDeliveryOptionDto, UpdateDeliveryZoneDto } from './dto/delivery.dto';
+import { CreateDeliveryZoneDto, UpdateDeliveryZoneDto } from './dto/delivery.dto';
+import { SearchProfileDto } from './dto/searchProfile.dto';
 import { SearchZoneDto } from './dto/searchZone.dto';
 import { UpdateProfileDto } from './dto/updateProfile.dto';
 import { ShippingService } from './shipping.service';
@@ -13,10 +14,12 @@ export class ShippingController {
         private readonly productService: ShippingService
     ) { }
 
-    @Get('getAll')
+    @Get('search')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.SHIPPING_READ])
-    getAllProfile() {
-        return this.productService.getAllProfile()
+    getProfilesBySearch(
+        @Query(new ValidationPipe({ transform: true })) data: SearchProfileDto
+    ) {
+        return this.productService.getProfilesBySearch(data)
     }
 
     @Get(':profileId')

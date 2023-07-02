@@ -521,6 +521,7 @@ model DeliveryProfile {
     createdAt DateTime       @default(now())
     updatedAt DateTime       @updatedAt
 
+    @@fulltext([title, location])
     @@map("deliveryprofile")
 }
 

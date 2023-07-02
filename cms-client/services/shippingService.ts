@@ -1,12 +1,13 @@
 import { api } from "@/store/api";
-import { DeliveryProfileCreateRequest, DeliveryProfileCreateResponse, DeliveryProfileDeleteRequest, DeliveryProfileDeleteResponse, DeliveryProfileGetAllRequest, DeliveryProfileGetAllResponse, DeliveryProfileGetByIdRequest, DeliveryProfileGetByIdResponse, DeliveryProfileGetDeliveryZonesRequest, DeliveryProfileGetDeliveryZonesResponse, DeliveryProfileUpdateRequest, DeliveryProfileUpdateResponse, DeliveryZoneCreateRequest, DeliveryZoneCreateResponse, DeliveryZoneDeleteRequest, DeliveryZoneDeleteResponse, DeliveryZoneUpdateRequest, DeliveryZoneUpdateResponse } from "@/types/api";
+import { DeliveryProfileCreateRequest, DeliveryProfileCreateResponse, DeliveryProfileDeleteRequest, DeliveryProfileDeleteResponse, DeliveryProfileSearchRequest, DeliveryProfileSearchResponse, DeliveryProfileGetByIdRequest, DeliveryProfileGetByIdResponse, DeliveryProfileGetDeliveryZonesRequest, DeliveryProfileGetDeliveryZonesResponse, DeliveryProfileUpdateRequest, DeliveryProfileUpdateResponse, DeliveryZoneCreateRequest, DeliveryZoneCreateResponse, DeliveryZoneDeleteRequest, DeliveryZoneDeleteResponse, DeliveryZoneUpdateRequest, DeliveryZoneUpdateResponse } from "@/types/api";
 
 export const shippingService = api.injectEndpoints({
     endpoints: builder => ({
-        getAllDeliveryProfile: builder.query<DeliveryProfileGetAllResponse, DeliveryProfileGetAllRequest>({
-            query: () => ({
-                url: "shipping/getAll",
-                method: "GET"
+        getDeliveryProfileBySearch: builder.query<DeliveryProfileSearchResponse, DeliveryProfileSearchRequest>({
+            query: (credentials) => ({
+                url: "shipping/search",
+                method: "GET",
+                params: credentials
             }),
             providesTags: ["DELIVERY_PROFILES"]
         }),
@@ -75,7 +76,7 @@ export const shippingService = api.injectEndpoints({
 })
 
 export const {
-    useGetAllDeliveryProfileQuery,
+    useLazyGetDeliveryProfileBySearchQuery,
     useGetDeliveryProfileByIdQuery,
     useLazyGetDeliveryZonesQuery,
     useCreateDeliveryProfileMutation,

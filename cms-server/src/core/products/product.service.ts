@@ -740,12 +740,4 @@ export class ProductService {
             throw new HttpException("Произошла ошибка на стороне сервера", HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
-
-    private getCombinations = (arrays: { feature: number; id: number; title: string; }[][]) => {
-        return arrays.reduce((result: { feature: number; id: number; title: string; }[][], array: { feature: number; id: number; title: string; }[]) => {
-            return result.reduce((newResult: { feature: number; id: number; title: string; }[][], combination: { feature: number; id: number; title: string; }[]) => {
-                return newResult.concat(array.map((num: { feature: number; id: number; title: string; }) => [...combination, num]));
-            }, []);
-        }, [[]]);
-    }
 }
