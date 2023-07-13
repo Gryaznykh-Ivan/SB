@@ -1,6 +1,7 @@
 import { Transform, TransformFnParams, Type } from "class-transformer";
 import { IsArray, IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength, NotEquals, ValidateIf, ValidateNested } from "class-validator";
 import { ConnectCollectionDto, DisconnectCollectionDto } from "./collections.dto";
+import { CreateFeatureDto, DeleteFeatureDto, ReorderFeatureDto, UpdateFeatureDto } from "./features.dto";
 import { CreateMetafieldDto, DeleteMetafieldDto, UpdateMetafieldDto } from "./metafields.dto";
 import { CreateTagDto, DeleteTagDto } from "./tag.dto";
 
@@ -97,4 +98,28 @@ export class UpdateProductDto {
     @ValidateNested({ each: true })
     @Type(() => DeleteTagDto)
     deleteTags: DeleteTagDto[]
+
+    @IsOptional()
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => ReorderFeatureDto)
+    reorderFeatures: ReorderFeatureDto[]
+
+    @IsOptional()
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => CreateFeatureDto)
+    createFeatures: CreateFeatureDto[]
+
+    @IsOptional()
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => UpdateFeatureDto)
+    updateFeatures: UpdateFeatureDto[]
+
+    @IsOptional()
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => DeleteFeatureDto)
+    deleteFeatures: DeleteFeatureDto[]
 }

@@ -36,6 +36,11 @@ export class DeleteFeatureValueDto {
     id: number;
 }
 
+export class ReorderFeatureValueDto {
+    @IsInt()
+    id: number;
+}
+
 export class CreateFeatureDto {
     @IsNotEmpty()
     @IsString()
@@ -46,47 +51,49 @@ export class CreateFeatureDto {
     @IsArray()
     @ValidateNested({ each: true })
     @Type(() => CreateFeatureValueDto)
-    createFeatureValues: CreateFeatureValueDto[]
-}
-
-export class ReorderFeatureValueDto {
-    @IsInt()
-    id: number;
-
-    @IsInt()
-    position: number;
+    values: CreateFeatureValueDto[]
 }
 
 export class UpdateFeatureDto {
+    @IsInt()
+    id: number;
+
     @IsOptional()
     @IsNotEmpty()
     @IsString()
     title: string;
 
     @IsOptional()
-    @IsInt()
-    position: number;
-
-    @IsOptional()
-    @ValidateNested()
+    @IsArray()
+    @ValidateNested({ each: true })
     @Type(() => ReorderFeatureValueDto)
-    reorderFeatureValue: ReorderFeatureValueDto;
+    reorderValues: ReorderFeatureValueDto[]
 
     @IsOptional()
     @IsArray()
     @ValidateNested({ each: true })
     @Type(() => CreateFeatureValueDto)
-    createFeatureValues: CreateFeatureValueDto[]
+    createValues: CreateFeatureValueDto[]
 
     @IsOptional()
     @IsArray()
     @ValidateNested({ each: true })
     @Type(() => UpdateFeatureValueDto)
-    updateFeatureValues: UpdateFeatureValueDto[]
+    updateValues: UpdateFeatureValueDto[]
 
     @IsOptional()
     @IsArray()
     @ValidateNested({ each: true })
     @Type(() => DeleteFeatureValueDto)
-    deleteFeatureValues: DeleteFeatureValueDto[];
+    deleteValues: DeleteFeatureValueDto[];
+}
+
+export class DeleteFeatureDto {
+    @IsInt()
+    id: number;
+}
+
+export class ReorderFeatureDto {
+    @IsInt()
+    id: number;
 }

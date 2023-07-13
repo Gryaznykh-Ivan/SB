@@ -72,35 +72,6 @@ export class ProductController {
         return this.productService.removeImage(productId, imageId)
     }
 
-    @Post(':productId/createFeature')
-    @Auth([Role.ADMIN, Role.MANAGER], [Right.PRODUCT_UPDATE])
-    createFeature(
-        @Param('productId', ParseIntPipe) productId: number,
-        @Body() data: CreateFeatureDto
-    ) {
-        return this.productService.createFeature(productId, data)
-    }
-
-    @Put(':productId/updateFeature/:featureId')
-    @Auth([Role.ADMIN, Role.MANAGER], [Right.PRODUCT_UPDATE])
-    updateFeature(
-        @Param('productId', ParseIntPipe) productId: number,
-        @Param('featureId', ParseIntPipe) featureId: number,
-        @Body() data: UpdateFeatureDto
-    ) {
-        return this.productService.updateFeature(productId, featureId, data)
-    }
-
-
-    @Delete(':productId/removeFeature/:featureId')
-    @Auth([Role.ADMIN, Role.MANAGER], [Right.PRODUCT_UPDATE])
-    removeFeature(
-        @Param('productId', ParseIntPipe) productId: number,
-        @Param('featureId', ParseIntPipe) featureId: number,
-    ) {
-        return this.productService.removeFeature(productId, featureId)
-    }
-
     @Put(':productId')
     @Auth([Role.ADMIN, Role.MANAGER], [Right.PRODUCT_UPDATE])
     updateProduct(

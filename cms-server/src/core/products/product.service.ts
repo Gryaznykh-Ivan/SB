@@ -225,8 +225,38 @@ export class ProductService {
         }
 
         try {
-            const product = await this.prisma.product.create({
-                data: createProductQuery
+            const product = await this.prisma.$transaction(async tx => {
+                const product = await tx.product.create({
+                    select: { id: true },
+                    data: createProductQuery
+                })
+
+                if (data.createFeatures !== undefined) {
+                    const lastFeature = await tx.feature.findFirst({
+                        where: { productId: product.id },
+                        select: { position: true },
+                        orderBy: { position: 'desc' }
+                    })
+
+                    const startPosition = lastFeature !== null ? lastFeature.position + 1 : 0
+
+                    for (const [index, feature] of data.createFeatures.entries()) {
+                        await tx.feature.create({
+                            data: {
+                                title: feature.title,
+                                position: startPosition + index,
+                                productId: product.id,
+                                values: {
+                                    createMany: {
+                                        data: feature.values.map((c, i) => ({ key: c.key, value: c.value, position: i, productId: product.id }))
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }
+
+                return product
             })
 
             return {
@@ -236,7 +266,11 @@ export class ProductService {
         } catch (e) {
             if (e instanceof Prisma.PrismaClientKnownRequestError) {
                 if (e.code === 'P2002') {
-                    throw new HttpException("Товар с таким handle уже существует", HttpStatus.BAD_REQUEST)
+                    if (e.meta?.target === "feature_productId_title_key") {
+                        throw new HttpException("Заголовок характеристик должен быть уникальным", HttpStatus.BAD_REQUEST)
+                    } else {
+                        throw new HttpException("Товар с таким handle уже существует", HttpStatus.BAD_REQUEST)
+                    }
                 }
             }
 
@@ -364,7 +398,7 @@ export class ProductService {
                     orderBy: { position: 'asc' }
                 })
 
-                for (const [index, image] of Object.entries(images)) {
+                for (const [index, image] of images.entries()) {
                     await tx.image.update({
                         where: {
                             id: image.id
@@ -384,226 +418,6 @@ export class ProductService {
             throw new HttpException("Произошла ошибка на стороне сервера", HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }
-
-
-    async createFeature(productId: number, data: CreateFeatureDto) {
-        try {
-            const featureNumber = await this.prisma.feature.count({
-                where: { productId }
-            })
-
-            await this.prisma.feature.create({
-                data: {
-                    title: data.title,
-                    position: featureNumber,
-                    productId: productId,
-                    values: {
-                        createMany: {
-                            data: data.createFeatureValues.map((feature, i) => ({ key: feature.key, value: feature.value, position: i, productId }))
-                        }
-                    }
-                }
-            })
-
-            return {
-                success: true
-            }
-        } catch (e) {
-
-            if (e instanceof Prisma.PrismaClientKnownRequestError) {
-                if (e.code === 'P2002') {
-                    throw new HttpException("Характеристики должны быть уникальны", HttpStatus.BAD_REQUEST)
-                }
-            }
-
-            throw new HttpException("Произошла ошибка на стороне сервера", HttpStatus.INTERNAL_SERVER_ERROR)
-        }
-    }
-
-    async updateFeature(productId: number, featureId: number, data: UpdateFeatureDto) {
-        const FeatureUpdateQuery = {
-            title: data.title
-        }
-
-        try {
-            await this.prisma.$transaction(async tx => {
-                if (data.createFeatureValues !== undefined) {
-                    const lastFeatureValue = await tx.featureValue.findFirst({
-                        where: { featureId },
-                        select: { position: true },
-                        orderBy: [{ position: 'desc' }]
-                    })
-
-                    const startPosition = lastFeatureValue !== null ? lastFeatureValue.position + 1 : 0
-
-                    Object.assign(FeatureUpdateQuery, {
-                        values: {
-                            createMany: {
-                                data: data.createFeatureValues.map((feature, index) => ({ key: feature.key, value: feature.value, position: startPosition + index, productId }))
-                            }
-                        }
-                    })
-                }
-
-                // Обновляем название группы и сразу создаем новые характеристики
-                await tx.feature.update({
-                    where: { id: featureId },
-                    data: FeatureUpdateQuery
-                })
-
-                // обновление характеристик
-                for (const { id, key, value } of data.updateFeatureValues ?? []) {
-                    await tx.featureValue.update({
-                        where: { id },
-                        data: {
-                            key,
-                            value
-                        }
-                    })
-
-                }
-
-                if (data.reorderFeatureValue !== undefined) {
-                    const current = await tx.featureValue.findFirst({
-                        where: {
-                            id: data.reorderFeatureValue.id
-                        },
-                        select: {
-                            id: true,
-                            position: true
-                        }
-                    })
-
-                    await tx.featureValue.updateMany({
-                        where: {
-                            featureId,
-                            position: data.reorderFeatureValue.position
-                        },
-                        data: {
-                            position: current.position
-                        }
-                    })
-
-                    await tx.featureValue.update({
-                        where: {
-                            id: data.reorderFeatureValue.id
-                        },
-                        data: {
-                            position: data.reorderFeatureValue.position
-                        }
-                    })
-                }
-
-                // удаление значений опций
-                if (data.deleteFeatureValues !== undefined) {
-                    for (const featureValue of data.deleteFeatureValues ?? []) {
-                        await tx.featureValue.delete({
-                            where: { id: featureValue.id },
-                        })
-                    }
-
-                    // Убираем пустоту между positon
-                    const featureValues = await tx.featureValue.findMany({
-                        where: { featureId },
-                        select: { id: true },
-                        orderBy: [{ position: 'asc' }]
-                    })
-
-                    for (const [index, value] of Object.entries(featureValues)) {
-                        await tx.featureValue.update({
-                            where: {
-                                id: value.id
-                            },
-                            data: {
-                                position: +index
-                            }
-                        })
-                    }
-                }
-
-                // swap позиции у групп характеристик
-                if (data.position !== undefined) {
-                    const current = await tx.feature.findFirst({
-                        where: {
-                            id: featureId
-                        },
-                        select: {
-                            id: true,
-                            position: true
-                        }
-                    })
-
-                    await tx.feature.updateMany({
-                        where: {
-                            productId,
-                            position: data.position
-                        },
-                        data: {
-                            position: current.position
-                        }
-                    })
-
-                    await tx.feature.update({
-                        where: {
-                            id: featureId
-                        },
-                        data: {
-                            position: data.position
-                        }
-                    })
-                }
-            })
-
-            return {
-                success: true
-            }
-        } catch (e) {
-            if (e instanceof Prisma.PrismaClientKnownRequestError) {
-                if (e.code === 'P2002') {
-                    throw new HttpException("Характеристики должны быть уникальны", HttpStatus.BAD_REQUEST)
-                }
-            }
-
-            throw new HttpException("Произошла ошибка на стороне сервера", HttpStatus.INTERNAL_SERVER_ERROR)
-        }
-    }
-
-    async removeFeature(productId: number, featureId: number) {
-        try {
-            await this.prisma.$transaction(async tx => {
-                // Удаление опции
-                await tx.feature.delete({
-                    where: { id: featureId }
-                })
-
-                // Получаем список оставшихся опций
-                const features = await tx.feature.findMany({
-                    where: { productId: productId },
-                    select: { id: true },
-                    orderBy: { position: 'asc' }
-                })
-
-                // Меняем позиции. Tеперь они начинаются с 0
-                for (const [index, feature] of Object.entries(features)) {
-                    await tx.feature.update({
-                        where: {
-                            id: feature.id
-                        },
-                        data: {
-                            position: +index
-                        }
-                    })
-                }
-            })
-
-            return {
-                success: true
-            }
-        } catch (e) {
-            throw new HttpException("Произошла ошибка на стороне сервера", HttpStatus.INTERNAL_SERVER_ERROR)
-        }
-    }
-
 
     async updateProduct(productId: number, data: UpdateProductDto) {
         const updateProductQuery = {
@@ -654,34 +468,174 @@ export class ProductService {
         try {
             await this.prisma.$transaction(async tx => {
 
-                // Обновляем название офферов
-                if (data.title !== undefined) {
-                    await tx.offer.updateMany({
-                        where: {
-                            status: {
-                                notIn: [OfferStatus.SOLD, OfferStatus.NO_MATCH, OfferStatus.RETURNING]
+                // Oбновляем метаполя
+                if (data.updateMetafields !== undefined) {
+                    for (const metafield of data.updateMetafields) {
+                        await tx.metafield.update({
+                            where: {
+                                id: metafield.id
                             },
-                            variant: {
-                                productId
+                            data: {
+                                key: metafield.key,
+                                value: metafield.value,
                             }
-                        },
-                        data: {
-                            productTitle: data.title
-                        }
-                    })
+                        })
+                    }
                 }
 
-                // Oбновляем метаполя
-                for (const metafield of data.updateMetafields ?? []) {
-                    await tx.metafield.update({
+                if (data.reorderFeatures !== undefined) {
+                    for (const [index, feature] of data.reorderFeatures.entries()) {
+                        await tx.feature.update({
+                            where: {
+                                id: feature.id
+                            },
+                            data: {
+                                position: +index
+                            }
+                        })
+                    }
+                }
+
+                if (data.createFeatures !== undefined) {
+                    const lastFeature = await tx.feature.findFirst({
+                        where: { productId: productId },
+                        select: { position: true },
+                        orderBy: { position: 'desc' }
+                    })
+
+                    const startPosition = lastFeature !== null ? lastFeature.position + 1 : 0
+
+                    for (const [index, feature] of data.createFeatures.entries()) {
+                        await tx.feature.create({
+                            data: {
+                                title: feature.title,
+                                position: startPosition + index,
+                                productId: productId,
+                                values: {
+                                    createMany: {
+                                        data: feature.values.map((c, i) => ({ key: c.key, value: c.value, position: i, productId: productId }))
+                                    }
+                                }
+                            }
+                        })
+                    }
+                }
+
+                if (data.deleteFeatures !== undefined) {
+                    await tx.feature.deleteMany({
                         where: {
-                            id: metafield.id
-                        },
-                        data: {
-                            key: metafield.key,
-                            value: metafield.value,
+                            id: {
+                                in: data.deleteFeatures.map(feature => feature.id)
+                            }
                         }
                     })
+
+                    const features = await tx.feature.findMany({
+                        where: { productId: productId },
+                        select: { id: true },
+                        orderBy: { position: 'asc' }
+                    })
+
+                    for (const [index, feature] of features.entries()) {
+                        await tx.feature.update({
+                            where: {
+                                id: feature.id
+                            },
+                            data: {
+                                position: +index
+                            }
+                        })
+                    }
+                }
+
+                if (data.updateFeatures !== undefined) {
+                    for (const feature of data.updateFeatures) {
+
+                        // Обновляем название
+                        if (feature.title !== undefined) {
+                            await tx.feature.update({
+                                where: { id: feature.id },
+                                data: { title: feature.title }
+                            })
+                        }
+
+                        // определение другого порядка характеристик
+                        if (feature.reorderValues !== undefined) {
+                            for (const [index, value] of feature.reorderValues.entries()) {
+                                await tx.featureValue.update({
+                                    where: {
+                                        id: value.id
+                                    },
+                                    data: {
+                                        position: +index
+                                    }
+                                })
+                            }
+                        }
+
+                        if (feature.createValues !== undefined) {
+                            const lastFeatureValue = await tx.featureValue.findFirst({
+                                where: { featureId: feature.id },
+                                select: { position: true },
+                                orderBy: [{ position: 'desc' }]
+                            })
+
+                            const startPosition = lastFeatureValue !== null ? lastFeatureValue.position + 1 : 0
+
+                            await tx.feature.update({
+                                where: { id: feature.id },
+                                data: {
+                                    values: {
+                                        createMany: {
+                                            data: feature.createValues.map((feature, index) => ({ key: feature.key, value: feature.value, position: startPosition + index, productId }))
+                                        }
+                                    }
+                                }
+                            })
+                        }
+
+                        // обновление характеристик
+                        if (feature.updateValues !== undefined) {
+                            for (const { id, key, value } of feature.updateValues) {
+                                await tx.featureValue.update({
+                                    where: { id },
+                                    data: {
+                                        key,
+                                        value
+                                    }
+                                })
+
+                            }
+                        }
+
+                        // удаление характеристик
+                        if (feature.deleteValues !== undefined) {
+                            await tx.featureValue.deleteMany({
+                                where: {
+                                    id: {
+                                        in: feature.deleteValues.map(feature => feature.id)
+                                    }
+                                },
+                            })
+
+                            const featureValues = await tx.featureValue.findMany({
+                                where: { featureId: feature.id },
+                                select: { id: true },
+                                orderBy: [{ position: 'asc' }]
+                            })
+
+                            for (const [index, value] of featureValues.entries()) {
+                                await tx.featureValue.update({
+                                    where: {
+                                        id: value.id
+                                    },
+                                    data: {
+                                        position: +index
+                                    }
+                                })
+                            }
+                        }
+                    }
                 }
 
                 await tx.product.update({
@@ -696,11 +650,11 @@ export class ProductService {
                 success: true
             }
         } catch (e) {
-
-
             if (e instanceof Prisma.PrismaClientKnownRequestError) {
                 if (e.code === 'P2002') {
-                    if (e.meta?.target === "Metafield_productId_key_key") {
+                    if (e.meta?.target === "feature_productId_title_key") {
+                        throw new HttpException("Заголовок характеристик должен быть уникальным", HttpStatus.BAD_REQUEST)
+                    } else if (e.meta?.target === "Metafield_productId_key_key") {
                         throw new HttpException("Ключи у метаполей должны быть уникальными", HttpStatus.BAD_REQUEST)
                     } else {
                         throw new HttpException("Товар с таким handle уже существует", HttpStatus.BAD_REQUEST)

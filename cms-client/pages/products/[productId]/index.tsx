@@ -15,6 +15,7 @@ import { toast } from 'react-toastify'
 import Media from '@/components/products/blocks/Media'
 import Metafields from '@/components/products/blocks/Metafields'
 import useConfirm from '@/hooks/useConfirm'
+import Features from '@/components/products/blocks/Features'
 
 function Index() {
     const router = useRouter()
@@ -131,9 +132,10 @@ function Index() {
                                     productId={data.data.id}
                                     images={data.data.images}
                                 />
-                                <FeatureList
-                                    productId={data.data.id}
-                                    options={data.data.features}
+                                <Features
+                                    // productId={data.data.id}
+                                    features={data.data.features}
+                                    onChange={onCollectChanges}
                                 />
                                 <SeoSearch
                                     metaTitle={data.data.metaTitle}

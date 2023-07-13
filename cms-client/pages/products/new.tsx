@@ -12,6 +12,7 @@ import { toast } from 'react-toastify'
 import { IErrorResponse, ProductCreateRequest, ProductUpdateRequest } from '@/types/api'
 import { useGetVariablesByGroupQuery } from '@/services/variableService'
 import url from '@/utils/url'
+import Features from '@/components/products/blocks/Features'
 
 function New() {
     const router = useRouter()
@@ -87,6 +88,10 @@ function New() {
                         <GeneralInfo
                             title={null}
                             description={null}
+                            onChange={onCollectChanges}
+                        />
+                        <Features
+                            features={[]}
                             onChange={onCollectChanges}
                         />
                         <CreateSeoSearch

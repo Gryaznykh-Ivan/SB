@@ -158,11 +158,22 @@ export interface IProductFeatureValue {
     position: number;
 }
 
-export interface IFeature {
+export interface IProductFeatureCreate {
+    title: string;
+    values: Pick<IProductFeatureValue, "key" | "value">[];
+}
+
+export type IProductFeatureUpdate = {
     id: number;
-    key: string;
-    value: string;
-    position: number;
+    title?: string;
+    createValues?: Pick<IProductFeatureValue, "key" | "value">[];
+    updateValues?: Pick<IProductFeatureValue, "id" | "key" | "value">[];
+    deleteValues?: Pick<IProductFeatureValue, "id">[];
+    reorderValues?: Pick<IProductFeatureValue, "id">[];
+}
+
+export type IProductFeatureDelete = {
+    id: number;
 }
 
 export interface ICollection {
@@ -355,12 +366,6 @@ export interface IOrder {
     fulfillments: IFulfillment[];
     paid: number;
 }
-
-export interface IReorderOptionValue {
-    id: number;
-    position: number;
-}
-
 
 
 
@@ -571,6 +576,7 @@ export type ProductCreateRequest = {
     vendor?: string | null;
     connectCollections?: Pick<ICollection, "id">[];
     createTags?: Omit<ITag, "id">[];
+    createFeatures?: IProductFeatureCreate[];
 }
 
 export type ProductUpdateResponse = IResponse<void>
@@ -590,6 +596,10 @@ export type ProductUpdateRequest = {
     deleteMetafields?: Pick<IMetafield, "id">[];
     createTags?: Omit<ITag, "id">[];
     deleteTags?: Pick<ITag, "id">[];
+    createFeatures?: IProductFeatureCreate[];
+    updateFeatures?: IProductFeatureUpdate[];
+    deleteFeatures?: IProductFeatureDelete[];
+    reorderFeatures?: Pick<IProductFeature, "id">[];
 }
 
 export type ProductDeleteResponse = IResponse<void>
@@ -631,7 +641,7 @@ export type ProductUpdateFeatureRequest = {
     featureId: number;
     title?: string;
     position?: number;
-    reorderFeatureValue?: IReorderOptionValue;
+    reorderFeatureValue?: Pick<IProductFeatureValue, "id" | "position">;
     createFeatureValues?: Pick<IProductFeatureValue, "key" | "value">[];
     updateFeatureValues?: Pick<IProductFeatureValue, "key" | "value" | "id">[];
     deleteFeatureValues?: Pick<IProductFeatureValue, "id">[];

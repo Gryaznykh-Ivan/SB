@@ -27,8 +27,6 @@ export default function Metafields({ onChange, ...data }: IProps) {
     }, [state])
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(state)
-
         if (state.at(-1)?.id.toString() === e.target.id && e.target.name === "key" && e.target.value !== "") {
             setState(prev => ([...prev, { id: Math.random(), key: "", value: "" }]))
         }
