@@ -514,14 +514,16 @@ model DeliveryProfile {
     id        Int            @id @default(autoincrement()) @db.UnsignedInt
     isDefault Boolean        @default(false)
     title     String         @unique
-    location  String
+    country   String?
+    city      String?
+    address   String?
     orders    Order[]
     offers    Offer[]
     zones     DeliveryZone[]
     createdAt DateTime       @default(now())
     updatedAt DateTime       @updatedAt
 
-    @@fulltext([title, location])
+    @@fulltext([title, city, address])
     @@map("deliveryprofile")
 }
 

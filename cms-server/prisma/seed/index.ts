@@ -114,9 +114,7 @@ const deliveryProfiles = async () => {
     for (const profile of data) {
         const createdProfile = await prisma.deliveryProfile.create({
             data: {
-                title: profile.title,
-                location: profile.location,
-                isDefault: profile.isDefault ?? undefined
+                title: profile.title
             },
             select: {
                 id: true

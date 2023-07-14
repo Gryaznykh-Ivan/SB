@@ -221,7 +221,7 @@ export class SuggestionService {
             },
             take: 5
         })
-        
+
         return {
             success: true,
             data: regions.map(region => region.title)
@@ -230,11 +230,13 @@ export class SuggestionService {
 
     async cities(q: string, region?: string) {
         const fulltextSearch = q ? q.replace(/[+\-<>()~*\"@]+/g, " ").replace(/\s+/g, " ").trim().split(" ").filter(word => word.length > 2).map(word => `+${word}*`).join(" ") : undefined
+
         const cities = await this.prisma.city.findMany({
             where: {
-                region: {
-                    title: region
-                },
+                region:
+                    region !== undefined
+                        ? { OR: [{ title: region }, { country: { title: region } }] }
+                        : { title: undefined },
                 title: {
                     search: fulltextSearch ? fulltextSearch : undefined,
                 }

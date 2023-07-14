@@ -49,10 +49,6 @@ export default function ProfileName({ onClose, onDone }: IProps) {
                                 <label htmlFor="title" className="text-sm text-gray-600 mb-1">Название профиля</label>
                                 <Input placeholder="Название профиля" type="text" name="title" value={state.title} onChange={onInputChange} />
                             </div>
-                            <div className="flex flex-col">
-                                <label htmlFor="location" className="text-sm text-gray-600 mb-1">Местоположение</label>
-                                <CountriesSmartInput id="location" placeholder="Местоположение" name="location" value={state.location} onChange={onInputChange} />
-                            </div>
                         </div>
                     </div>
                     <div className="p-5 border-t-[1px]">

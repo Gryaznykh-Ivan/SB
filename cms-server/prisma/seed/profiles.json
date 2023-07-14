@@ -1,8 +1,6 @@
 [
     {
         "title": "Товары с долгой доставкой",
-        "location": "Китай",
-        "isDefault": true,
         "zones": [
             {
                 "country": "Россия",
@@ -944,8 +942,6 @@
     {
         "id": null,
         "title": "Товары с быстрой доставкой",
-        "location": "Россия",
-        "isDefault": false,
         "zones": [
             {
                 "country": "Россия",

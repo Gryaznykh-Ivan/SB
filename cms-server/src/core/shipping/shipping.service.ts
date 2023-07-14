@@ -21,7 +21,10 @@ export class ShippingService {
                 title: {
                     search: fulltextSearch ? fulltextSearch : undefined
                 },
-                location: {
+                city: {
+                    search: fulltextSearch ? fulltextSearch : undefined
+                },
+                address: {
                     search: fulltextSearch ? fulltextSearch : undefined
                 }
             },
@@ -99,7 +102,9 @@ export class ShippingService {
             select: {
                 id: true,
                 title: true,
-                location: true,
+                country: true,
+                city: true,
+                address: true,
                 isDefault: true
             }
         })
@@ -114,8 +119,7 @@ export class ShippingService {
         try {
             const profile = await this.prisma.deliveryProfile.create({
                 data: {
-                    title: data.title,
-                    location: data.location
+                    title: data.title
                 }
             })
 
@@ -216,7 +220,10 @@ export class ShippingService {
     async updateProfile(profileId: number, data: UpdateProfileDto) {
         const updateDeliveryProfileQuery = {
             title: data.title,
-            location: data.location,
+            country: data.country,
+            city: data.city,
+            address: data.address,
+            isDefault: data.isDefault
         }
 
         if (data.connectOffers !== undefined) {
@@ -229,6 +236,13 @@ export class ShippingService {
 
         try {
             await this.prisma.$transaction(async tx => {
+                if (data.isDefault === true) {
+                    await tx.deliveryProfile.updateMany({
+                        where: {},
+                        data: { isDefault: false }
+                    })
+                }
+
                 await tx.deliveryProfile.update({
                     where: {
                         id: profileId
@@ -243,7 +257,7 @@ export class ShippingService {
                 })
 
                 if (defaultProfile === null) {
-                    throw new HttpException("Дефолтный профиль не определен", HttpStatus.BAD_REQUEST)
+                    throw new HttpException("Один из профилей доставки должен быть основным", HttpStatus.BAD_REQUEST)
                 }
 
                 await tx.deliveryProfile.update({
@@ -300,7 +314,7 @@ export class ShippingService {
                 })
 
                 if (defaultProfile === null) {
-                    throw new HttpException("Дефолтный профиль не определен", HttpStatus.BAD_REQUEST)
+                    throw new HttpException("Один из профилей доставки должен быть основным", HttpStatus.BAD_REQUEST)
                 }
 
                 if (profileId === defaultProfile.id) {

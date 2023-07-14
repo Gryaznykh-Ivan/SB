@@ -219,7 +219,7 @@ export class OfferService {
                     })
 
                     if (defaultProfile === null) {
-                        throw new HttpException("Дефолтный профиль не определен", HttpStatus.BAD_REQUEST)
+                        throw new HttpException("Один из профилей доставки должен быть основным", HttpStatus.BAD_REQUEST)
                     }
 
                     Object.assign(createOfferQuery, {

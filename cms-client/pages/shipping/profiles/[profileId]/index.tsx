@@ -9,6 +9,7 @@ import ProfileShipping from '@/components/shipping/blocks/ProfileShipping'
 import { useDeleteDeliveryProfileMutation, useGetDeliveryProfileByIdQuery, useUpdateDeliveryProfileMutation } from '@/services/shippingService'
 import { DeliveryProfileUpdateRequest, IErrorResponse } from '@/types/api'
 import useConfirm from '@/hooks/useConfirm'
+import ProfileLocation from '@/components/shipping/blocks/ProfileLocation'
 
 export default function Index() {
     const router = useRouter()
@@ -113,7 +114,13 @@ export default function Index() {
                             <div className="flex-1 space-y-4">
                                 <ProfileGeneralInfo
                                     title={data.data.title}
-                                    location={data.data.location}
+                                    isDefault={data.data.isDefault}
+                                    onChange={onCollectChanges}
+                                />
+                                <ProfileLocation
+                                    country={data.data.country}
+                                    city={data.data.city}
+                                    address={data.data.address}
                                     onChange={onCollectChanges}
                                 />
                                 <ProfileOffers

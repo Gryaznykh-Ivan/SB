@@ -7,14 +7,14 @@ import TextArea from '../../inputs/TextArea'
 
 interface IProps {
     title: string | null;
-    location: string | null;
+    isDefault: boolean | null;
     onChange: (obj: DeliveryProfileUpdateRequest) => void;
 }
 
 export default function ProfileGeneralInfo({ onChange, ...data }: IProps) {
     const [state, setState] = useState({
         title: data.title ?? "",
-        location: data.location ?? "",
+        isDefault: data.isDefault ?? false
     })
 
     useEffect(() => {
@@ -42,16 +42,20 @@ export default function ProfileGeneralInfo({ onChange, ...data }: IProps) {
         setState(prev => ({ ...prev, [e.target.name]: e.target.value }))
     }
 
+    const onInputCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setState(prev => ({ ...prev, [e.target.name]: e.target.checked }))
+    }
+
     return (
         <div className="rounded-md bg-white shadow-sm p-5">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="space-y-4">
                 <div className="flex flex-col md:col-span-2">
                     <label htmlFor="title" className="text-sm text-gray-600 mb-1">Название профиля</label>
                     <Input type="text" id="title" placeholder="Название профиля" name="title" value={state.title} onChange={onInputChange} />
                 </div>
-                <div className="flex flex-col">
-                    <label htmlFor="location" className="text-sm text-gray-600 mb-1">Местоположение</label>
-                    <CountriesSmartInput id="location" placeholder="Местоположение" name="location" value={state.location} onChange={onInputChange} />
+                <div className="flex items-center">
+                    <input type="checkbox" className="rounded" id="isDefault" name="isDefault" checked={state.isDefault} onChange={onInputCheckboxChange} />
+                    <label htmlFor="isDefault" className="text-sm text-gray-600 ml-3">Основной профиль доставки</label>
                 </div>
             </div>
         </div>

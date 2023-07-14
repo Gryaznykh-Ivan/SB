@@ -61,7 +61,9 @@ export interface IDeliveryProfilePreview {
 export interface IDeliveryProfile {
     id: number;
     title: string;
-    location: string;
+    country: string;
+    city: string;
+    address: string;
     isDefault: boolean;
 }
 
@@ -926,7 +928,6 @@ export type DeliveryProfileGetByIdRequest = {
 export type DeliveryProfileCreateResponse = IResponse<string>
 export type DeliveryProfileCreateRequest = {
     title: string;
-    location: string;
 }
 
 export type DeliveryProfileUpdateResponse = IResponse<void>

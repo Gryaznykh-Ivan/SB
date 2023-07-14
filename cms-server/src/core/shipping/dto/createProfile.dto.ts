@@ -7,9 +7,4 @@ export class CreateProfileDto {
     @IsString()
     @Transform(({ value }: TransformFnParams) => value?.trim())
     title: string;
-
-    @IsNotEmpty()
-    @IsString()
-    @Transform(({ value }: TransformFnParams) => value?.trim())
-    location: string;
 }
