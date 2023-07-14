@@ -1274,7 +1274,6 @@ export class OrderService {
         //     }
         // } catch (e) {
         //     if (e.name === HttpException.name) {
-        //         console.log(e.status)
         //         throw new HttpException(e.message, e.status)
         //     }
 

@@ -31,8 +31,6 @@ export class BrowserService {
             args.push(`--proxy-server=${proxyUrl}`)
         }
 
-        console.log(executablePath())
-
         this._browser = await puppeteer.launch({
             headless: false,
             executablePath: executablePath(),

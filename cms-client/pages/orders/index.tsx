@@ -33,7 +33,6 @@ function Index() {
 
     useEffect(() => {
         if (didMount === true) {
-            console.log("test")
             getOrdersBySearch(query)
         }
     }, [query])

@@ -12,8 +12,6 @@ export class GlobalValidationPipe implements PipeTransform<any> {
         
         const object = plainToInstance(metatype, value);
         const errors = await validate(object);
-        
-        console.log(errors[0])
 
         if (errors.length > 0) {
             throw new HttpException(`${errors[0].property} - ${Object.values(errors[0].children[0].constraints ?? {default: "Ошибка валидации"}).join(', ')}`, HttpStatus.BAD_REQUEST)

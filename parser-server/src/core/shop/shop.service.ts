@@ -160,8 +160,6 @@ export class ShopService {
 
     async upsertOffers(data: { variantId: number; deliveryProfileId: number; userId: number; price: string; offerPrice: string; amount: number }) {
         try {
-            console.log(data)
-
             await this.shop.$transaction(async tx => {
                 const variant = await tx.variant.findUnique({
                     where: { id: data.variantId },
@@ -219,7 +217,6 @@ export class ShopService {
 
             return { success: true }
         } catch (e) {
-            console.log(e)
             throw new HttpException("Произошла ошибка на стороне сервера", HttpStatus.INTERNAL_SERVER_ERROR)
         }
     }

@@ -280,8 +280,6 @@ export class ParserService {
     private async updateShopProducts(provider: { id: number }, deliveryProfile: { id: number }) {
         const setting = await this.parser.settings.findUnique({ where: { id: process.env.BOT_ID } })
 
-        console.log(provider, deliveryProfile)
-
         const limit = 10;
         let hasNextPage = true
 
