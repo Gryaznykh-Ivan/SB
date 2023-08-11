@@ -1,5 +1,5 @@
 import { api } from "@/store/api";
-import { VariantCreateRequest, VariantCreateResponse, VariantDeleteRequest, VariantDeleteResponse, VariantGetAllRequest, VariantGetAllResponse, VariantGetByIdRequest, VariantGetByIdResponse, VariantGetPreviewRequest, VariantGetPreviewResponse, VariantRemoveImageRequest, VariantRemoveImageResponse, VariantSearchRequest, VariantSearchResponse, VariantUpdateImageRequest, VariantUpdateImageResponse, VariantUpdateRequest, VariantUpdateResponse, VariantUploadImagesRequest, VariantUploadImagesResponse } from "@/types/api";
+import { VariantCreateRequest, VariantCreateResponse, VariantDeleteRequest, VariantDeleteResponse, VariantGetAllRequest, VariantGetAllResponse, VariantGetByIdRequest, VariantGetByIdResponse, VariantGetPreviewRequest, VariantGetPreviewResponse, VariantSearchRequest, VariantSearchResponse, VariantUpdateRequest, VariantUpdateResponse } from "@/types/api";
 
 export const variantService = api.injectEndpoints({
     endpoints: builder => ({
@@ -53,29 +53,6 @@ export const variantService = api.injectEndpoints({
                 method: "DELETE"
             }),
             invalidatesTags: ["VARIANTS", "OFFERS", "OFFER"]
-        }),
-        uploadVariantImages: builder.mutation<VariantUploadImagesResponse, VariantUploadImagesRequest>({
-            query: ({ variantId, formData }) => ({
-                url: `variants/${variantId}/uploadImages`,
-                method: "POST",
-                body: formData
-            }),
-            invalidatesTags: ["VARIANT", "VARIANTS"]
-        }),
-        updateVariantImage: builder.mutation<VariantUpdateImageResponse, VariantUpdateImageRequest>({
-            query: ({ variantId, imageId, ...rest }) => ({
-                url: `variants/${variantId}/updateImage/${imageId}`,
-                method: "PUT",
-                body: rest
-            }),
-            invalidatesTags: ["VARIANT", "VARIANTS"]
-        }),
-        removeVariantImage: builder.mutation<VariantRemoveImageResponse, VariantRemoveImageRequest>({
-            query: ({ variantId, imageId }) => ({
-                url: `variants/${variantId}/removeImage/${imageId}`,
-                method: "DELETE"
-            }),
-            invalidatesTags: ["VARIANT", "VARIANTS"]
         })
     })
 })
@@ -88,7 +65,4 @@ export const {
     useCreateVariantMutation,
     useUpdateVariantMutation,
     useDeleteVariantMutation,
-    useUploadVariantImagesMutation,
-    useUpdateVariantImageMutation,
-    useRemoveVariantImageMutation
 } = variantService

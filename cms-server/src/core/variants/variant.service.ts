@@ -1,11 +1,7 @@
-import * as FormData from 'form-data';
-import { HttpService } from '@nestjs/axios';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { OfferStatus, Prisma } from '@prisma/client';
 import { PrismaService } from '@prisma-module/prisma.service';
-import { firstValueFrom } from 'rxjs';
 import { CreateVariantDto } from './dto/createVariant.dto';
-import { UpdateImageDto } from './dto/updateImage.dto';
 import { UpdateVariantDto } from './dto/updateVariant.dto';
 import { SearchVariantDto } from './dto/searchVariant.dto';
 import { FilesService } from 'src/utils/files/files.service';
@@ -51,9 +47,7 @@ export class VariantService {
                 variants: {
                     select: {
                         id: true,
-                        option0: true,
-                        option1: true,
-                        option2: true,
+                        title: true
                     }
                 },
             },
@@ -70,7 +64,7 @@ export class VariantService {
             title: product.title,
             variants: product.variants.map(variant => ({
                 id: variant.id,
-                title: "TODO"
+                title: variant.title
             }))
         }))
 
@@ -83,13 +77,11 @@ export class VariantService {
     async getVariants(productId: number) {
         const variants = await this.prisma.variant.findMany({
             where: {
-                productId: productId
+                productId
             },
             select: {
                 id: true,
-                option0: true,
-                option1: true,
-                option2: true,
+                title: true,
                 offers: {
                     where: {
                         status: OfferStatus.ACTIVE
@@ -99,27 +91,14 @@ export class VariantService {
                     },
                     orderBy: [{ price: 'asc' }],
                     take: 1
-                },
-                images: {
-                    select: {
-                        id: true,
-                        src: true,
-                        alt: true,
-                        position: true,
-                    },
-                    orderBy: {
-                        position: 'asc'
-                    },
-                    take: 1
                 }
             }
         })
 
         const result = variants.map(variant => ({
             id: variant.id,
-            title: "TODO",
-            price: variant.offers[0]?.price ?? 0,
-            image: variant.images[0] ?? null
+            title: variant.title,
+            price: variant.offers[0]?.price ?? 0
         }))
 
         return {
@@ -133,21 +112,7 @@ export class VariantService {
             where: { id: variantId },
             select: {
                 id: true,
-                option0: true,
-                option1: true,
-                option2: true,
-                images: {
-                    select: {
-                        id: true,
-                        src: true,
-                        alt: true,
-                        position: true,
-                    },
-                    orderBy: {
-                        position: 'asc'
-                    },
-                    take: 1
-                },
+                title: true,
                 product: {
                     select: {
                         id: true,
@@ -177,8 +142,8 @@ export class VariantService {
             id: variant.id,
             product: variant.product.title,
             productId: variant.product.id,
-            image: variant.images[0] ?? variant.product.images[0] ?? null,
-            variant: "TODO",
+            image: variant.product.images[0] ?? null,
+            variant: variant.title,
         }
 
         return {
@@ -192,22 +157,9 @@ export class VariantService {
             where: { id: variantId },
             select: {
                 id: true,
-                option0: true,
-                option1: true,
-                option2: true,
+                title: true,
                 barcode: true,
-                sku: true,
-                images: {
-                    select: {
-                        id: true,
-                        src: true,
-                        alt: true,
-                        position: true,
-                    },
-                    orderBy: {
-                        position: 'asc'
-                    }
-                }
+                sku: true
             }
         })
 
@@ -217,13 +169,9 @@ export class VariantService {
 
         const result = {
             id: variant.id,
-            option0: variant.option0,
-            option1: variant.option1,
-            option2: variant.option2,
+            title: variant.title,
             barcode: variant.barcode,
             sku: variant.sku,
-            images: variant.images,
-            options: [] //variant.product.options
         }
 
         return {
@@ -242,9 +190,7 @@ export class VariantService {
                 barcode: true,
                 variants: {
                     where: {
-                        option0: data.option0,
-                        option1: data.option1,
-                        option2: data.option2
+                        title: data.title,
                     },
                     take: 1
                 }
@@ -260,9 +206,7 @@ export class VariantService {
         }
 
         const createVariantQuery = {
-            option0: data.option0,
-            option1: data.option1,
-            option2: data.option2,
+            title: data.title,
             sku: data.sku || product.sku,
             barcode: data.barcode || product.barcode,
             productId: data.productId
@@ -283,195 +227,23 @@ export class VariantService {
     }
 
 
-    async uploadImages(variantId: number, images: Express.Multer.File[]) {
-        const variant = await this.prisma.variant.findFirst({
-            where: { id: variantId },
-            select: {
-                product: {
-                    select: {
-                        title: true
-                    }
-                }
-            }
-        })
-
-        if (variant === null) {
-            throw new HttpException("Вариант не найден", HttpStatus.BAD_REQUEST)
-        }
-
-        try {
-            const result = await this.files.upload(images, 100);
-            if (result.success !== true) {
-                throw new HttpException("Загрузить картинки не удалось", HttpStatus.INTERNAL_SERVER_ERROR)
-            }
-
-            const lastImage = await this.prisma.image.findFirst({
-                where: { variantId: variantId },
-                select: { position: true },
-                orderBy: [{ position: 'desc' }]
-            })
-
-            const startPosition = lastImage !== null ? lastImage.position + 1 : 0
-            const createImagesQuery = result.data.map((image, index) => ({
-                path: image.path,
-                src: image.src,
-                blurhash: image.blurhash,
-                alt: variant.product.title,
-                position: startPosition + index,
-                variantId: variantId
-            }))
-
-            await this.prisma.image.createMany({
-                data: createImagesQuery
-            })
-
-            return {
-                success: true
-            }
-        } catch (e) {
-
-            throw new HttpException("Произошла ошибка на стороне сервера", HttpStatus.INTERNAL_SERVER_ERROR)
-        }
-    }
-
-    async updateImage(variantId: number, imageId: number, data: UpdateImageDto) {
-        try {
-            if (data.src !== undefined || data.alt !== undefined) {
-                await this.prisma.image.update({
-                    where: { id: imageId },
-                    data: {
-                        src: data.src,
-                        alt: data.alt
-                    }
-                })
-            }
-
-            if (data.position !== undefined) {
-                await this.prisma.$transaction(async tx => {
-                    const current = await tx.image.findFirst({
-                        where: {
-                            id: imageId
-                        },
-                        select: {
-                            id: true,
-                            position: true
-                        }
-                    })
-
-                    await tx.image.updateMany({
-                        where: {
-                            variantId,
-                            position: data.position
-                        },
-                        data: {
-                            position: current.position
-                        }
-                    })
-
-                    await tx.image.update({
-                        where: {
-                            id: imageId
-                        },
-                        data: {
-                            position: data.position
-                        }
-                    })
-                })
-            }
-
-            return {
-                success: true,
-            }
-        } catch (e) {
-            throw new HttpException("Произошла ошибка на стороне сервера", HttpStatus.INTERNAL_SERVER_ERROR)
-        }
-    }
-
-    async removeImage(variantId: number, imageId: number) {
-        try {
-            await this.prisma.$transaction(async tx => {
-                await tx.image.update({
-                    where: { id: imageId },
-                    data: {
-                        variantId: null
-                    }
-                })
-
-                const images = await tx.image.findMany({
-                    where: { variantId },
-                    select: { id: true },
-                    orderBy: [{ position: 'asc' }]
-                })
-
-                for (const [index, image] of Object.entries(images)) {
-                    await tx.image.update({
-                        where: {
-                            id: image.id
-                        },
-                        data: {
-                            position: +index
-                        }
-                    })
-                }
-            })
-
-            return {
-                success: true,
-            }
-        } catch (e) {
-            throw new HttpException("Произошла ошибка на стороне сервера", HttpStatus.INTERNAL_SERVER_ERROR)
-        }
-    }
-
-
     async updateVariant(variantId: number, data: UpdateVariantDto) {
         const updateVariantQuery = {
-            option0: data.option0,
-            option1: data.option1,
-            option2: data.option2,
+            title: data.title,
             sku: data.sku,
             barcode: data.barcode,
         }
 
         try {
-            await this.prisma.$transaction(async tx => {
-                const variant = await tx.variant.update({
-                    where: {
-                        id: variantId
-                    },
-                    data: updateVariantQuery,
-                    select: {
-                        option0: true,
-                        option1: true,
-                        option2: true,
-                    }
-                })
-
-                const existCheck = await tx.variant.findMany({
-                    where: {
-                        option0: variant.option0,
-                        option1: variant.option1,
-                        option2: variant.option2,
-                    },
-                    take: 2
-                })
-
-                if (existCheck.length > 1) {
-                    throw new HttpException("Вариант должен быть уникальным", HttpStatus.INTERNAL_SERVER_ERROR)
+            
+            await this.prisma.variant.update({
+                where: {
+                    id: variantId
+                },
+                data: updateVariantQuery,
+                select: {
+                    title: true
                 }
-
-                await tx.offer.updateMany({
-                    where: {
-                        status: {
-                            notIn: [OfferStatus.SOLD, OfferStatus.NO_MATCH, OfferStatus.RETURNING]
-                        },
-                        variantId: variantId
-                    },
-                    data: {
-                        variantTitle: "TODO"
-                    }
-                })
-
             })
 
             return {

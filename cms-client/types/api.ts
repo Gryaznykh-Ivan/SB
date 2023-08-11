@@ -225,25 +225,24 @@ export interface IVariantPreview {
     id: number;
     title: string;
     price: string;
-    image: IImage | null;
+    compareAtPrice: string;
 }
 
 export interface IOfferVariantPreview {
     id: number;
-    product: string;
     productId: number;
+    product: string;
     variant: string;
     image: IImage | null;
 }
 
 export interface IVariant {
     id: number;
-    option0: string;
-    option1: string;
-    option2: string;
+    title: string;
+    price: string;
+    compareAtPrice: string;
     barcode: string;
     sku: string;
-    images: IImage[];
 }
 
 export interface IProductSearch {
@@ -684,9 +683,9 @@ export type VariantGetByIdRequest = {
 export type VariantCreateResponse = IResponse<string>
 export type VariantCreateRequest = {
     productId?: number;
-    option0?: string | null;
-    option1?: string | null;
-    option2?: string | null;
+    title?: string | null;
+    price?: string | null;
+    compareAtPrice?: string | null;
     barcode?: string | null;
     sku?: string | null;
 }
@@ -694,9 +693,9 @@ export type VariantCreateRequest = {
 export type VariantUpdateResponse = IResponse<void>
 export type VariantUpdateRequest = {
     variantId?: number;
-    option0?: string | null;
-    option1?: string | null;
-    option2?: string | null;
+    title?: string | null;
+    price?: string | null;
+    compareAtPrice?: string | null;
     barcode?: string | null;
     sku?: string | null;
 }
@@ -704,27 +703,6 @@ export type VariantUpdateRequest = {
 export type VariantDeleteResponse = IResponse<void>
 export type VariantDeleteRequest = {
     variantId: number;
-}
-
-export type VariantUploadImagesResponse = IResponse<void>
-export type VariantUploadImagesRequest = {
-    variantId: number;
-    formData: FormData;
-}
-
-export type VariantUpdateImageResponse = IResponse<void>
-export type VariantUpdateImageRequest = {
-    variantId: number;
-    imageId: number;
-    src?: string;
-    alt?: string;
-    position?: number;
-}
-
-export type VariantRemoveImageResponse = IResponse<void>
-export type VariantRemoveImageRequest = {
-    variantId: number;
-    imageId: number;
 }
 
 

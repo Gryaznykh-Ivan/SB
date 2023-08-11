@@ -1,24 +1,20 @@
 import { Type } from "class-transformer";
-import { IsArray, IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString, NotEquals, ValidateIf, ValidateNested } from "class-validator";
+import { IsArray, IsBoolean, IsDecimal, IsNotEmpty, IsNumber, IsOptional, IsString, NotEquals, ValidateIf, ValidateNested } from "class-validator";
 
 export class UpdateVariantDto {
     @IsNotEmpty()
     @IsString()
     @NotEquals(null)
     @ValidateIf((object, value) => value !== undefined)
-    option0: string;
+    title: string;
 
-    @IsNotEmpty()
-    @IsString()
-    @NotEquals(null)
-    @ValidateIf((object, value) => value !== undefined)
-    option1: string;
+    @IsOptional()
+    @IsDecimal()
+    price: number;
 
-    @IsNotEmpty()
-    @IsString()
-    @NotEquals(null)
-    @ValidateIf((object, value) => value !== undefined)
-    option2: string;
+    @IsOptional()
+    @IsDecimal()
+    compareAtPrice: number;
 
     @IsOptional()
     @IsString()

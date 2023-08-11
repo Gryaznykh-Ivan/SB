@@ -179,9 +179,7 @@ export class OfferService {
         const variant = await this.prisma.variant.findUnique({
             where: { id: data.variantId },
             select: {
-                option0: true,
-                option1: true,
-                option2: true,
+                title: true,
                 product: {
                     select: {
                         id: true,
@@ -200,7 +198,7 @@ export class OfferService {
                 const createOfferQuery = {
                     productId: variant.product.id,
                     productTitle: variant.product.title,
-                    variantTitle: "TODO",
+                    variantTitle: variant.title,
                     variantId: data.variantId,
                     userId: data.userId,
                     status: data.status,
@@ -287,9 +285,7 @@ export class OfferService {
             const variant = await this.prisma.variant.findUnique({
                 where: { id: data.variantId },
                 select: {
-                    option0: true,
-                    option1: true,
-                    option2: true,
+                    title: true,
                     product: {
                         select: {
                             id: true,
@@ -307,7 +303,7 @@ export class OfferService {
                 status: (offer.status === OfferStatus.NO_MATCH && data.status === undefined) ? OfferStatus.ACTIVE : data.status,
                 productId: variant.product.id,
                 productTitle: variant.product.title,
-                variantTitle: "TODO",
+                variantTitle: variant.title,
                 variantId: data.variantId
             })
         }

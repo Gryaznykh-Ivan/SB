@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { ArrayMaxSize, IsArray, IsBoolean, IsInt, IsNotEmpty, IsOptional, IsString, MaxLength, NotEquals, ValidateIf, ValidateNested } from "class-validator";
+import { ArrayMaxSize, IsArray, IsBoolean, IsDecimal, IsInt, IsNotEmpty, IsOptional, IsString, MaxLength, NotEquals, ValidateIf, ValidateNested } from "class-validator";
 
 export class CreateVariantDto {
     @IsInt()
@@ -9,19 +9,14 @@ export class CreateVariantDto {
     @IsString()
     @NotEquals(null)
     @ValidateIf((object, value) => value !== undefined)
-    option0: string;
+    title: string;
 
-    @IsNotEmpty()
-    @IsString()
-    @NotEquals(null)
-    @ValidateIf((object, value) => value !== undefined)
-    option1: string;
+    @IsDecimal()
+    price: number;
 
-    @IsNotEmpty()
-    @IsString()
-    @NotEquals(null)
-    @ValidateIf((object, value) => value !== undefined)
-    option2: string;
+    @IsOptional()
+    @IsDecimal()
+    compareAtPrice: number;
 
     @IsOptional()
     @IsString()

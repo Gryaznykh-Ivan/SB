@@ -8,7 +8,6 @@ import SeoSearch from '@/components/products/blocks/SeoSearch'
 import Status from '@/components/products/blocks/Status'
 import OrganizationInfo from '@/components/products/blocks/OrganizationInfo'
 import VariantList from '@/components/variants/blocks/VariantList'
-import FeatureList from '@/components/products/blocks/FeatureList'
 import { useDeleteProductMutation, useGetProductByIdQuery, useUpdateProductMutation } from '@/services/productService'
 import { IErrorResponse, ProductUpdateRequest } from '@/types/api'
 import { toast } from 'react-toastify'
@@ -133,7 +132,6 @@ function Index() {
                                     images={data.data.images}
                                 />
                                 <Features
-                                    // productId={data.data.id}
                                     features={data.data.features}
                                     onChange={onCollectChanges}
                                 />

@@ -105,7 +105,7 @@ function Variant() {
                                         <path d="M10 19L3 12M3 12L10 5M3 12H21" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                     </svg>
                                 </Link>
-                                <h1 className="text-xl font-medium">{data.data.options.map(({ option }) => data.data[`option${option}` as keyof typeof data.data]).join(" | ")}</h1>
+                                <h1 className="text-xl font-medium">{data.data.title}</h1>
                             </div>
                             <div className="flex justify-end">
                                 {/* <Link href={`/offers?q=${router.query.variantId}`} className="flex space-x-2 hover:bg-gray-300 p-2 text-gray-700 font-medium rounded-md">
@@ -123,17 +123,10 @@ function Variant() {
                             </div>
                             <div className="flex-1 space-y-4">
                                 <GeneralInfo
-                                    options={data.data.options}
-                                    option0={data.data.option0}
-                                    option1={data.data.option1}
-                                    option2={data.data.option2}
+                                    title={data.data.title}
                                     barcode={data.data.barcode}
                                     sku={data.data.sku}
                                     onChange={onCollectChanges}
-                                />
-                                <Media
-                                    variantId={data.data.id}
-                                    images={data.data.images}
                                 />
                             </div>
                         </div>
